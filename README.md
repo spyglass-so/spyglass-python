@@ -1,194 +1,197 @@
-# Spyglass Python Library
+<div align="center">
+  <img src="./assets/wordmark.svg" alt="Spyglass" width="360">
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fspyglass-so%2Fspyglass-python)
-[![pypi](https://img.shields.io/pypi/v/spyglass-sdk)](https://pypi.python.org/pypi/spyglass-sdk)
+  <h3>The API layer for the social internet</h3>
+  <p>Official Python SDK for the Spyglass API — search brands, creators, and the ads they run.</p>
 
-The Spyglass Python library provides convenient access to the Spyglass APIs from Python.
+  <a href="https://app.spyglass.so">
+    <img src="https://img.shields.io/badge/Get_Started-111111?style=for-the-badge" alt="Get Started">
+  </a>
+  <a href="https://docs.spyglass.so">
+    <img src="https://img.shields.io/badge/Documentation-4A4A4A?style=for-the-badge" alt="Documentation">
+  </a>
+  <a href="https://spyglass.so">
+    <img src="https://img.shields.io/badge/spyglass.so-0A0A0A?style=for-the-badge" alt="spyglass.so">
+  </a>
+</div>
 
-## Table of Contents
+<br>
 
-- [Installation](#installation)
-- [Reference](#reference)
-- [Usage](#usage)
-- [Environments](#environments)
-- [Async Client](#async-client)
-- [Exception Handling](#exception-handling)
-- [Advanced](#advanced)
-  - [Access Raw Response Data](#access-raw-response-data)
-  - [Retries](#retries)
-  - [Timeouts](#timeouts)
-  - [Custom Client](#custom-client)
-- [Contributing](#contributing)
+<div align="center">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/github/license/spyglass-so/spyglass-python" alt="License">
+  </a>
+  <a href="https://github.com/spyglass-so/spyglass-python/stargazers">
+    <img src="https://img.shields.io/github/stars/spyglass-so/spyglass-python?style=social" alt="Stars">
+  </a>
+  <a href="https://pypi.org/project/spyglass-sdk/">
+    <img src="https://img.shields.io/pypi/v/spyglass-sdk" alt="PyPI">
+  </a>
+  <a href="https://github.com/spyglass-so/spyglass-typescript">
+    <img src="https://img.shields.io/badge/TypeScript_SDK-%40spyglass%2Fsdk-3178C6?logo=typescript&logoColor=white" alt="TypeScript SDK">
+  </a>
+</div>
+
+---
+
+Official Python client for the [Spyglass API](https://docs.spyglass.so) with synchronous and asynchronous (`asyncio`) support. Looking for TypeScript? See [`spyglass-so/spyglass-typescript`](https://github.com/spyglass-so/spyglass-typescript).
 
 ## Installation
 
-```sh
+```bash
 pip install spyglass-sdk
+# or
+uv add spyglass-sdk
 ```
 
-## Reference
+## Quickstart
 
-A full reference for this library is available [here](https://github.com/spyglass-so/spyglass-python/blob/HEAD/./reference.md).
-
-## Usage
-
-Instantiate and use the client with the following:
+Create an API key in [Settings → API](https://app.spyglass.so). Keys start with `sg_live_` and are shown once.
 
 ```python
+import os
 from spyglass import Spyglass
 
-client = Spyglass(
-    token="<token>",
-)
+client = Spyglass(token=os.environ["SPYGLASS_API_KEY"])
 
-client.search.search_brands_v2(
-    names=[
-        "Nike"
-    ],
-    limit=3,
-)
+# 1. Resolve a brand
+result = client.search.search_brands_v2(names=["Nike"], limit=1)
+
+if result.brands:
+    brand = result.brands[0]
+
+    # 2. Pull the creatives that brand is running
+    media_result = client.search.get_media_v2(
+        brand_id=brand.id,
+        query="running shoes comfort",
+        limit=20,
+    )
+
+    for ad in media_result.media:
+        print(ad.id, ad.hook, ad.landing_page_url)
 ```
 
-## Environments
+## Async Usage
 
-This SDK allows you to configure different environments for API requests.
-
-```python
-from spyglass import Spyglass
-from spyglass.environment import SpyglassEnvironment
-
-client = Spyglass(
-    environment=SpyglassEnvironment.DEFAULT,
-)
-```
-
-## Async Client
-
-The SDK also exports an `async` client so that you can make non-blocking calls to our API. Note that if you are constructing an Async httpx client class to pass into this client, use `httpx.AsyncClient()` instead of `httpx.Client()` (e.g. for the `httpx_client` parameter of this client).
+Use `AsyncSpyglass` for non-blocking calls with `asyncio`:
 
 ```python
 import asyncio
-
+import os
 from spyglass import AsyncSpyglass
 
-client = AsyncSpyglass(
-    token="<token>",
-)
+client = AsyncSpyglass(token=os.environ["SPYGLASS_API_KEY"])
 
 
 async def main() -> None:
-    await client.search.search_brands_v2(
-        names=[
-            "Nike"
-        ],
-        limit=3,
-    )
+    result = await client.search.search_brands_v2(names=["Nike"], limit=3)
+    for brand in result.brands:
+        print(brand.id, brand.name)
 
 
 asyncio.run(main())
 ```
 
-## Exception Handling
+## What You Can Query
 
-When the API returns a non-success status code (4xx or 5xx response), a subclass of the following error
-will be thrown.
+| Method | Endpoint | What it answers |
+| --- | --- | --- |
+| `client.search.search_brands_v2(...)` | `POST /brands` | Which brand is this? Who else is in this space? |
+| `client.search.creators(...)` | `POST /creators` | Which creator is this? Who matches this audience profile? |
+| `client.search.get_account(...)` | `GET /account/{id}` | What do we know about a brand or creator ID you already have? |
+| `client.search.get_media_v2(...)` | `POST /media` | What creatives is this account running, or what's out there for this theme? |
+| `client.search.taxonomies(...)` | `GET /taxonomies` | Which product-category paths match this phrase? |
+| `client.search.get_brand_media_insights(...)` | `GET /account/{id}/insights` | What hooks, USPs, personas, and formats does it lean on? |
+| `client.search.get_brand_landing_pages(...)` | `GET /account/{id}/landing-pages` | Where does its ad traffic go? |
+| `client.search.get_comments(...)` | `POST /comments` | What are people saying on this Instagram or TikTok post? |
+| `client.indexing.index_brand(...)` | `POST /account/index` | Index a brand we don't have yet by website or social URL. |
+| `client.indexing.index_brand_status(...)` | `GET /account/{id}/index-status` | Has that brand finished indexing? |
+| `client.account.get_credit_usage()` | `GET /team/credit-usage` | How many monthly credits does this team have left? |
+
+Full parameters and response schemas are documented in [`reference.md`](./reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
+
+## Indexing a New Brand
+
+If Spyglass doesn't have a brand yet, queue it by website or social profile URL and poll until `status` is `"ready"`:
+
+```python
+import time
+
+indexed = client.indexing.index_brand(website_url="https://www.nike.com")
+
+status = indexed.status
+while status == "indexing":
+    time.sleep(3)
+    check = client.indexing.index_brand_status(id=indexed.brand_id)
+    status = check.status
+```
+
+## Error Handling
+
+Non-2xx responses raise an `ApiError` with status code and parsed error body:
 
 ```python
 from spyglass.core.api_error import ApiError
 
 try:
-    client.search.search_brands_v2(...)
+    client.search.search_brands_v2(names=["Nike"], limit=5)
 except ApiError as e:
-    print(e.status_code)
-    print(e.body)
+    print(e.status_code, e.body)
 ```
 
-## Advanced
+## Advanced Options
 
-### Access Raw Response Data
+### Retries & Timeouts
 
-The SDK provides access to raw response data, including headers, through the `.with_raw_response` property.
-The `.with_raw_response` property returns a "raw" client that can be used to access the `.headers` and `.data` attributes.
+Requests default to a 60-second timeout and up to 2 automatic retries with exponential backoff on `408`, `409`, `429`, and `5xx` responses. Override at the client or per-request level:
 
 ```python
-from spyglass import Spyglass
+client = Spyglass(token="...", timeout=30.0, max_retries=3)
 
-client = Spyglass(...)
-response = client.search.with_raw_response.search_brands_v2(...)
-print(response.headers)  # access the response headers
-print(response.status_code)  # access the response status code
-print(response.data)  # access the underlying object
+response = client.search.search_brands_v2(
+    names=["Nike"],
+    limit=5,
+    request_options={"timeout_in_seconds": 15, "max_retries": 1},
+)
 ```
 
-### Retries
+### Raw Response & Headers
 
-The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
-as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
-retry limit (default: 2).
-
-Which status codes are retried depends on the `retryStatusCodes` generator configuration:
-
-**`legacy`** (current default): retries on
-- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
-- [409](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409) (Conflict)
-- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (All server errors, including 500)
-
-**`recommended`**: retries on
-- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
-- [409](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409) (Conflict)
-- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [502](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502) (Bad Gateway)
-- [503](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) (Service Unavailable)
-- [504](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504) (Gateway Timeout)
-
-Use the `max_retries` request option to configure this behavior.
+Use `.with_raw_response` to inspect HTTP headers and status codes:
 
 ```python
-client.search.search_brands_v2(..., request_options={
-    "max_retries": 1
-})
+raw = client.search.with_raw_response.search_brands_v2(names=["Nike"], limit=1)
+print(raw.status_code)
+print(raw.headers)
+print(raw.data.brands)
 ```
 
-### Timeouts
+### Custom HTTPX Client
 
-The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
-
-```python
-from spyglass import Spyglass
-
-client = Spyglass(..., timeout=20.0)
-
-# Override timeout for a specific method
-client.search.search_brands_v2(..., request_options={
-    "timeout": 1
-})
-```
-
-### Custom Client
-
-You can override the `httpx` client to customize it for your use-case. Some common use-cases include support for proxies
-and transports.
+Pass a custom `httpx.Client` or `httpx.AsyncClient` for custom proxies or transport settings:
 
 ```python
 import httpx
 from spyglass import Spyglass
 
 client = Spyglass(
-    ...,
-    httpx_client=httpx.Client(
-        proxy="http://my.test.proxy.example.com",
-        transport=httpx.HTTPTransport(local_address="0.0.0.0"),
-    ),
+    token="...",
+    httpx_client=httpx.Client(proxy="http://proxy.example.com"),
 )
 ```
 
-## Contributing
+## Billing & Conventions
 
-While we value open-source contributions to this SDK, this library is generated programmatically.
-Additions made directly to this library would have to be moved over to our generation code,
-otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
-a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
-an issue first to discuss with us!
+- **Credits:** Most calls spend monthly credits per row returned (`count` in the response). Always bound requests with `limit`. See [Billing docs](https://docs.spyglass.so/documentation/get-started/billing).
+- **Pagination:** Page through results with `offset` and `limit`. `count` is the number of rows in the current response.
+- **Server-to-server:** Call the API from your backend, data pipeline, or agent runtime.
 
-On the other hand, contributions to the README are always very welcome!
+## Support
+
+- **Documentation:** [docs.spyglass.so](https://docs.spyglass.so)
+- **Issues:** [GitHub Issues](https://github.com/spyglass-so/spyglass-python/issues)
+- **Email:** [support@spyglass.so](mailto:support@spyglass.so)
+
+## License
+
+[MIT](./LICENSE)
