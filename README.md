@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/wordmark.svg" alt="Spyglass" width="360">
+  <img src="https://raw.githubusercontent.com/spyglass-so/spyglass-python/main/assets/wordmark.svg" alt="Spyglass" width="360">
 
   <h3>The API layer for the social internet</h3>
   <p>Official Python SDK for the Spyglass API — search brands, creators, and the ads they run.</p>
@@ -18,7 +18,7 @@
 <br>
 
 <div align="center">
-  <a href="./LICENSE">
+  <a href="https://github.com/spyglass-so/spyglass-python/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/spyglass-so/spyglass-python" alt="License">
   </a>
   <a href="https://github.com/spyglass-so/spyglass-python/stargazers">
@@ -28,13 +28,15 @@
     <img src="https://img.shields.io/pypi/v/spyglass-sdk" alt="PyPI">
   </a>
   <a href="https://github.com/spyglass-so/spyglass-typescript">
-    <img src="https://img.shields.io/badge/TypeScript_SDK-%40spyglass%2Fsdk-3178C6?logo=typescript&logoColor=white" alt="TypeScript SDK">
+    <img src="https://img.shields.io/badge/TypeScript_SDK-%40spyglasshq%2Fsdk-3178C6?logo=typescript&logoColor=white" alt="TypeScript SDK">
   </a>
 </div>
 
 ---
 
-Official Python client for the [Spyglass API](https://docs.spyglass.so) with synchronous and asynchronous (`asyncio`) support. Looking for TypeScript? See [`spyglass-so/spyglass-typescript`](https://github.com/spyglass-so/spyglass-typescript).
+**`spyglass-sdk`** is the official Python client for the [Spyglass API](https://docs.spyglass.so) with both synchronous (`Spyglass`) and asynchronous (`AsyncSpyglass`) clients. Resolve brands and creators, search across millions of Meta, Instagram, and TikTok creatives with natural-language briefs or structured filters, and extract hooks, personas, landing pages, and public comments.
+
+> Looking for TypeScript / Node.js? See [`spyglass-so/spyglass-typescript`](https://github.com/spyglass-so/spyglass-typescript) (`npm install @spyglasshq/sdk`).
 
 ## Installation
 
@@ -46,7 +48,7 @@ uv add spyglass-sdk
 
 ## Quickstart
 
-Create an API key in [Settings → API](https://app.spyglass.so). Keys start with `sg_live_` and are shown once.
+Create an API key in **[Settings → API](https://app.spyglass.so)**. Keys start with `sg_live_` and are shown once.
 
 ```python
 import os
@@ -55,20 +57,20 @@ from spyglass import Spyglass
 client = Spyglass(token=os.environ["SPYGLASS_API_KEY"])
 
 # 1. Resolve a brand
-result = client.search.search_brands_v2(names=["Nike"], limit=1)
+result = client.search.brands(names=["Nike"], limit=1)
 
 if result.brands:
     brand = result.brands[0]
 
-    # 2. Pull the creatives that brand is running
-    media_result = client.search.get_media_v2(
+    # 2. Search the creatives that brand is running
+    media_result = client.search.get_media(
         brand_id=brand.id,
-        query="running shoes comfort",
-        limit=20,
+        query="marathon running shoes comfort",
+        limit=10,
     )
 
     for ad in media_result.media:
-        print(ad.id, ad.hook, ad.landing_page_url)
+        print(ad.id, ad.hook, ad.core_angle, ad.url)
 ```
 
 ## Async Usage
@@ -84,7 +86,7 @@ client = AsyncSpyglass(token=os.environ["SPYGLASS_API_KEY"])
 
 
 async def main() -> None:
-    result = await client.search.search_brands_v2(names=["Nike"], limit=3)
+    result = await client.search.brands(names=["Nike"], limit=3)
     for brand in result.brands:
         print(brand.id, brand.name)
 
@@ -92,32 +94,32 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## What You Can Query
+## API Reference Overview
 
-| Method | Endpoint | What it answers |
-| --- | --- | --- |
-| `client.search.search_brands_v2(...)` | `POST /brands` | Which brand is this? Who else is in this space? |
-| `client.search.creators(...)` | `POST /creators` | Which creator is this? Who matches this audience profile? |
-| `client.search.get_account(...)` | `GET /account/{id}` | What do we know about a brand or creator ID you already have? |
-| `client.search.get_media_v2(...)` | `POST /media` | What creatives is this account running, or what's out there for this theme? |
-| `client.search.taxonomies(...)` | `GET /taxonomies` | Which product-category paths match this phrase? |
-| `client.search.get_brand_media_insights(...)` | `GET /account/{id}/insights` | What hooks, USPs, personas, and formats does it lean on? |
-| `client.search.get_brand_landing_pages(...)` | `GET /account/{id}/landing-pages` | Where does its ad traffic go? |
-| `client.search.get_comments(...)` | `POST /comments` | What are people saying on this Instagram or TikTok post? |
-| `client.indexing.index_brand(...)` | `POST /account/index` | Index a brand we don't have yet by website or social URL. |
-| `client.indexing.index_brand_status(...)` | `GET /account/{id}/index-status` | Has that brand finished indexing? |
-| `client.account.get_credit_usage()` | `GET /team/credit-usage` | How many monthly credits does this team have left? |
+| SDK Method | HTTP Endpoint | Cost | Rate Limit |
+| --- | --- | --- | --- |
+| `client.search.brands(...)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
+| `client.search.creators(...)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
+| `client.search.get_account(id=...)` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
+| `client.search.get_media(...)` | `POST /media` | $0.0010 / creative returned | 120 / min |
+| `client.search.taxonomies(query=...)` | `GET /taxonomies` | Free | 120 / min |
+| `client.search.get_brand_media_insights(...)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
+| `client.search.get_brand_landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
+| `client.search.get_comments(...)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
+| `client.indexing.index_brand(...)` | `POST /account/index` | Free | 50 / min |
+| `client.indexing.index_brand_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
+| `client.account.get_credit_usage()` | `GET /team/credit-usage` | Free | 120 / min |
 
-Full parameters and response schemas are documented in [`reference.md`](./reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
+Full parameters and response schemas are documented in [`reference.md`](https://github.com/spyglass-so/spyglass-python/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
 
 ## Indexing a New Brand
 
-If Spyglass doesn't have a brand yet, queue it by website or social profile URL and poll until `status` is `"ready"`:
+If Spyglass doesn't have a brand yet, queue it by website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
 
 ```python
 import time
 
-indexed = client.indexing.index_brand(website_url="https://www.nike.com")
+indexed = client.indexing.index_brand(website_url="https://www.on.com")
 
 status = indexed.status
 while status == "indexing":
@@ -134,7 +136,7 @@ Non-2xx responses raise an `ApiError` with status code and parsed error body:
 from spyglass.core.api_error import ApiError
 
 try:
-    client.search.search_brands_v2(names=["Nike"], limit=5)
+    client.search.brands(names=["Nike"], limit=5)
 except ApiError as e:
     print(e.status_code, e.body)
 ```
@@ -148,7 +150,7 @@ Requests default to a 60-second timeout and up to 2 automatic retries with expon
 ```python
 client = Spyglass(token="...", timeout=30.0, max_retries=3)
 
-response = client.search.search_brands_v2(
+response = client.search.brands(
     names=["Nike"],
     limit=5,
     request_options={"timeout_in_seconds": 15, "max_retries": 1},
@@ -160,7 +162,7 @@ response = client.search.search_brands_v2(
 Use `.with_raw_response` to inspect HTTP headers and status codes:
 
 ```python
-raw = client.search.with_raw_response.search_brands_v2(names=["Nike"], limit=1)
+raw = client.search.with_raw_response.brands(names=["Nike"], limit=1)
 print(raw.status_code)
 print(raw.headers)
 print(raw.data.brands)
@@ -189,9 +191,9 @@ client = Spyglass(
 ## Support
 
 - **Documentation:** [docs.spyglass.so](https://docs.spyglass.so)
-- **Issues:** [GitHub Issues](https://github.com/spyglass-so/spyglass-python/issues)
+- **Issues:** [github.com/spyglass-so/spyglass-python/issues](https://github.com/spyglass-so/spyglass-python/issues)
 - **Email:** [support@spyglass.so](mailto:support@spyglass.so)
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](https://github.com/spyglass-so/spyglass-python/blob/main/LICENSE)
