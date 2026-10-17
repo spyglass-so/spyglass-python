@@ -2,7 +2,7 @@
 
 import typing
 
-GetMediaV2ResponseMediaItemUgcCharacterEthnicity = typing.Union[
+GetMediaResponseMediaItemUgcCharacterEthnicity = typing.Union[
     typing.Literal["White", "Black", "Asian", "Hispanic", "Middle Eastern", "Indigenous", "Pacific Islander"],
     typing.Any,
 ]

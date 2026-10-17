@@ -6,16 +6,16 @@ import pydantic
 import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
-from .get_media_v2response_media_item_brand_type import GetMediaV2ResponseMediaItemBrandType
+from .get_media_response_media_item_brand_type import GetMediaResponseMediaItemBrandType
 
 
-class GetMediaV2ResponseMediaItemBrand(UniversalBaseModel):
+class GetMediaResponseMediaItemBrand(UniversalBaseModel):
     id: str
     facebook_ad_library_id: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="facebookAdLibraryId"), pydantic.Field(alias="facebookAdLibraryId")
     ] = None
     name: str
-    type: typing.Optional[GetMediaV2ResponseMediaItemBrandType] = None
+    type: typing.Optional[GetMediaResponseMediaItemBrandType] = None
     ig_username: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="igUsername"), pydantic.Field(alias="igUsername")
     ] = None

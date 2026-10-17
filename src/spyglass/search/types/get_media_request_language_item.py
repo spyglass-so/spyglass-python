@@ -2,7 +2,7 @@
 
 import typing
 
-GetMediaV2RequestLanguageItem = typing.Union[
+GetMediaRequestLanguageItem = typing.Union[
     typing.Literal[
         "English",
         "Spanish",

@@ -6,11 +6,11 @@ import pydantic
 import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
-from .search_brands_v2response_brands_item_type import SearchBrandsV2ResponseBrandsItemType
+from .search_brands_response_brands_item_type import SearchBrandsResponseBrandsItemType
 
 
-class SearchBrandsV2ResponseBrandsItem(UniversalBaseModel):
-    type: SearchBrandsV2ResponseBrandsItemType
+class SearchBrandsResponseBrandsItem(UniversalBaseModel):
+    type: SearchBrandsResponseBrandsItemType
     id: str
     facebook_ad_library_id: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="facebookAdLibraryId"), pydantic.Field(alias="facebookAdLibraryId")

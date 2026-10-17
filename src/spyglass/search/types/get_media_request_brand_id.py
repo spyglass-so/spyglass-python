@@ -2,4 +2,4 @@
 
 import typing
 
-GetMediaV2RequestBrandId = typing.Union[str, float]
+GetMediaRequestBrandId = typing.Union[str, float]

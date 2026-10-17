@@ -2,7 +2,7 @@
 
 import typing
 
-GetMediaV2RequestCategoriesItem = typing.Union[
+GetMediaRequestCategoriesItem = typing.Union[
     typing.Literal[
         "Announcement",
         "Before and After",

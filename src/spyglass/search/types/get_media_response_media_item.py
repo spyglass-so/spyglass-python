@@ -6,20 +6,20 @@ import pydantic
 import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
-from .get_media_v2response_media_item_brand import GetMediaV2ResponseMediaItemBrand
-from .get_media_v2response_media_item_media_type import GetMediaV2ResponseMediaItemMediaType
-from .get_media_v2response_media_item_type import GetMediaV2ResponseMediaItemType
-from .get_media_v2response_media_item_ugc_character import GetMediaV2ResponseMediaItemUgcCharacter
+from .get_media_response_media_item_brand import GetMediaResponseMediaItemBrand
+from .get_media_response_media_item_media_type import GetMediaResponseMediaItemMediaType
+from .get_media_response_media_item_type import GetMediaResponseMediaItemType
+from .get_media_response_media_item_ugc_character import GetMediaResponseMediaItemUgcCharacter
 
 
-class GetMediaV2ResponseMediaItem(UniversalBaseModel):
+class GetMediaResponseMediaItem(UniversalBaseModel):
     id: str
     platform_id: typing_extensions.Annotated[str, FieldMetadata(alias="platformId"), pydantic.Field(alias="platformId")]
-    brand: typing.Optional[GetMediaV2ResponseMediaItemBrand] = None
+    brand: typing.Optional[GetMediaResponseMediaItemBrand] = None
     title: typing.Optional[str] = None
-    type: typing.Optional[GetMediaV2ResponseMediaItemType] = None
+    type: typing.Optional[GetMediaResponseMediaItemType] = None
     media_type: typing_extensions.Annotated[
-        typing.Optional[GetMediaV2ResponseMediaItemMediaType],
+        typing.Optional[GetMediaResponseMediaItemMediaType],
         FieldMetadata(alias="mediaType"),
         pydantic.Field(alias="mediaType"),
     ] = None
@@ -49,7 +49,7 @@ class GetMediaV2ResponseMediaItem(UniversalBaseModel):
         typing.Optional[typing.List[str]], FieldMetadata(alias="sellingPoints"), pydantic.Field(alias="sellingPoints")
     ] = None
     ugc_character: typing_extensions.Annotated[
-        typing.Optional[GetMediaV2ResponseMediaItemUgcCharacter],
+        typing.Optional[GetMediaResponseMediaItemUgcCharacter],
         FieldMetadata(alias="ugcCharacter"),
         pydantic.Field(alias="ugcCharacter"),
     ] = None

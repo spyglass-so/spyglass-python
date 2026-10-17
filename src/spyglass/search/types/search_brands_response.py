@@ -6,12 +6,12 @@ import pydantic
 import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
-from .search_brands_v2response_brands_item import SearchBrandsV2ResponseBrandsItem
+from .search_brands_response_brands_item import SearchBrandsResponseBrandsItem
 
 
-class SearchBrandsV2Response(UniversalBaseModel):
+class SearchBrandsResponse(UniversalBaseModel):
     count: int
-    brands: typing.List[SearchBrandsV2ResponseBrandsItem]
+    brands: typing.List[SearchBrandsResponseBrandsItem]
     unmatched_ids: typing_extensions.Annotated[
         typing.Optional[typing.List[str]], FieldMetadata(alias="unmatchedIds"), pydantic.Field(alias="unmatchedIds")
     ] = None

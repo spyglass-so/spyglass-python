@@ -6,19 +6,19 @@ import pydantic
 import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
-from .get_media_v2response_media_item_ugc_character_age_range import GetMediaV2ResponseMediaItemUgcCharacterAgeRange
-from .get_media_v2response_media_item_ugc_character_ethnicity import GetMediaV2ResponseMediaItemUgcCharacterEthnicity
-from .get_media_v2response_media_item_ugc_character_gender import GetMediaV2ResponseMediaItemUgcCharacterGender
+from .get_media_response_media_item_ugc_character_age_range import GetMediaResponseMediaItemUgcCharacterAgeRange
+from .get_media_response_media_item_ugc_character_ethnicity import GetMediaResponseMediaItemUgcCharacterEthnicity
+from .get_media_response_media_item_ugc_character_gender import GetMediaResponseMediaItemUgcCharacterGender
 
 
-class GetMediaV2ResponseMediaItemUgcCharacter(UniversalBaseModel):
+class GetMediaResponseMediaItemUgcCharacter(UniversalBaseModel):
     age_range: typing_extensions.Annotated[
-        typing.Optional[GetMediaV2ResponseMediaItemUgcCharacterAgeRange],
+        typing.Optional[GetMediaResponseMediaItemUgcCharacterAgeRange],
         FieldMetadata(alias="ageRange"),
         pydantic.Field(alias="ageRange"),
     ] = None
-    gender: typing.Optional[GetMediaV2ResponseMediaItemUgcCharacterGender] = None
-    ethnicity: typing.Optional[GetMediaV2ResponseMediaItemUgcCharacterEthnicity] = None
+    gender: typing.Optional[GetMediaResponseMediaItemUgcCharacterGender] = None
+    ethnicity: typing.Optional[GetMediaResponseMediaItemUgcCharacterEthnicity] = None
     description: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

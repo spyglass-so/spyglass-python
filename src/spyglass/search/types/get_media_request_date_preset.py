@@ -2,7 +2,7 @@
 
 import typing
 
-GetMediaV2RequestDatePreset = typing.Union[
+GetMediaRequestDatePreset = typing.Union[
     typing.Literal[
         "today",
         "yesterday",

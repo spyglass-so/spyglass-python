@@ -27,34 +27,32 @@ if typing.TYPE_CHECKING:
     from .get_comments_response import GetCommentsResponse
     from .get_comments_response_posts_item import GetCommentsResponsePostsItem
     from .get_comments_response_posts_item_comments_item import GetCommentsResponsePostsItemCommentsItem
-    from .get_media_v2request_brand_id import GetMediaV2RequestBrandId
-    from .get_media_v2request_categories_item import GetMediaV2RequestCategoriesItem
-    from .get_media_v2request_channel_item import GetMediaV2RequestChannelItem
-    from .get_media_v2request_date_preset import GetMediaV2RequestDatePreset
-    from .get_media_v2request_duration_item import GetMediaV2RequestDurationItem
-    from .get_media_v2request_format_item import GetMediaV2RequestFormatItem
-    from .get_media_v2request_funnel_stage_item import GetMediaV2RequestFunnelStageItem
-    from .get_media_v2request_landing_page_match import GetMediaV2RequestLandingPageMatch
-    from .get_media_v2request_language_item import GetMediaV2RequestLanguageItem
-    from .get_media_v2request_sort_by import GetMediaV2RequestSortBy
-    from .get_media_v2request_status import GetMediaV2RequestStatus
-    from .get_media_v2response import GetMediaV2Response
-    from .get_media_v2response_media_item import GetMediaV2ResponseMediaItem
-    from .get_media_v2response_media_item_brand import GetMediaV2ResponseMediaItemBrand
-    from .get_media_v2response_media_item_brand_type import GetMediaV2ResponseMediaItemBrandType
-    from .get_media_v2response_media_item_media_type import GetMediaV2ResponseMediaItemMediaType
-    from .get_media_v2response_media_item_type import GetMediaV2ResponseMediaItemType
-    from .get_media_v2response_media_item_ugc_character import GetMediaV2ResponseMediaItemUgcCharacter
-    from .get_media_v2response_media_item_ugc_character_age_range import GetMediaV2ResponseMediaItemUgcCharacterAgeRange
-    from .get_media_v2response_media_item_ugc_character_ethnicity import (
-        GetMediaV2ResponseMediaItemUgcCharacterEthnicity,
-    )
-    from .get_media_v2response_media_item_ugc_character_gender import GetMediaV2ResponseMediaItemUgcCharacterGender
-    from .search_brands_v2request_brand_ids_item import SearchBrandsV2RequestBrandIdsItem
-    from .search_brands_v2request_sort_by import SearchBrandsV2RequestSortBy
-    from .search_brands_v2response import SearchBrandsV2Response
-    from .search_brands_v2response_brands_item import SearchBrandsV2ResponseBrandsItem
-    from .search_brands_v2response_brands_item_type import SearchBrandsV2ResponseBrandsItemType
+    from .get_media_request_brand_id import GetMediaRequestBrandId
+    from .get_media_request_categories_item import GetMediaRequestCategoriesItem
+    from .get_media_request_channel_item import GetMediaRequestChannelItem
+    from .get_media_request_date_preset import GetMediaRequestDatePreset
+    from .get_media_request_duration_item import GetMediaRequestDurationItem
+    from .get_media_request_format_item import GetMediaRequestFormatItem
+    from .get_media_request_funnel_stage_item import GetMediaRequestFunnelStageItem
+    from .get_media_request_landing_page_match import GetMediaRequestLandingPageMatch
+    from .get_media_request_language_item import GetMediaRequestLanguageItem
+    from .get_media_request_sort_by import GetMediaRequestSortBy
+    from .get_media_request_status import GetMediaRequestStatus
+    from .get_media_response import GetMediaResponse
+    from .get_media_response_media_item import GetMediaResponseMediaItem
+    from .get_media_response_media_item_brand import GetMediaResponseMediaItemBrand
+    from .get_media_response_media_item_brand_type import GetMediaResponseMediaItemBrandType
+    from .get_media_response_media_item_media_type import GetMediaResponseMediaItemMediaType
+    from .get_media_response_media_item_type import GetMediaResponseMediaItemType
+    from .get_media_response_media_item_ugc_character import GetMediaResponseMediaItemUgcCharacter
+    from .get_media_response_media_item_ugc_character_age_range import GetMediaResponseMediaItemUgcCharacterAgeRange
+    from .get_media_response_media_item_ugc_character_ethnicity import GetMediaResponseMediaItemUgcCharacterEthnicity
+    from .get_media_response_media_item_ugc_character_gender import GetMediaResponseMediaItemUgcCharacterGender
+    from .search_brands_request_brand_ids_item import SearchBrandsRequestBrandIdsItem
+    from .search_brands_request_sort_by import SearchBrandsRequestSortBy
+    from .search_brands_response import SearchBrandsResponse
+    from .search_brands_response_brands_item import SearchBrandsResponseBrandsItem
+    from .search_brands_response_brands_item_type import SearchBrandsResponseBrandsItemType
     from .search_creators_request_age_range import SearchCreatorsRequestAgeRange
     from .search_creators_request_brand_ids_item import SearchCreatorsRequestBrandIdsItem
     from .search_creators_request_ethnicity import SearchCreatorsRequestEthnicity
@@ -87,32 +85,32 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetCommentsResponse": ".get_comments_response",
     "GetCommentsResponsePostsItem": ".get_comments_response_posts_item",
     "GetCommentsResponsePostsItemCommentsItem": ".get_comments_response_posts_item_comments_item",
-    "GetMediaV2RequestBrandId": ".get_media_v2request_brand_id",
-    "GetMediaV2RequestCategoriesItem": ".get_media_v2request_categories_item",
-    "GetMediaV2RequestChannelItem": ".get_media_v2request_channel_item",
-    "GetMediaV2RequestDatePreset": ".get_media_v2request_date_preset",
-    "GetMediaV2RequestDurationItem": ".get_media_v2request_duration_item",
-    "GetMediaV2RequestFormatItem": ".get_media_v2request_format_item",
-    "GetMediaV2RequestFunnelStageItem": ".get_media_v2request_funnel_stage_item",
-    "GetMediaV2RequestLandingPageMatch": ".get_media_v2request_landing_page_match",
-    "GetMediaV2RequestLanguageItem": ".get_media_v2request_language_item",
-    "GetMediaV2RequestSortBy": ".get_media_v2request_sort_by",
-    "GetMediaV2RequestStatus": ".get_media_v2request_status",
-    "GetMediaV2Response": ".get_media_v2response",
-    "GetMediaV2ResponseMediaItem": ".get_media_v2response_media_item",
-    "GetMediaV2ResponseMediaItemBrand": ".get_media_v2response_media_item_brand",
-    "GetMediaV2ResponseMediaItemBrandType": ".get_media_v2response_media_item_brand_type",
-    "GetMediaV2ResponseMediaItemMediaType": ".get_media_v2response_media_item_media_type",
-    "GetMediaV2ResponseMediaItemType": ".get_media_v2response_media_item_type",
-    "GetMediaV2ResponseMediaItemUgcCharacter": ".get_media_v2response_media_item_ugc_character",
-    "GetMediaV2ResponseMediaItemUgcCharacterAgeRange": ".get_media_v2response_media_item_ugc_character_age_range",
-    "GetMediaV2ResponseMediaItemUgcCharacterEthnicity": ".get_media_v2response_media_item_ugc_character_ethnicity",
-    "GetMediaV2ResponseMediaItemUgcCharacterGender": ".get_media_v2response_media_item_ugc_character_gender",
-    "SearchBrandsV2RequestBrandIdsItem": ".search_brands_v2request_brand_ids_item",
-    "SearchBrandsV2RequestSortBy": ".search_brands_v2request_sort_by",
-    "SearchBrandsV2Response": ".search_brands_v2response",
-    "SearchBrandsV2ResponseBrandsItem": ".search_brands_v2response_brands_item",
-    "SearchBrandsV2ResponseBrandsItemType": ".search_brands_v2response_brands_item_type",
+    "GetMediaRequestBrandId": ".get_media_request_brand_id",
+    "GetMediaRequestCategoriesItem": ".get_media_request_categories_item",
+    "GetMediaRequestChannelItem": ".get_media_request_channel_item",
+    "GetMediaRequestDatePreset": ".get_media_request_date_preset",
+    "GetMediaRequestDurationItem": ".get_media_request_duration_item",
+    "GetMediaRequestFormatItem": ".get_media_request_format_item",
+    "GetMediaRequestFunnelStageItem": ".get_media_request_funnel_stage_item",
+    "GetMediaRequestLandingPageMatch": ".get_media_request_landing_page_match",
+    "GetMediaRequestLanguageItem": ".get_media_request_language_item",
+    "GetMediaRequestSortBy": ".get_media_request_sort_by",
+    "GetMediaRequestStatus": ".get_media_request_status",
+    "GetMediaResponse": ".get_media_response",
+    "GetMediaResponseMediaItem": ".get_media_response_media_item",
+    "GetMediaResponseMediaItemBrand": ".get_media_response_media_item_brand",
+    "GetMediaResponseMediaItemBrandType": ".get_media_response_media_item_brand_type",
+    "GetMediaResponseMediaItemMediaType": ".get_media_response_media_item_media_type",
+    "GetMediaResponseMediaItemType": ".get_media_response_media_item_type",
+    "GetMediaResponseMediaItemUgcCharacter": ".get_media_response_media_item_ugc_character",
+    "GetMediaResponseMediaItemUgcCharacterAgeRange": ".get_media_response_media_item_ugc_character_age_range",
+    "GetMediaResponseMediaItemUgcCharacterEthnicity": ".get_media_response_media_item_ugc_character_ethnicity",
+    "GetMediaResponseMediaItemUgcCharacterGender": ".get_media_response_media_item_ugc_character_gender",
+    "SearchBrandsRequestBrandIdsItem": ".search_brands_request_brand_ids_item",
+    "SearchBrandsRequestSortBy": ".search_brands_request_sort_by",
+    "SearchBrandsResponse": ".search_brands_response",
+    "SearchBrandsResponseBrandsItem": ".search_brands_response_brands_item",
+    "SearchBrandsResponseBrandsItemType": ".search_brands_response_brands_item_type",
     "SearchCreatorsRequestAgeRange": ".search_creators_request_age_range",
     "SearchCreatorsRequestBrandIdsItem": ".search_creators_request_brand_ids_item",
     "SearchCreatorsRequestEthnicity": ".search_creators_request_ethnicity",
@@ -169,32 +167,32 @@ __all__ = [
     "GetCommentsResponse",
     "GetCommentsResponsePostsItem",
     "GetCommentsResponsePostsItemCommentsItem",
-    "GetMediaV2RequestBrandId",
-    "GetMediaV2RequestCategoriesItem",
-    "GetMediaV2RequestChannelItem",
-    "GetMediaV2RequestDatePreset",
-    "GetMediaV2RequestDurationItem",
-    "GetMediaV2RequestFormatItem",
-    "GetMediaV2RequestFunnelStageItem",
-    "GetMediaV2RequestLandingPageMatch",
-    "GetMediaV2RequestLanguageItem",
-    "GetMediaV2RequestSortBy",
-    "GetMediaV2RequestStatus",
-    "GetMediaV2Response",
-    "GetMediaV2ResponseMediaItem",
-    "GetMediaV2ResponseMediaItemBrand",
-    "GetMediaV2ResponseMediaItemBrandType",
-    "GetMediaV2ResponseMediaItemMediaType",
-    "GetMediaV2ResponseMediaItemType",
-    "GetMediaV2ResponseMediaItemUgcCharacter",
-    "GetMediaV2ResponseMediaItemUgcCharacterAgeRange",
-    "GetMediaV2ResponseMediaItemUgcCharacterEthnicity",
-    "GetMediaV2ResponseMediaItemUgcCharacterGender",
-    "SearchBrandsV2RequestBrandIdsItem",
-    "SearchBrandsV2RequestSortBy",
-    "SearchBrandsV2Response",
-    "SearchBrandsV2ResponseBrandsItem",
-    "SearchBrandsV2ResponseBrandsItemType",
+    "GetMediaRequestBrandId",
+    "GetMediaRequestCategoriesItem",
+    "GetMediaRequestChannelItem",
+    "GetMediaRequestDatePreset",
+    "GetMediaRequestDurationItem",
+    "GetMediaRequestFormatItem",
+    "GetMediaRequestFunnelStageItem",
+    "GetMediaRequestLandingPageMatch",
+    "GetMediaRequestLanguageItem",
+    "GetMediaRequestSortBy",
+    "GetMediaRequestStatus",
+    "GetMediaResponse",
+    "GetMediaResponseMediaItem",
+    "GetMediaResponseMediaItemBrand",
+    "GetMediaResponseMediaItemBrandType",
+    "GetMediaResponseMediaItemMediaType",
+    "GetMediaResponseMediaItemType",
+    "GetMediaResponseMediaItemUgcCharacter",
+    "GetMediaResponseMediaItemUgcCharacterAgeRange",
+    "GetMediaResponseMediaItemUgcCharacterEthnicity",
+    "GetMediaResponseMediaItemUgcCharacterGender",
+    "SearchBrandsRequestBrandIdsItem",
+    "SearchBrandsRequestSortBy",
+    "SearchBrandsResponse",
+    "SearchBrandsResponseBrandsItem",
+    "SearchBrandsResponseBrandsItemType",
     "SearchCreatorsRequestAgeRange",
     "SearchCreatorsRequestBrandIdsItem",
     "SearchCreatorsRequestEthnicity",

@@ -2,7 +2,7 @@
 
 import typing
 
-SearchBrandsV2RequestSortBy = typing.Union[
+SearchBrandsRequestSortBy = typing.Union[
     typing.Literal["NAME", "MOST_FOLLOWERS", "LEAST_FOLLOWERS", "MOST_VIEWS", "HIGHEST_ENGAGEMENT", "MOST_ACTIVE_ADS"],
     typing.Any,
 ]

@@ -2,6 +2,6 @@
 
 import typing
 
-GetMediaV2RequestFunnelStageItem = typing.Union[
+GetMediaRequestFunnelStageItem = typing.Union[
     typing.Literal["UNAWARE", "PROBLEM_AWARE", "SOLUTION_AWARE", "PRODUCT_AWARE", "MOST_AWARE"], typing.Any
 ]
