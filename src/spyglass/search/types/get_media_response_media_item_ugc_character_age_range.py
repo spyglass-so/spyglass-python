@@ -2,6 +2,6 @@
 
 import typing
 
-GetMediaV2ResponseMediaItemUgcCharacterAgeRange = typing.Union[
+GetMediaResponseMediaItemUgcCharacterAgeRange = typing.Union[
     typing.Literal["0-18", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"], typing.Any
 ]

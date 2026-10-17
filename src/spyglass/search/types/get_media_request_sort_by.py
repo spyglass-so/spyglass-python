@@ -2,7 +2,7 @@
 
 import typing
 
-GetMediaV2RequestSortBy = typing.Union[
+GetMediaRequestSortBy = typing.Union[
     typing.Literal[
         "MOST_RECENT",
         "OLDEST",

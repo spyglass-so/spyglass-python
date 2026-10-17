@@ -27,21 +27,21 @@ from .types.get_brand_landing_pages_response import GetBrandLandingPagesResponse
 from .types.get_brand_media_insights_request_type import GetBrandMediaInsightsRequestType
 from .types.get_brand_media_insights_response import GetBrandMediaInsightsResponse
 from .types.get_comments_response import GetCommentsResponse
-from .types.get_media_v2request_brand_id import GetMediaV2RequestBrandId
-from .types.get_media_v2request_categories_item import GetMediaV2RequestCategoriesItem
-from .types.get_media_v2request_channel_item import GetMediaV2RequestChannelItem
-from .types.get_media_v2request_date_preset import GetMediaV2RequestDatePreset
-from .types.get_media_v2request_duration_item import GetMediaV2RequestDurationItem
-from .types.get_media_v2request_format_item import GetMediaV2RequestFormatItem
-from .types.get_media_v2request_funnel_stage_item import GetMediaV2RequestFunnelStageItem
-from .types.get_media_v2request_landing_page_match import GetMediaV2RequestLandingPageMatch
-from .types.get_media_v2request_language_item import GetMediaV2RequestLanguageItem
-from .types.get_media_v2request_sort_by import GetMediaV2RequestSortBy
-from .types.get_media_v2request_status import GetMediaV2RequestStatus
-from .types.get_media_v2response import GetMediaV2Response
-from .types.search_brands_v2request_brand_ids_item import SearchBrandsV2RequestBrandIdsItem
-from .types.search_brands_v2request_sort_by import SearchBrandsV2RequestSortBy
-from .types.search_brands_v2response import SearchBrandsV2Response
+from .types.get_media_request_brand_id import GetMediaRequestBrandId
+from .types.get_media_request_categories_item import GetMediaRequestCategoriesItem
+from .types.get_media_request_channel_item import GetMediaRequestChannelItem
+from .types.get_media_request_date_preset import GetMediaRequestDatePreset
+from .types.get_media_request_duration_item import GetMediaRequestDurationItem
+from .types.get_media_request_format_item import GetMediaRequestFormatItem
+from .types.get_media_request_funnel_stage_item import GetMediaRequestFunnelStageItem
+from .types.get_media_request_landing_page_match import GetMediaRequestLandingPageMatch
+from .types.get_media_request_language_item import GetMediaRequestLanguageItem
+from .types.get_media_request_sort_by import GetMediaRequestSortBy
+from .types.get_media_request_status import GetMediaRequestStatus
+from .types.get_media_response import GetMediaResponse
+from .types.search_brands_request_brand_ids_item import SearchBrandsRequestBrandIdsItem
+from .types.search_brands_request_sort_by import SearchBrandsRequestSortBy
+from .types.search_brands_response import SearchBrandsResponse
 from .types.search_creators_request_age_range import SearchCreatorsRequestAgeRange
 from .types.search_creators_request_brand_ids_item import SearchCreatorsRequestBrandIdsItem
 from .types.search_creators_request_ethnicity import SearchCreatorsRequestEthnicity
@@ -60,10 +60,10 @@ class RawSearchClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def search_brands_v2(
+    def brands(
         self,
         *,
-        brand_ids: typing.Optional[typing.Sequence[SearchBrandsV2RequestBrandIdsItem]] = OMIT,
+        brand_ids: typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]] = OMIT,
         names: typing.Optional[typing.Sequence[str]] = OMIT,
         ig_username: typing.Optional[str] = OMIT,
         tiktok_username: typing.Optional[str] = OMIT,
@@ -71,12 +71,12 @@ class RawSearchClient:
         location: typing.Optional[str] = OMIT,
         min_followers: typing.Optional[int] = OMIT,
         max_followers: typing.Optional[int] = OMIT,
-        sort_by: typing.Optional[SearchBrandsV2RequestSortBy] = OMIT,
+        sort_by: typing.Optional[SearchBrandsRequestSortBy] = OMIT,
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[SearchBrandsV2Response]:
+    ) -> HttpResponse[SearchBrandsResponse]:
         """
         Find brands (advertisers) only.
 
@@ -114,7 +114,7 @@ class RawSearchClient:
 
         Parameters
         ----------
-        brand_ids : typing.Optional[typing.Sequence[SearchBrandsV2RequestBrandIdsItem]]
+        brand_ids : typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]]
 
         names : typing.Optional[typing.Sequence[str]]
 
@@ -130,7 +130,7 @@ class RawSearchClient:
 
         max_followers : typing.Optional[int]
 
-        sort_by : typing.Optional[SearchBrandsV2RequestSortBy]
+        sort_by : typing.Optional[SearchBrandsRequestSortBy]
 
         offset : typing.Optional[int]
 
@@ -143,7 +143,7 @@ class RawSearchClient:
 
         Returns
         -------
-        HttpResponse[SearchBrandsV2Response]
+        HttpResponse[SearchBrandsResponse]
             Matching brands.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -151,7 +151,7 @@ class RawSearchClient:
             method="POST",
             json={
                 "brandIds": convert_and_respect_annotation_metadata(
-                    object_=brand_ids, annotation=typing.Sequence[SearchBrandsV2RequestBrandIdsItem], direction="write"
+                    object_=brand_ids, annotation=typing.Sequence[SearchBrandsRequestBrandIdsItem], direction="write"
                 ),
                 "names": names,
                 "igUsername": ig_username,
@@ -174,9 +174,9 @@ class RawSearchClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SearchBrandsV2Response,
+                    SearchBrandsResponse,
                     parse_obj_as(
-                        type_=SearchBrandsV2Response,  # type: ignore
+                        type_=SearchBrandsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -777,21 +777,21 @@ class RawSearchClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get_media_v2(
+    def get_media(
         self,
         *,
-        brand_id: typing.Optional[GetMediaV2RequestBrandId] = OMIT,
+        brand_id: typing.Optional[GetMediaRequestBrandId] = OMIT,
         query: typing.Optional[str] = OMIT,
-        channel: typing.Optional[typing.Sequence[GetMediaV2RequestChannelItem]] = OMIT,
-        format: typing.Optional[typing.Sequence[GetMediaV2RequestFormatItem]] = OMIT,
-        duration: typing.Optional[typing.Sequence[GetMediaV2RequestDurationItem]] = OMIT,
-        status: typing.Optional[GetMediaV2RequestStatus] = OMIT,
-        categories: typing.Optional[typing.Sequence[GetMediaV2RequestCategoriesItem]] = OMIT,
+        channel: typing.Optional[typing.Sequence[GetMediaRequestChannelItem]] = OMIT,
+        format: typing.Optional[typing.Sequence[GetMediaRequestFormatItem]] = OMIT,
+        duration: typing.Optional[typing.Sequence[GetMediaRequestDurationItem]] = OMIT,
+        status: typing.Optional[GetMediaRequestStatus] = OMIT,
+        categories: typing.Optional[typing.Sequence[GetMediaRequestCategoriesItem]] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
-        funnel_stage: typing.Optional[typing.Sequence[GetMediaV2RequestFunnelStageItem]] = OMIT,
-        language: typing.Optional[typing.Sequence[GetMediaV2RequestLanguageItem]] = OMIT,
+        funnel_stage: typing.Optional[typing.Sequence[GetMediaRequestFunnelStageItem]] = OMIT,
+        language: typing.Optional[typing.Sequence[GetMediaRequestLanguageItem]] = OMIT,
         location: typing.Optional[typing.Sequence[str]] = OMIT,
-        date_preset: typing.Optional[GetMediaV2RequestDatePreset] = OMIT,
+        date_preset: typing.Optional[GetMediaRequestDatePreset] = OMIT,
         start_date: typing.Optional[str] = OMIT,
         end_date: typing.Optional[str] = OMIT,
         min_days_run: typing.Optional[float] = OMIT,
@@ -799,15 +799,15 @@ class RawSearchClient:
         min_view_count: typing.Optional[float] = OMIT,
         max_view_count: typing.Optional[float] = OMIT,
         landing_page: typing.Optional[str] = OMIT,
-        landing_page_match: typing.Optional[GetMediaV2RequestLandingPageMatch] = OMIT,
+        landing_page_match: typing.Optional[GetMediaRequestLandingPageMatch] = OMIT,
         low_impressions: typing.Optional[bool] = OMIT,
         partnership_ad: typing.Optional[bool] = OMIT,
         crossposted: typing.Optional[bool] = OMIT,
-        sort_by: typing.Optional[GetMediaV2RequestSortBy] = OMIT,
+        sort_by: typing.Optional[GetMediaRequestSortBy] = OMIT,
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[GetMediaV2Response]:
+    ) -> HttpResponse[GetMediaResponse]:
         """
         Return creatives. Pass `brandId` to scope to one brand or creator,
         or omit it to search the whole corpus. Without `brandId`,
@@ -820,30 +820,30 @@ class RawSearchClient:
 
         Parameters
         ----------
-        brand_id : typing.Optional[GetMediaV2RequestBrandId]
+        brand_id : typing.Optional[GetMediaRequestBrandId]
             Brand id given as a platform string or uuid
 
         query : typing.Optional[str]
 
-        channel : typing.Optional[typing.Sequence[GetMediaV2RequestChannelItem]]
+        channel : typing.Optional[typing.Sequence[GetMediaRequestChannelItem]]
 
-        format : typing.Optional[typing.Sequence[GetMediaV2RequestFormatItem]]
+        format : typing.Optional[typing.Sequence[GetMediaRequestFormatItem]]
 
-        duration : typing.Optional[typing.Sequence[GetMediaV2RequestDurationItem]]
+        duration : typing.Optional[typing.Sequence[GetMediaRequestDurationItem]]
 
-        status : typing.Optional[GetMediaV2RequestStatus]
+        status : typing.Optional[GetMediaRequestStatus]
 
-        categories : typing.Optional[typing.Sequence[GetMediaV2RequestCategoriesItem]]
+        categories : typing.Optional[typing.Sequence[GetMediaRequestCategoriesItem]]
 
         taxonomy : typing.Optional[typing.Sequence[str]]
 
-        funnel_stage : typing.Optional[typing.Sequence[GetMediaV2RequestFunnelStageItem]]
+        funnel_stage : typing.Optional[typing.Sequence[GetMediaRequestFunnelStageItem]]
 
-        language : typing.Optional[typing.Sequence[GetMediaV2RequestLanguageItem]]
+        language : typing.Optional[typing.Sequence[GetMediaRequestLanguageItem]]
 
         location : typing.Optional[typing.Sequence[str]]
 
-        date_preset : typing.Optional[GetMediaV2RequestDatePreset]
+        date_preset : typing.Optional[GetMediaRequestDatePreset]
 
         start_date : typing.Optional[str]
 
@@ -859,7 +859,7 @@ class RawSearchClient:
 
         landing_page : typing.Optional[str]
 
-        landing_page_match : typing.Optional[GetMediaV2RequestLandingPageMatch]
+        landing_page_match : typing.Optional[GetMediaRequestLandingPageMatch]
 
         low_impressions : typing.Optional[bool]
 
@@ -867,7 +867,7 @@ class RawSearchClient:
 
         crossposted : typing.Optional[bool]
 
-        sort_by : typing.Optional[GetMediaV2RequestSortBy]
+        sort_by : typing.Optional[GetMediaRequestSortBy]
 
         limit : typing.Optional[int]
 
@@ -878,7 +878,7 @@ class RawSearchClient:
 
         Returns
         -------
-        HttpResponse[GetMediaV2Response]
+        HttpResponse[GetMediaResponse]
             Matching creatives.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -886,7 +886,7 @@ class RawSearchClient:
             method="POST",
             json={
                 "brandId": convert_and_respect_annotation_metadata(
-                    object_=brand_id, annotation=GetMediaV2RequestBrandId, direction="write"
+                    object_=brand_id, annotation=GetMediaRequestBrandId, direction="write"
                 ),
                 "query": query,
                 "channel": channel,
@@ -923,9 +923,9 @@ class RawSearchClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetMediaV2Response,
+                    GetMediaResponse,
                     parse_obj_as(
-                        type_=GetMediaV2Response,  # type: ignore
+                        type_=GetMediaResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1520,10 +1520,10 @@ class AsyncRawSearchClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def search_brands_v2(
+    async def brands(
         self,
         *,
-        brand_ids: typing.Optional[typing.Sequence[SearchBrandsV2RequestBrandIdsItem]] = OMIT,
+        brand_ids: typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]] = OMIT,
         names: typing.Optional[typing.Sequence[str]] = OMIT,
         ig_username: typing.Optional[str] = OMIT,
         tiktok_username: typing.Optional[str] = OMIT,
@@ -1531,12 +1531,12 @@ class AsyncRawSearchClient:
         location: typing.Optional[str] = OMIT,
         min_followers: typing.Optional[int] = OMIT,
         max_followers: typing.Optional[int] = OMIT,
-        sort_by: typing.Optional[SearchBrandsV2RequestSortBy] = OMIT,
+        sort_by: typing.Optional[SearchBrandsRequestSortBy] = OMIT,
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[SearchBrandsV2Response]:
+    ) -> AsyncHttpResponse[SearchBrandsResponse]:
         """
         Find brands (advertisers) only.
 
@@ -1574,7 +1574,7 @@ class AsyncRawSearchClient:
 
         Parameters
         ----------
-        brand_ids : typing.Optional[typing.Sequence[SearchBrandsV2RequestBrandIdsItem]]
+        brand_ids : typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]]
 
         names : typing.Optional[typing.Sequence[str]]
 
@@ -1590,7 +1590,7 @@ class AsyncRawSearchClient:
 
         max_followers : typing.Optional[int]
 
-        sort_by : typing.Optional[SearchBrandsV2RequestSortBy]
+        sort_by : typing.Optional[SearchBrandsRequestSortBy]
 
         offset : typing.Optional[int]
 
@@ -1603,7 +1603,7 @@ class AsyncRawSearchClient:
 
         Returns
         -------
-        AsyncHttpResponse[SearchBrandsV2Response]
+        AsyncHttpResponse[SearchBrandsResponse]
             Matching brands.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1611,7 +1611,7 @@ class AsyncRawSearchClient:
             method="POST",
             json={
                 "brandIds": convert_and_respect_annotation_metadata(
-                    object_=brand_ids, annotation=typing.Sequence[SearchBrandsV2RequestBrandIdsItem], direction="write"
+                    object_=brand_ids, annotation=typing.Sequence[SearchBrandsRequestBrandIdsItem], direction="write"
                 ),
                 "names": names,
                 "igUsername": ig_username,
@@ -1634,9 +1634,9 @@ class AsyncRawSearchClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SearchBrandsV2Response,
+                    SearchBrandsResponse,
                     parse_obj_as(
-                        type_=SearchBrandsV2Response,  # type: ignore
+                        type_=SearchBrandsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2237,21 +2237,21 @@ class AsyncRawSearchClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def get_media_v2(
+    async def get_media(
         self,
         *,
-        brand_id: typing.Optional[GetMediaV2RequestBrandId] = OMIT,
+        brand_id: typing.Optional[GetMediaRequestBrandId] = OMIT,
         query: typing.Optional[str] = OMIT,
-        channel: typing.Optional[typing.Sequence[GetMediaV2RequestChannelItem]] = OMIT,
-        format: typing.Optional[typing.Sequence[GetMediaV2RequestFormatItem]] = OMIT,
-        duration: typing.Optional[typing.Sequence[GetMediaV2RequestDurationItem]] = OMIT,
-        status: typing.Optional[GetMediaV2RequestStatus] = OMIT,
-        categories: typing.Optional[typing.Sequence[GetMediaV2RequestCategoriesItem]] = OMIT,
+        channel: typing.Optional[typing.Sequence[GetMediaRequestChannelItem]] = OMIT,
+        format: typing.Optional[typing.Sequence[GetMediaRequestFormatItem]] = OMIT,
+        duration: typing.Optional[typing.Sequence[GetMediaRequestDurationItem]] = OMIT,
+        status: typing.Optional[GetMediaRequestStatus] = OMIT,
+        categories: typing.Optional[typing.Sequence[GetMediaRequestCategoriesItem]] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
-        funnel_stage: typing.Optional[typing.Sequence[GetMediaV2RequestFunnelStageItem]] = OMIT,
-        language: typing.Optional[typing.Sequence[GetMediaV2RequestLanguageItem]] = OMIT,
+        funnel_stage: typing.Optional[typing.Sequence[GetMediaRequestFunnelStageItem]] = OMIT,
+        language: typing.Optional[typing.Sequence[GetMediaRequestLanguageItem]] = OMIT,
         location: typing.Optional[typing.Sequence[str]] = OMIT,
-        date_preset: typing.Optional[GetMediaV2RequestDatePreset] = OMIT,
+        date_preset: typing.Optional[GetMediaRequestDatePreset] = OMIT,
         start_date: typing.Optional[str] = OMIT,
         end_date: typing.Optional[str] = OMIT,
         min_days_run: typing.Optional[float] = OMIT,
@@ -2259,15 +2259,15 @@ class AsyncRawSearchClient:
         min_view_count: typing.Optional[float] = OMIT,
         max_view_count: typing.Optional[float] = OMIT,
         landing_page: typing.Optional[str] = OMIT,
-        landing_page_match: typing.Optional[GetMediaV2RequestLandingPageMatch] = OMIT,
+        landing_page_match: typing.Optional[GetMediaRequestLandingPageMatch] = OMIT,
         low_impressions: typing.Optional[bool] = OMIT,
         partnership_ad: typing.Optional[bool] = OMIT,
         crossposted: typing.Optional[bool] = OMIT,
-        sort_by: typing.Optional[GetMediaV2RequestSortBy] = OMIT,
+        sort_by: typing.Optional[GetMediaRequestSortBy] = OMIT,
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[GetMediaV2Response]:
+    ) -> AsyncHttpResponse[GetMediaResponse]:
         """
         Return creatives. Pass `brandId` to scope to one brand or creator,
         or omit it to search the whole corpus. Without `brandId`,
@@ -2280,30 +2280,30 @@ class AsyncRawSearchClient:
 
         Parameters
         ----------
-        brand_id : typing.Optional[GetMediaV2RequestBrandId]
+        brand_id : typing.Optional[GetMediaRequestBrandId]
             Brand id given as a platform string or uuid
 
         query : typing.Optional[str]
 
-        channel : typing.Optional[typing.Sequence[GetMediaV2RequestChannelItem]]
+        channel : typing.Optional[typing.Sequence[GetMediaRequestChannelItem]]
 
-        format : typing.Optional[typing.Sequence[GetMediaV2RequestFormatItem]]
+        format : typing.Optional[typing.Sequence[GetMediaRequestFormatItem]]
 
-        duration : typing.Optional[typing.Sequence[GetMediaV2RequestDurationItem]]
+        duration : typing.Optional[typing.Sequence[GetMediaRequestDurationItem]]
 
-        status : typing.Optional[GetMediaV2RequestStatus]
+        status : typing.Optional[GetMediaRequestStatus]
 
-        categories : typing.Optional[typing.Sequence[GetMediaV2RequestCategoriesItem]]
+        categories : typing.Optional[typing.Sequence[GetMediaRequestCategoriesItem]]
 
         taxonomy : typing.Optional[typing.Sequence[str]]
 
-        funnel_stage : typing.Optional[typing.Sequence[GetMediaV2RequestFunnelStageItem]]
+        funnel_stage : typing.Optional[typing.Sequence[GetMediaRequestFunnelStageItem]]
 
-        language : typing.Optional[typing.Sequence[GetMediaV2RequestLanguageItem]]
+        language : typing.Optional[typing.Sequence[GetMediaRequestLanguageItem]]
 
         location : typing.Optional[typing.Sequence[str]]
 
-        date_preset : typing.Optional[GetMediaV2RequestDatePreset]
+        date_preset : typing.Optional[GetMediaRequestDatePreset]
 
         start_date : typing.Optional[str]
 
@@ -2319,7 +2319,7 @@ class AsyncRawSearchClient:
 
         landing_page : typing.Optional[str]
 
-        landing_page_match : typing.Optional[GetMediaV2RequestLandingPageMatch]
+        landing_page_match : typing.Optional[GetMediaRequestLandingPageMatch]
 
         low_impressions : typing.Optional[bool]
 
@@ -2327,7 +2327,7 @@ class AsyncRawSearchClient:
 
         crossposted : typing.Optional[bool]
 
-        sort_by : typing.Optional[GetMediaV2RequestSortBy]
+        sort_by : typing.Optional[GetMediaRequestSortBy]
 
         limit : typing.Optional[int]
 
@@ -2338,7 +2338,7 @@ class AsyncRawSearchClient:
 
         Returns
         -------
-        AsyncHttpResponse[GetMediaV2Response]
+        AsyncHttpResponse[GetMediaResponse]
             Matching creatives.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -2346,7 +2346,7 @@ class AsyncRawSearchClient:
             method="POST",
             json={
                 "brandId": convert_and_respect_annotation_metadata(
-                    object_=brand_id, annotation=GetMediaV2RequestBrandId, direction="write"
+                    object_=brand_id, annotation=GetMediaRequestBrandId, direction="write"
                 ),
                 "query": query,
                 "channel": channel,
@@ -2383,9 +2383,9 @@ class AsyncRawSearchClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetMediaV2Response,
+                    GetMediaResponse,
                     parse_obj_as(
-                        type_=GetMediaV2Response,  # type: ignore
+                        type_=GetMediaResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

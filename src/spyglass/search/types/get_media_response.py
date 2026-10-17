@@ -4,12 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .get_media_v2response_media_item import GetMediaV2ResponseMediaItem
+from .get_media_response_media_item import GetMediaResponseMediaItem
 
 
-class GetMediaV2Response(UniversalBaseModel):
+class GetMediaResponse(UniversalBaseModel):
     count: int
-    media: typing.List[GetMediaV2ResponseMediaItem]
+    media: typing.List[GetMediaResponseMediaItem]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -1,6 +1,6 @@
 # Reference
 ## Search
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">search_brands_v2</a>(...) -> SearchBrandsV2Response</code></summary>
+<details><summary><code>client.search.<a href="src/spyglass/search/client.py">brands</a>(...) -> SearchBrandsResponse</code></summary>
 <dl>
 <dd>
 
@@ -67,7 +67,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.search_brands_v2(
+client.search.brands(
     names=[
         "Nike"
     ],
@@ -88,7 +88,7 @@ client.search.search_brands_v2(
 <dl>
 <dd>
 
-**brand_ids:** `typing.Optional[typing.List[SearchBrandsV2RequestBrandIdsItem]]` 
+**brand_ids:** `typing.Optional[typing.List[SearchBrandsRequestBrandIdsItem]]` 
     
 </dd>
 </dl>
@@ -152,7 +152,7 @@ client.search.search_brands_v2(
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[SearchBrandsV2RequestSortBy]` 
+**sort_by:** `typing.Optional[SearchBrandsRequestSortBy]` 
     
 </dd>
 </dl>
@@ -582,7 +582,7 @@ client.search.taxonomies(
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">get_media_v2</a>(...) -> GetMediaV2Response</code></summary>
+<details><summary><code>client.search.<a href="src/spyglass/search/client.py">get_media</a>(...) -> GetMediaResponse</code></summary>
 <dl>
 <dd>
 
@@ -624,7 +624,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.get_media_v2(
+client.search.get_media(
     query="comfort-focused video ads",
     limit=20,
 )
@@ -643,7 +643,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**brand_id:** `typing.Optional[GetMediaV2RequestBrandId]` — Brand id given as a platform string or uuid
+**brand_id:** `typing.Optional[GetMediaRequestBrandId]` — Brand id given as a platform string or uuid
     
 </dd>
 </dl>
@@ -659,7 +659,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**channel:** `typing.Optional[typing.List[GetMediaV2RequestChannelItem]]` 
+**channel:** `typing.Optional[typing.List[GetMediaRequestChannelItem]]` 
     
 </dd>
 </dl>
@@ -667,7 +667,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**format:** `typing.Optional[typing.List[GetMediaV2RequestFormatItem]]` 
+**format:** `typing.Optional[typing.List[GetMediaRequestFormatItem]]` 
     
 </dd>
 </dl>
@@ -675,7 +675,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**duration:** `typing.Optional[typing.List[GetMediaV2RequestDurationItem]]` 
+**duration:** `typing.Optional[typing.List[GetMediaRequestDurationItem]]` 
     
 </dd>
 </dl>
@@ -683,7 +683,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**status:** `typing.Optional[GetMediaV2RequestStatus]` 
+**status:** `typing.Optional[GetMediaRequestStatus]` 
     
 </dd>
 </dl>
@@ -691,7 +691,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**categories:** `typing.Optional[typing.List[GetMediaV2RequestCategoriesItem]]` 
+**categories:** `typing.Optional[typing.List[GetMediaRequestCategoriesItem]]` 
     
 </dd>
 </dl>
@@ -707,7 +707,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**funnel_stage:** `typing.Optional[typing.List[GetMediaV2RequestFunnelStageItem]]` 
+**funnel_stage:** `typing.Optional[typing.List[GetMediaRequestFunnelStageItem]]` 
     
 </dd>
 </dl>
@@ -715,7 +715,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**language:** `typing.Optional[typing.List[GetMediaV2RequestLanguageItem]]` 
+**language:** `typing.Optional[typing.List[GetMediaRequestLanguageItem]]` 
     
 </dd>
 </dl>
@@ -731,7 +731,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**date_preset:** `typing.Optional[GetMediaV2RequestDatePreset]` 
+**date_preset:** `typing.Optional[GetMediaRequestDatePreset]` 
     
 </dd>
 </dl>
@@ -795,7 +795,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**landing_page_match:** `typing.Optional[GetMediaV2RequestLandingPageMatch]` 
+**landing_page_match:** `typing.Optional[GetMediaRequestLandingPageMatch]` 
     
 </dd>
 </dl>
@@ -827,7 +827,7 @@ client.search.get_media_v2(
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[GetMediaV2RequestSortBy]` 
+**sort_by:** `typing.Optional[GetMediaRequestSortBy]` 
     
 </dd>
 </dl>
