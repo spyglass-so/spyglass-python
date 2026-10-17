@@ -1,6 +1,5 @@
 # Reference
-## Search
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">brands</a>(...) -> SearchBrandsResponse</code></summary>
+<details><summary><code>client.<a href="src/spyglass/client.py">search_brands</a>(...) -> SearchBrandsResponse</code></summary>
 <dl>
 <dd>
 
@@ -70,7 +69,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.brands(
+client.search_brands(
     names=[
         "Nike"
     ],
@@ -199,7 +198,7 @@ client.search.brands(
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">creators</a>(...) -> SearchCreatorsResponse</code></summary>
+<details><summary><code>client.<a href="src/spyglass/client.py">search_creators</a>(...) -> SearchCreatorsResponse</code></summary>
 <dl>
 <dd>
 
@@ -269,7 +268,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.creators(
+client.search_creators(
     ig_username="charlidamelio",
     limit=3,
     gender="female",
@@ -421,86 +420,7 @@ client.search.creators(
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">get_account</a>(...) -> GetAccountResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Fetch a single brand or creator by id. The `type` field tells you
-which one you got: `BRAND` or `CREATOR`, and the creator-only fields
-(`gender`, `ageRange`, ...) are present only on `CREATOR`.
-
-Limited to 120 requests per minute per user.
-Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
-An id that matches nothing returns 404 and is free.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from spyglass import Spyglass
-from spyglass.environment import SpyglassEnvironment
-
-client = Spyglass(
-    token="<token>",
-    environment=SpyglassEnvironment.DEFAULT,
-)
-
-client.search.get_account(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">taxonomies</a>(...) -> SearchTaxonomiesResponse</code></summary>
+<details><summary><code>client.<a href="src/spyglass/client.py">search_taxonomies</a>(...) -> SearchTaxonomiesResponse</code></summary>
 <dl>
 <dd>
 
@@ -540,7 +460,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.taxonomies(
+client.search_taxonomies(
     query="running shoes",
 )
 
@@ -586,7 +506,7 @@ client.search.taxonomies(
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">get_media</a>(...) -> GetMediaResponse</code></summary>
+<details><summary><code>client.<a href="src/spyglass/client.py">search_media</a>(...) -> SearchMediaResponse</code></summary>
 <dl>
 <dd>
 
@@ -628,7 +548,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.get_media(
+client.search_media(
     query="comfort-focused video ads",
     limit=20,
 )
@@ -647,7 +567,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**brand_id:** `typing.Optional[GetMediaRequestBrandId]` — Brand id given as a platform string or uuid
+**brand_id:** `typing.Optional[SearchMediaRequestBrandId]` — Brand id given as a platform string or uuid
     
 </dd>
 </dl>
@@ -663,7 +583,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**channel:** `typing.Optional[typing.List[GetMediaRequestChannelItem]]` 
+**channel:** `typing.Optional[typing.List[SearchMediaRequestChannelItem]]` 
     
 </dd>
 </dl>
@@ -671,7 +591,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**format:** `typing.Optional[typing.List[GetMediaRequestFormatItem]]` 
+**format:** `typing.Optional[typing.List[SearchMediaRequestFormatItem]]` 
     
 </dd>
 </dl>
@@ -679,7 +599,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**duration:** `typing.Optional[typing.List[GetMediaRequestDurationItem]]` 
+**duration:** `typing.Optional[typing.List[SearchMediaRequestDurationItem]]` 
     
 </dd>
 </dl>
@@ -687,7 +607,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**status:** `typing.Optional[GetMediaRequestStatus]` 
+**status:** `typing.Optional[SearchMediaRequestStatus]` 
     
 </dd>
 </dl>
@@ -695,7 +615,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**categories:** `typing.Optional[typing.List[GetMediaRequestCategoriesItem]]` 
+**categories:** `typing.Optional[typing.List[SearchMediaRequestCategoriesItem]]` 
     
 </dd>
 </dl>
@@ -711,7 +631,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**funnel_stage:** `typing.Optional[typing.List[GetMediaRequestFunnelStageItem]]` 
+**funnel_stage:** `typing.Optional[typing.List[SearchMediaRequestFunnelStageItem]]` 
     
 </dd>
 </dl>
@@ -719,7 +639,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**language:** `typing.Optional[typing.List[GetMediaRequestLanguageItem]]` 
+**language:** `typing.Optional[typing.List[SearchMediaRequestLanguageItem]]` 
     
 </dd>
 </dl>
@@ -735,7 +655,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**date_preset:** `typing.Optional[GetMediaRequestDatePreset]` 
+**date_preset:** `typing.Optional[SearchMediaRequestDatePreset]` 
     
 </dd>
 </dl>
@@ -799,7 +719,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**landing_page_match:** `typing.Optional[GetMediaRequestLandingPageMatch]` 
+**landing_page_match:** `typing.Optional[SearchMediaRequestLandingPageMatch]` 
     
 </dd>
 </dl>
@@ -831,7 +751,7 @@ client.search.get_media(
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[GetMediaRequestSortBy]` 
+**sort_by:** `typing.Optional[SearchMediaRequestSortBy]` 
     
 </dd>
 </dl>
@@ -867,7 +787,7 @@ client.search.get_media(
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">get_brand_media_insights</a>(...) -> GetBrandMediaInsightsResponse</code></summary>
+<details><summary><code>client.<a href="src/spyglass/client.py">get_credit_usage</a>() -> GetCreditUsageResponse</code></summary>
 <dl>
 <dd>
 
@@ -879,15 +799,13 @@ client.search.get_media(
 <dl>
 <dd>
 
-Return clustered creative themes for an account. `MEDIA_MIX` returns a
-breakdown by media type; the other types return weekly buckets plus
-ranked totals, highest first.
-
-`maxDaysBack` filters both the weekly bucket series and ranked
-`totals` to creatives that started within the requested window.
+Credits left on the API key's team, the credits included in the
+plan, and the current billing period. Granted credits count toward
+`remainingCredits` and not `planCredits`.
 
 Limited to 120 requests per minute per user.
-Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+This call is free and does not use credits. It still responds when
+the team is out of credits.
 </dd>
 </dl>
 </dd>
@@ -910,10 +828,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.get_brand_media_insights(
-    id="id",
-    type="HOOK",
-)
+client.get_credit_usage()
 
 ```
 </dd>
@@ -925,38 +840,6 @@ client.search.get_brand_media_insights(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**type:** `GetBrandMediaInsightsRequestType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**max_days_back:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -973,100 +856,7 @@ client.search.get_brand_media_insights(
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">get_brand_landing_pages</a>(...) -> GetBrandLandingPagesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Return the landing-page URLs a brand sends ad traffic to, ranked by
-how often they appear across its ads.
-
-Limited to 120 requests per minute per user.
-Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from spyglass import Spyglass
-from spyglass.environment import SpyglassEnvironment
-
-client = Spyglass(
-    token="<token>",
-    environment=SpyglassEnvironment.DEFAULT,
-)
-
-client.search.get_brand_landing_pages(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**show_inactive:** `typing.Optional[GetBrandLandingPagesRequestShowInactive]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.search.<a href="src/spyglass/search/client.py">get_comments</a>(...) -> GetCommentsResponse</code></summary>
+<details><summary><code>client.<a href="src/spyglass/client.py">get_comments</a>(...) -> GetCommentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1123,7 +913,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.search.get_comments(
+client.get_comments(
     instagram_ids=[
         "https://www.instagram.com/p/C2xY9abcD1e/"
     ],
@@ -1184,7 +974,7 @@ client.search.get_comments(
 </details>
 
 ## Account
-<details><summary><code>client.account.<a href="src/spyglass/account/client.py">get_credit_usage</a>() -> GetCreditUsageResponse</code></summary>
+<details><summary><code>client.account.<a href="src/spyglass/account/client.py">get</a>(...) -> GetAccountResponse</code></summary>
 <dl>
 <dd>
 
@@ -1196,13 +986,13 @@ client.search.get_comments(
 <dl>
 <dd>
 
-Credits left on the API key's team, the credits included in the
-plan, and the current billing period. Granted credits count toward
-`remainingCredits` and not `planCredits`.
+Fetch a single brand or creator by id. The `type` field tells you
+which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+(`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
 Limited to 120 requests per minute per user.
-This call is free and does not use credits. It still responds when
-the team is out of credits.
+Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+An id that matches nothing returns 404 and is free.
 </dd>
 </dl>
 </dd>
@@ -1225,7 +1015,9 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.account.get_credit_usage()
+client.account.get(
+    id="id",
+)
 
 ```
 </dd>
@@ -1237,6 +1029,14 @@ client.account.get_credit_usage()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1253,8 +1053,206 @@ client.account.get_credit_usage()
 </dl>
 </details>
 
-## Indexing
-<details><summary><code>client.indexing.<a href="src/spyglass/indexing/client.py">index_brand</a>(...) -> IndexBrandResponse</code></summary>
+<details><summary><code>client.account.<a href="src/spyglass/account/client.py">insights</a>(...) -> InsightsAccountResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return clustered creative themes for an account. `MEDIA_MIX` returns a
+breakdown by media type; the other types return weekly buckets plus
+ranked totals, highest first.
+
+`maxDaysBack` filters both the weekly bucket series and ranked
+`totals` to creatives that started within the requested window.
+
+Limited to 120 requests per minute per user.
+Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from spyglass import Spyglass
+from spyglass.environment import SpyglassEnvironment
+
+client = Spyglass(
+    token="<token>",
+    environment=SpyglassEnvironment.DEFAULT,
+)
+
+client.account.insights(
+    id="id",
+    type="HOOK",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `InsightsAccountRequestType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**max_days_back:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.account.<a href="src/spyglass/account/client.py">landing_pages</a>(...) -> LandingPagesAccountResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return the landing-page URLs an account sends ad traffic to, ranked by
+how often they appear across its ads.
+
+Limited to 120 requests per minute per user.
+Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from spyglass import Spyglass
+from spyglass.environment import SpyglassEnvironment
+
+client = Spyglass(
+    token="<token>",
+    environment=SpyglassEnvironment.DEFAULT,
+)
+
+client.account.landing_pages(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**show_inactive:** `typing.Optional[LandingPagesAccountRequestShowInactive]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.account.<a href="src/spyglass/account/client.py">index</a>(...) -> IndexAccountResponse</code></summary>
 <dl>
 <dd>
 
@@ -1298,7 +1296,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.indexing.index_brand(
+client.account.index(
     website_url="https://www.nike.com",
 )
 
@@ -1336,7 +1334,7 @@ client.indexing.index_brand(
 </dl>
 </details>
 
-<details><summary><code>client.indexing.<a href="src/spyglass/indexing/client.py">index_brand_status</a>(...) -> IndexBrandStatusResponse</code></summary>
+<details><summary><code>client.account.<a href="src/spyglass/account/client.py">index_status</a>(...) -> IndexStatusAccountResponse</code></summary>
 <dl>
 <dd>
 
@@ -1374,7 +1372,7 @@ client = Spyglass(
     environment=SpyglassEnvironment.DEFAULT,
 )
 
-client.indexing.index_brand_status(
+client.account.index_status(
     id="id",
 )
 

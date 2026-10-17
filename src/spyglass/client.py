@@ -7,12 +7,39 @@ import typing
 import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.logging import LogConfig, Logger
+from .core.request_options import RequestOptions
 from .environment import SpyglassEnvironment
+from .raw_client import AsyncRawSpyglass, RawSpyglass
+from .types.get_comments_response import GetCommentsResponse
+from .types.get_credit_usage_response import GetCreditUsageResponse
+from .types.search_brands_request_brand_ids_item import SearchBrandsRequestBrandIdsItem
+from .types.search_brands_request_sort_by import SearchBrandsRequestSortBy
+from .types.search_brands_response import SearchBrandsResponse
+from .types.search_creators_request_age_range import SearchCreatorsRequestAgeRange
+from .types.search_creators_request_brand_ids_item import SearchCreatorsRequestBrandIdsItem
+from .types.search_creators_request_ethnicity import SearchCreatorsRequestEthnicity
+from .types.search_creators_request_gender import SearchCreatorsRequestGender
+from .types.search_creators_request_language import SearchCreatorsRequestLanguage
+from .types.search_creators_request_sort_by import SearchCreatorsRequestSortBy
+from .types.search_creators_response import SearchCreatorsResponse
+from .types.search_media_request_brand_id import SearchMediaRequestBrandId
+from .types.search_media_request_categories_item import SearchMediaRequestCategoriesItem
+from .types.search_media_request_channel_item import SearchMediaRequestChannelItem
+from .types.search_media_request_date_preset import SearchMediaRequestDatePreset
+from .types.search_media_request_duration_item import SearchMediaRequestDurationItem
+from .types.search_media_request_format_item import SearchMediaRequestFormatItem
+from .types.search_media_request_funnel_stage_item import SearchMediaRequestFunnelStageItem
+from .types.search_media_request_landing_page_match import SearchMediaRequestLandingPageMatch
+from .types.search_media_request_language_item import SearchMediaRequestLanguageItem
+from .types.search_media_request_sort_by import SearchMediaRequestSortBy
+from .types.search_media_request_status import SearchMediaRequestStatus
+from .types.search_media_response import SearchMediaResponse
+from .types.search_taxonomies_response import SearchTaxonomiesResponse
 
 if typing.TYPE_CHECKING:
     from .account.client import AccountClient, AsyncAccountClient
-    from .indexing.client import AsyncIndexingClient, IndexingClient
-    from .search.client import AsyncSearchClient, SearchClient
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 
 class Spyglass:
@@ -99,17 +126,556 @@ class Spyglass:
             max_stream_reconnection_attempts=max_stream_reconnection_attempts,
             logging=logging,
         )
-        self._search: typing.Optional[SearchClient] = None
+        self._raw_client = RawSpyglass(client_wrapper=self._client_wrapper)
         self._account: typing.Optional[AccountClient] = None
-        self._indexing: typing.Optional[IndexingClient] = None
 
     @property
-    def search(self):
-        if self._search is None:
-            from .search.client import SearchClient  # noqa: E402
+    def with_raw_response(self) -> RawSpyglass:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
 
-            self._search = SearchClient(client_wrapper=self._client_wrapper)
-        return self._search
+        Returns
+        -------
+        RawSpyglass
+        """
+        return self._raw_client
+
+    def search_brands(
+        self,
+        *,
+        brand_ids: typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]] = OMIT,
+        names: typing.Optional[typing.Sequence[str]] = OMIT,
+        ig_username: typing.Optional[str] = OMIT,
+        tiktok_username: typing.Optional[str] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        location: typing.Optional[str] = OMIT,
+        min_followers: typing.Optional[int] = OMIT,
+        max_followers: typing.Optional[int] = OMIT,
+        sort_by: typing.Optional[SearchBrandsRequestSortBy] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchBrandsResponse:
+        """
+        Find brands.
+        Search semantically with `query`, or look them up by name, id, or
+        social handle. Either way, you can also narrow the results with
+        filters such as product taxonomy, location, and follower count.
+
+        Send one search field. Each field is its own mode:
+
+        - **Query** (`query`). A natural-language brief. Runs a language model and
+          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
+          when nothing matches.
+        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
+          match). Pass every name in one array.
+        - **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+          in `unmatchedIds`. `limit` and `offset` are ignored.
+        - **Instagram** (`igUsername`). Case-insensitive contains match on the
+          handle. A leading `@` is ignored.
+        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+
+        If a request includes more than one of these fields, only the highest
+        priority field is used. The rest are ignored:
+
+        1. `brandIds`
+        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
+        3. `names`
+        4. `query`
+
+        One exception: `query` together with `names` uses both. `names` narrows the
+        set, and `query` ranks inside it.
+
+        `limit` (default 20, max 100) caps the rows returned, and the cost, for
+        every mode except ID.
+
+        Limited to 120 requests per minute per user.
+        Costs 2,000 microdollars ($0.0020) per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        A `query` search runs a language model, so it bills a minimum of one
+        row even when nothing matches.
+
+        Parameters
+        ----------
+        brand_ids : typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]]
+
+        names : typing.Optional[typing.Sequence[str]]
+
+        ig_username : typing.Optional[str]
+
+        tiktok_username : typing.Optional[str]
+
+        query : typing.Optional[str]
+
+        location : typing.Optional[str]
+
+        min_followers : typing.Optional[int]
+
+        max_followers : typing.Optional[int]
+
+        sort_by : typing.Optional[SearchBrandsRequestSortBy]
+
+        offset : typing.Optional[int]
+
+        limit : typing.Optional[int]
+
+        taxonomy : typing.Optional[typing.Sequence[str]]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchBrandsResponse
+            Matching brands.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.search_brands(
+            names=["Nike"],
+            limit=3,
+        )
+        """
+        _response = self._raw_client.search_brands(
+            brand_ids=brand_ids,
+            names=names,
+            ig_username=ig_username,
+            tiktok_username=tiktok_username,
+            query=query,
+            location=location,
+            min_followers=min_followers,
+            max_followers=max_followers,
+            sort_by=sort_by,
+            offset=offset,
+            limit=limit,
+            taxonomy=taxonomy,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def search_creators(
+        self,
+        *,
+        brand_ids: typing.Optional[typing.Sequence[SearchCreatorsRequestBrandIdsItem]] = OMIT,
+        names: typing.Optional[typing.Sequence[str]] = OMIT,
+        ig_username: typing.Optional[str] = OMIT,
+        tiktok_username: typing.Optional[str] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        location: typing.Optional[str] = OMIT,
+        min_followers: typing.Optional[int] = OMIT,
+        max_followers: typing.Optional[int] = OMIT,
+        sort_by: typing.Optional[SearchCreatorsRequestSortBy] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        ethnicity: typing.Optional[SearchCreatorsRequestEthnicity] = OMIT,
+        gender: typing.Optional[SearchCreatorsRequestGender] = OMIT,
+        age_range: typing.Optional[SearchCreatorsRequestAgeRange] = OMIT,
+        language: typing.Optional[SearchCreatorsRequestLanguage] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchCreatorsResponse:
+        """
+        Find creators.
+        Search semantically with `query`, or look them up by name, id, or
+        social handle. Either way, you can also narrow the results with
+        filters such as audience profile, location, and follower count.
+
+        Send one search field. Each field is its own mode:
+
+        - **Query** (`query`). A natural-language brief. Runs a language model and
+          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
+          when nothing matches.
+        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
+          match). Pass every name in one array.
+        - **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+          in `unmatchedIds`. `limit` and `offset` are ignored.
+        - **Instagram** (`igUsername`). Case-insensitive contains match on the
+          handle. A leading `@` is ignored.
+        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+
+        If a request includes more than one of these fields, only the highest
+        priority field is used. The rest are ignored:
+
+        1. `brandIds`
+        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
+        3. `names`
+        4. `query`
+
+        One exception: `query` together with `names` uses both. `names` narrows the
+        set, and `query` ranks inside it.
+
+        `limit` (default 20, max 100) caps the rows returned, and the cost, for
+        every mode except ID.
+
+        Limited to 120 requests per minute per user.
+        Costs 2,000 microdollars ($0.0020) per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        A `query` search runs a language model, so it bills a minimum of one
+        row even when nothing matches.
+
+        Parameters
+        ----------
+        brand_ids : typing.Optional[typing.Sequence[SearchCreatorsRequestBrandIdsItem]]
+
+        names : typing.Optional[typing.Sequence[str]]
+
+        ig_username : typing.Optional[str]
+
+        tiktok_username : typing.Optional[str]
+
+        query : typing.Optional[str]
+
+        location : typing.Optional[str]
+
+        min_followers : typing.Optional[int]
+
+        max_followers : typing.Optional[int]
+
+        sort_by : typing.Optional[SearchCreatorsRequestSortBy]
+
+        offset : typing.Optional[int]
+
+        limit : typing.Optional[int]
+
+        ethnicity : typing.Optional[SearchCreatorsRequestEthnicity]
+
+        gender : typing.Optional[SearchCreatorsRequestGender]
+
+        age_range : typing.Optional[SearchCreatorsRequestAgeRange]
+
+        language : typing.Optional[SearchCreatorsRequestLanguage]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchCreatorsResponse
+            Matching creators.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.search_creators(
+            ig_username="charlidamelio",
+            limit=3,
+            gender="female",
+        )
+        """
+        _response = self._raw_client.search_creators(
+            brand_ids=brand_ids,
+            names=names,
+            ig_username=ig_username,
+            tiktok_username=tiktok_username,
+            query=query,
+            location=location,
+            min_followers=min_followers,
+            max_followers=max_followers,
+            sort_by=sort_by,
+            offset=offset,
+            limit=limit,
+            ethnicity=ethnicity,
+            gender=gender,
+            age_range=age_range,
+            language=language,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def search_taxonomies(
+        self, *, query: str, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> SearchTaxonomiesResponse:
+        """
+        Find taxonomy paths you can pass to POST /media as `taxonomy`.
+        `query` is a product or category phrase. Each path is a string
+        such as `Apparel > Footwear > Sneakers`.
+
+        Limited to 120 requests per minute per user.
+        This call is free and does not use credits.
+
+        Parameters
+        ----------
+        query : str
+
+        limit : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchTaxonomiesResponse
+            Matching taxonomy paths.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.search_taxonomies(
+            query="running shoes",
+        )
+        """
+        _response = self._raw_client.search_taxonomies(query=query, limit=limit, request_options=request_options)
+        return _response.data
+
+    def search_media(
+        self,
+        *,
+        brand_id: typing.Optional[SearchMediaRequestBrandId] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        channel: typing.Optional[typing.Sequence[SearchMediaRequestChannelItem]] = OMIT,
+        format: typing.Optional[typing.Sequence[SearchMediaRequestFormatItem]] = OMIT,
+        duration: typing.Optional[typing.Sequence[SearchMediaRequestDurationItem]] = OMIT,
+        status: typing.Optional[SearchMediaRequestStatus] = OMIT,
+        categories: typing.Optional[typing.Sequence[SearchMediaRequestCategoriesItem]] = OMIT,
+        taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
+        funnel_stage: typing.Optional[typing.Sequence[SearchMediaRequestFunnelStageItem]] = OMIT,
+        language: typing.Optional[typing.Sequence[SearchMediaRequestLanguageItem]] = OMIT,
+        location: typing.Optional[typing.Sequence[str]] = OMIT,
+        date_preset: typing.Optional[SearchMediaRequestDatePreset] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
+        min_days_run: typing.Optional[float] = OMIT,
+        max_days_run: typing.Optional[float] = OMIT,
+        min_view_count: typing.Optional[float] = OMIT,
+        max_view_count: typing.Optional[float] = OMIT,
+        landing_page: typing.Optional[str] = OMIT,
+        landing_page_match: typing.Optional[SearchMediaRequestLandingPageMatch] = OMIT,
+        low_impressions: typing.Optional[bool] = OMIT,
+        partnership_ad: typing.Optional[bool] = OMIT,
+        crossposted: typing.Optional[bool] = OMIT,
+        sort_by: typing.Optional[SearchMediaRequestSortBy] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchMediaResponse:
+        """
+        Return creatives. Pass `brandId` to scope to one brand or creator,
+        or omit it to search the whole corpus. Without `brandId`,
+        `query` is required.
+
+        Limited to 120 requests per minute per user.
+        Costs 1,000 microdollars ($0.0010) per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        The call bills a minimum of one row even when nothing matches. In that
+        case `count` is 0 but you are charged for one row.
+
+        Parameters
+        ----------
+        brand_id : typing.Optional[SearchMediaRequestBrandId]
+            Brand id given as a platform string or uuid
+
+        query : typing.Optional[str]
+
+        channel : typing.Optional[typing.Sequence[SearchMediaRequestChannelItem]]
+
+        format : typing.Optional[typing.Sequence[SearchMediaRequestFormatItem]]
+
+        duration : typing.Optional[typing.Sequence[SearchMediaRequestDurationItem]]
+
+        status : typing.Optional[SearchMediaRequestStatus]
+
+        categories : typing.Optional[typing.Sequence[SearchMediaRequestCategoriesItem]]
+
+        taxonomy : typing.Optional[typing.Sequence[str]]
+
+        funnel_stage : typing.Optional[typing.Sequence[SearchMediaRequestFunnelStageItem]]
+
+        language : typing.Optional[typing.Sequence[SearchMediaRequestLanguageItem]]
+
+        location : typing.Optional[typing.Sequence[str]]
+
+        date_preset : typing.Optional[SearchMediaRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
+
+        min_days_run : typing.Optional[float]
+
+        max_days_run : typing.Optional[float]
+
+        min_view_count : typing.Optional[float]
+
+        max_view_count : typing.Optional[float]
+
+        landing_page : typing.Optional[str]
+
+        landing_page_match : typing.Optional[SearchMediaRequestLandingPageMatch]
+
+        low_impressions : typing.Optional[bool]
+
+        partnership_ad : typing.Optional[bool]
+
+        crossposted : typing.Optional[bool]
+
+        sort_by : typing.Optional[SearchMediaRequestSortBy]
+
+        limit : typing.Optional[int]
+
+        offset : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchMediaResponse
+            Matching creatives.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.search_media(
+            query="comfort-focused video ads",
+            limit=20,
+        )
+        """
+        _response = self._raw_client.search_media(
+            brand_id=brand_id,
+            query=query,
+            channel=channel,
+            format=format,
+            duration=duration,
+            status=status,
+            categories=categories,
+            taxonomy=taxonomy,
+            funnel_stage=funnel_stage,
+            language=language,
+            location=location,
+            date_preset=date_preset,
+            start_date=start_date,
+            end_date=end_date,
+            min_days_run=min_days_run,
+            max_days_run=max_days_run,
+            min_view_count=min_view_count,
+            max_view_count=max_view_count,
+            landing_page=landing_page,
+            landing_page_match=landing_page_match,
+            low_impressions=low_impressions,
+            partnership_ad=partnership_ad,
+            crossposted=crossposted,
+            sort_by=sort_by,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_credit_usage(self, *, request_options: typing.Optional[RequestOptions] = None) -> GetCreditUsageResponse:
+        """
+        Credits left on the API key's team, the credits included in the
+        plan, and the current billing period. Granted credits count toward
+        `remainingCredits` and not `planCredits`.
+
+        Limited to 120 requests per minute per user.
+        This call is free and does not use credits. It still responds when
+        the team is out of credits.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditUsageResponse
+            Credit balance for the current billing period.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.get_credit_usage()
+        """
+        _response = self._raw_client.get_credit_usage(request_options=request_options)
+        return _response.data
+
+    def get_comments(
+        self,
+        *,
+        instagram_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        tiktok_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCommentsResponse:
+        """
+        Return public comments for specific Instagram or TikTok posts.
+        Pass post URLs or the platform id. At least one of `instagramIds` or
+        `tiktokIds` is required (max 20 each). `limit` is comment pages
+        per post (default 1, max 20).
+
+        Instagram accepts a shortcode or a post URL:
+
+        - `C2xY9abcD1e`
+        - `https://www.instagram.com/p/C2xY9abcD1e/`
+        - `https://www.instagram.com/reel/C2xY9abcD1e/`
+
+        TikTok accepts a video id or a post URL:
+
+        - `7234567890123456789`
+        - `https://www.tiktok.com/@nike/video/7234567890123456789`
+
+        Recent posts may be scraped live; older posts with stored comments
+        are served from cache.
+
+        Limited to 20 requests per minute per user.
+        Costs 10,000 microdollars ($0.0100) per successful page of comments returned, charged against your plan's monthly credits.
+        Each comment page fetched live (`limit`, default 1) is one billed
+        unit. Cached posts do not scrape and are not billed.
+
+        Parameters
+        ----------
+        instagram_ids : typing.Optional[typing.Sequence[str]]
+            Instagram post shortcodes or post URLs
+
+        tiktok_ids : typing.Optional[typing.Sequence[str]]
+            TikTok video ids or post URLs
+
+        limit : typing.Optional[int]
+            Comment pages to fetch per post. Default 1.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCommentsResponse
+            Comments grouped by post.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.get_comments(
+            instagram_ids=["https://www.instagram.com/p/C2xY9abcD1e/"],
+            tiktok_ids=["https://www.tiktok.com/@nike/video/7234567890123456789"],
+            limit=1,
+        )
+        """
+        _response = self._raw_client.get_comments(
+            instagram_ids=instagram_ids, tiktok_ids=tiktok_ids, limit=limit, request_options=request_options
+        )
+        return _response.data
 
     @property
     def account(self):
@@ -118,14 +684,6 @@ class Spyglass:
 
             self._account = AccountClient(client_wrapper=self._client_wrapper)
         return self._account
-
-    @property
-    def indexing(self):
-        if self._indexing is None:
-            from .indexing.client import IndexingClient  # noqa: E402
-
-            self._indexing = IndexingClient(client_wrapper=self._client_wrapper)
-        return self._indexing
 
 
 def _make_default_async_client(
@@ -233,17 +791,606 @@ class AsyncSpyglass:
             max_stream_reconnection_attempts=max_stream_reconnection_attempts,
             logging=logging,
         )
-        self._search: typing.Optional[AsyncSearchClient] = None
+        self._raw_client = AsyncRawSpyglass(client_wrapper=self._client_wrapper)
         self._account: typing.Optional[AsyncAccountClient] = None
-        self._indexing: typing.Optional[AsyncIndexingClient] = None
 
     @property
-    def search(self):
-        if self._search is None:
-            from .search.client import AsyncSearchClient  # noqa: E402
+    def with_raw_response(self) -> AsyncRawSpyglass:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
 
-            self._search = AsyncSearchClient(client_wrapper=self._client_wrapper)
-        return self._search
+        Returns
+        -------
+        AsyncRawSpyglass
+        """
+        return self._raw_client
+
+    async def search_brands(
+        self,
+        *,
+        brand_ids: typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]] = OMIT,
+        names: typing.Optional[typing.Sequence[str]] = OMIT,
+        ig_username: typing.Optional[str] = OMIT,
+        tiktok_username: typing.Optional[str] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        location: typing.Optional[str] = OMIT,
+        min_followers: typing.Optional[int] = OMIT,
+        max_followers: typing.Optional[int] = OMIT,
+        sort_by: typing.Optional[SearchBrandsRequestSortBy] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchBrandsResponse:
+        """
+        Find brands.
+        Search semantically with `query`, or look them up by name, id, or
+        social handle. Either way, you can also narrow the results with
+        filters such as product taxonomy, location, and follower count.
+
+        Send one search field. Each field is its own mode:
+
+        - **Query** (`query`). A natural-language brief. Runs a language model and
+          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
+          when nothing matches.
+        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
+          match). Pass every name in one array.
+        - **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+          in `unmatchedIds`. `limit` and `offset` are ignored.
+        - **Instagram** (`igUsername`). Case-insensitive contains match on the
+          handle. A leading `@` is ignored.
+        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+
+        If a request includes more than one of these fields, only the highest
+        priority field is used. The rest are ignored:
+
+        1. `brandIds`
+        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
+        3. `names`
+        4. `query`
+
+        One exception: `query` together with `names` uses both. `names` narrows the
+        set, and `query` ranks inside it.
+
+        `limit` (default 20, max 100) caps the rows returned, and the cost, for
+        every mode except ID.
+
+        Limited to 120 requests per minute per user.
+        Costs 2,000 microdollars ($0.0020) per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        A `query` search runs a language model, so it bills a minimum of one
+        row even when nothing matches.
+
+        Parameters
+        ----------
+        brand_ids : typing.Optional[typing.Sequence[SearchBrandsRequestBrandIdsItem]]
+
+        names : typing.Optional[typing.Sequence[str]]
+
+        ig_username : typing.Optional[str]
+
+        tiktok_username : typing.Optional[str]
+
+        query : typing.Optional[str]
+
+        location : typing.Optional[str]
+
+        min_followers : typing.Optional[int]
+
+        max_followers : typing.Optional[int]
+
+        sort_by : typing.Optional[SearchBrandsRequestSortBy]
+
+        offset : typing.Optional[int]
+
+        limit : typing.Optional[int]
+
+        taxonomy : typing.Optional[typing.Sequence[str]]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchBrandsResponse
+            Matching brands.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.search_brands(
+                names=["Nike"],
+                limit=3,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.search_brands(
+            brand_ids=brand_ids,
+            names=names,
+            ig_username=ig_username,
+            tiktok_username=tiktok_username,
+            query=query,
+            location=location,
+            min_followers=min_followers,
+            max_followers=max_followers,
+            sort_by=sort_by,
+            offset=offset,
+            limit=limit,
+            taxonomy=taxonomy,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def search_creators(
+        self,
+        *,
+        brand_ids: typing.Optional[typing.Sequence[SearchCreatorsRequestBrandIdsItem]] = OMIT,
+        names: typing.Optional[typing.Sequence[str]] = OMIT,
+        ig_username: typing.Optional[str] = OMIT,
+        tiktok_username: typing.Optional[str] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        location: typing.Optional[str] = OMIT,
+        min_followers: typing.Optional[int] = OMIT,
+        max_followers: typing.Optional[int] = OMIT,
+        sort_by: typing.Optional[SearchCreatorsRequestSortBy] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        ethnicity: typing.Optional[SearchCreatorsRequestEthnicity] = OMIT,
+        gender: typing.Optional[SearchCreatorsRequestGender] = OMIT,
+        age_range: typing.Optional[SearchCreatorsRequestAgeRange] = OMIT,
+        language: typing.Optional[SearchCreatorsRequestLanguage] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchCreatorsResponse:
+        """
+        Find creators.
+        Search semantically with `query`, or look them up by name, id, or
+        social handle. Either way, you can also narrow the results with
+        filters such as audience profile, location, and follower count.
+
+        Send one search field. Each field is its own mode:
+
+        - **Query** (`query`). A natural-language brief. Runs a language model and
+          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
+          when nothing matches.
+        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
+          match). Pass every name in one array.
+        - **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+          in `unmatchedIds`. `limit` and `offset` are ignored.
+        - **Instagram** (`igUsername`). Case-insensitive contains match on the
+          handle. A leading `@` is ignored.
+        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+
+        If a request includes more than one of these fields, only the highest
+        priority field is used. The rest are ignored:
+
+        1. `brandIds`
+        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
+        3. `names`
+        4. `query`
+
+        One exception: `query` together with `names` uses both. `names` narrows the
+        set, and `query` ranks inside it.
+
+        `limit` (default 20, max 100) caps the rows returned, and the cost, for
+        every mode except ID.
+
+        Limited to 120 requests per minute per user.
+        Costs 2,000 microdollars ($0.0020) per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        A `query` search runs a language model, so it bills a minimum of one
+        row even when nothing matches.
+
+        Parameters
+        ----------
+        brand_ids : typing.Optional[typing.Sequence[SearchCreatorsRequestBrandIdsItem]]
+
+        names : typing.Optional[typing.Sequence[str]]
+
+        ig_username : typing.Optional[str]
+
+        tiktok_username : typing.Optional[str]
+
+        query : typing.Optional[str]
+
+        location : typing.Optional[str]
+
+        min_followers : typing.Optional[int]
+
+        max_followers : typing.Optional[int]
+
+        sort_by : typing.Optional[SearchCreatorsRequestSortBy]
+
+        offset : typing.Optional[int]
+
+        limit : typing.Optional[int]
+
+        ethnicity : typing.Optional[SearchCreatorsRequestEthnicity]
+
+        gender : typing.Optional[SearchCreatorsRequestGender]
+
+        age_range : typing.Optional[SearchCreatorsRequestAgeRange]
+
+        language : typing.Optional[SearchCreatorsRequestLanguage]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchCreatorsResponse
+            Matching creators.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.search_creators(
+                ig_username="charlidamelio",
+                limit=3,
+                gender="female",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.search_creators(
+            brand_ids=brand_ids,
+            names=names,
+            ig_username=ig_username,
+            tiktok_username=tiktok_username,
+            query=query,
+            location=location,
+            min_followers=min_followers,
+            max_followers=max_followers,
+            sort_by=sort_by,
+            offset=offset,
+            limit=limit,
+            ethnicity=ethnicity,
+            gender=gender,
+            age_range=age_range,
+            language=language,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def search_taxonomies(
+        self, *, query: str, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> SearchTaxonomiesResponse:
+        """
+        Find taxonomy paths you can pass to POST /media as `taxonomy`.
+        `query` is a product or category phrase. Each path is a string
+        such as `Apparel > Footwear > Sneakers`.
+
+        Limited to 120 requests per minute per user.
+        This call is free and does not use credits.
+
+        Parameters
+        ----------
+        query : str
+
+        limit : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchTaxonomiesResponse
+            Matching taxonomy paths.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.search_taxonomies(
+                query="running shoes",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.search_taxonomies(query=query, limit=limit, request_options=request_options)
+        return _response.data
+
+    async def search_media(
+        self,
+        *,
+        brand_id: typing.Optional[SearchMediaRequestBrandId] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        channel: typing.Optional[typing.Sequence[SearchMediaRequestChannelItem]] = OMIT,
+        format: typing.Optional[typing.Sequence[SearchMediaRequestFormatItem]] = OMIT,
+        duration: typing.Optional[typing.Sequence[SearchMediaRequestDurationItem]] = OMIT,
+        status: typing.Optional[SearchMediaRequestStatus] = OMIT,
+        categories: typing.Optional[typing.Sequence[SearchMediaRequestCategoriesItem]] = OMIT,
+        taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
+        funnel_stage: typing.Optional[typing.Sequence[SearchMediaRequestFunnelStageItem]] = OMIT,
+        language: typing.Optional[typing.Sequence[SearchMediaRequestLanguageItem]] = OMIT,
+        location: typing.Optional[typing.Sequence[str]] = OMIT,
+        date_preset: typing.Optional[SearchMediaRequestDatePreset] = OMIT,
+        start_date: typing.Optional[str] = OMIT,
+        end_date: typing.Optional[str] = OMIT,
+        min_days_run: typing.Optional[float] = OMIT,
+        max_days_run: typing.Optional[float] = OMIT,
+        min_view_count: typing.Optional[float] = OMIT,
+        max_view_count: typing.Optional[float] = OMIT,
+        landing_page: typing.Optional[str] = OMIT,
+        landing_page_match: typing.Optional[SearchMediaRequestLandingPageMatch] = OMIT,
+        low_impressions: typing.Optional[bool] = OMIT,
+        partnership_ad: typing.Optional[bool] = OMIT,
+        crossposted: typing.Optional[bool] = OMIT,
+        sort_by: typing.Optional[SearchMediaRequestSortBy] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchMediaResponse:
+        """
+        Return creatives. Pass `brandId` to scope to one brand or creator,
+        or omit it to search the whole corpus. Without `brandId`,
+        `query` is required.
+
+        Limited to 120 requests per minute per user.
+        Costs 1,000 microdollars ($0.0010) per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        The call bills a minimum of one row even when nothing matches. In that
+        case `count` is 0 but you are charged for one row.
+
+        Parameters
+        ----------
+        brand_id : typing.Optional[SearchMediaRequestBrandId]
+            Brand id given as a platform string or uuid
+
+        query : typing.Optional[str]
+
+        channel : typing.Optional[typing.Sequence[SearchMediaRequestChannelItem]]
+
+        format : typing.Optional[typing.Sequence[SearchMediaRequestFormatItem]]
+
+        duration : typing.Optional[typing.Sequence[SearchMediaRequestDurationItem]]
+
+        status : typing.Optional[SearchMediaRequestStatus]
+
+        categories : typing.Optional[typing.Sequence[SearchMediaRequestCategoriesItem]]
+
+        taxonomy : typing.Optional[typing.Sequence[str]]
+
+        funnel_stage : typing.Optional[typing.Sequence[SearchMediaRequestFunnelStageItem]]
+
+        language : typing.Optional[typing.Sequence[SearchMediaRequestLanguageItem]]
+
+        location : typing.Optional[typing.Sequence[str]]
+
+        date_preset : typing.Optional[SearchMediaRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
+
+        min_days_run : typing.Optional[float]
+
+        max_days_run : typing.Optional[float]
+
+        min_view_count : typing.Optional[float]
+
+        max_view_count : typing.Optional[float]
+
+        landing_page : typing.Optional[str]
+
+        landing_page_match : typing.Optional[SearchMediaRequestLandingPageMatch]
+
+        low_impressions : typing.Optional[bool]
+
+        partnership_ad : typing.Optional[bool]
+
+        crossposted : typing.Optional[bool]
+
+        sort_by : typing.Optional[SearchMediaRequestSortBy]
+
+        limit : typing.Optional[int]
+
+        offset : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchMediaResponse
+            Matching creatives.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.search_media(
+                query="comfort-focused video ads",
+                limit=20,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.search_media(
+            brand_id=brand_id,
+            query=query,
+            channel=channel,
+            format=format,
+            duration=duration,
+            status=status,
+            categories=categories,
+            taxonomy=taxonomy,
+            funnel_stage=funnel_stage,
+            language=language,
+            location=location,
+            date_preset=date_preset,
+            start_date=start_date,
+            end_date=end_date,
+            min_days_run=min_days_run,
+            max_days_run=max_days_run,
+            min_view_count=min_view_count,
+            max_view_count=max_view_count,
+            landing_page=landing_page,
+            landing_page_match=landing_page_match,
+            low_impressions=low_impressions,
+            partnership_ad=partnership_ad,
+            crossposted=crossposted,
+            sort_by=sort_by,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_credit_usage(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCreditUsageResponse:
+        """
+        Credits left on the API key's team, the credits included in the
+        plan, and the current billing period. Granted credits count toward
+        `remainingCredits` and not `planCredits`.
+
+        Limited to 120 requests per minute per user.
+        This call is free and does not use credits. It still responds when
+        the team is out of credits.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditUsageResponse
+            Credit balance for the current billing period.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.get_credit_usage()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_credit_usage(request_options=request_options)
+        return _response.data
+
+    async def get_comments(
+        self,
+        *,
+        instagram_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        tiktok_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCommentsResponse:
+        """
+        Return public comments for specific Instagram or TikTok posts.
+        Pass post URLs or the platform id. At least one of `instagramIds` or
+        `tiktokIds` is required (max 20 each). `limit` is comment pages
+        per post (default 1, max 20).
+
+        Instagram accepts a shortcode or a post URL:
+
+        - `C2xY9abcD1e`
+        - `https://www.instagram.com/p/C2xY9abcD1e/`
+        - `https://www.instagram.com/reel/C2xY9abcD1e/`
+
+        TikTok accepts a video id or a post URL:
+
+        - `7234567890123456789`
+        - `https://www.tiktok.com/@nike/video/7234567890123456789`
+
+        Recent posts may be scraped live; older posts with stored comments
+        are served from cache.
+
+        Limited to 20 requests per minute per user.
+        Costs 10,000 microdollars ($0.0100) per successful page of comments returned, charged against your plan's monthly credits.
+        Each comment page fetched live (`limit`, default 1) is one billed
+        unit. Cached posts do not scrape and are not billed.
+
+        Parameters
+        ----------
+        instagram_ids : typing.Optional[typing.Sequence[str]]
+            Instagram post shortcodes or post URLs
+
+        tiktok_ids : typing.Optional[typing.Sequence[str]]
+            TikTok video ids or post URLs
+
+        limit : typing.Optional[int]
+            Comment pages to fetch per post. Default 1.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCommentsResponse
+            Comments grouped by post.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.get_comments(
+                instagram_ids=["https://www.instagram.com/p/C2xY9abcD1e/"],
+                tiktok_ids=["https://www.tiktok.com/@nike/video/7234567890123456789"],
+                limit=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_comments(
+            instagram_ids=instagram_ids, tiktok_ids=tiktok_ids, limit=limit, request_options=request_options
+        )
+        return _response.data
 
     @property
     def account(self):
@@ -252,14 +1399,6 @@ class AsyncSpyglass:
 
             self._account = AsyncAccountClient(client_wrapper=self._client_wrapper)
         return self._account
-
-    @property
-    def indexing(self):
-        if self._indexing is None:
-            from .indexing.client import AsyncIndexingClient  # noqa: E402
-
-            self._indexing = AsyncIndexingClient(client_wrapper=self._client_wrapper)
-        return self._indexing
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: SpyglassEnvironment) -> str:

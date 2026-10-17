@@ -5,7 +5,16 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawAccountClient, RawAccountClient
-from .types.get_credit_usage_response import GetCreditUsageResponse
+from .types.get_account_response import GetAccountResponse
+from .types.index_account_response import IndexAccountResponse
+from .types.index_status_account_response import IndexStatusAccountResponse
+from .types.insights_account_request_type import InsightsAccountRequestType
+from .types.insights_account_response import InsightsAccountResponse
+from .types.landing_pages_account_request_show_inactive import LandingPagesAccountRequestShowInactive
+from .types.landing_pages_account_response import LandingPagesAccountResponse
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 
 class AccountClient:
@@ -23,25 +32,28 @@ class AccountClient:
         """
         return self._raw_client
 
-    def get_credit_usage(self, *, request_options: typing.Optional[RequestOptions] = None) -> GetCreditUsageResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetAccountResponse:
         """
-        Credits left on the API key's team, the credits included in the
-        plan, and the current billing period. Granted credits count toward
-        `remainingCredits` and not `planCredits`.
+        Fetch a single brand or creator by id. The `type` field tells you
+        which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+        (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
         Limited to 120 requests per minute per user.
-        This call is free and does not use credits. It still responds when
-        the team is out of credits.
+        Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+        An id that matches nothing returns 404 and is free.
 
         Parameters
         ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        GetCreditUsageResponse
-            Credit balance for the current billing period.
+        GetAccountResponse
+            The account.
 
         Examples
         --------
@@ -50,9 +62,192 @@ class AccountClient:
         client = Spyglass(
             token="YOUR_TOKEN",
         )
-        client.account.get_credit_usage()
+        client.account.get(
+            id="id",
+        )
         """
-        _response = self._raw_client.get_credit_usage(request_options=request_options)
+        _response = self._raw_client.get(id, request_options=request_options)
+        return _response.data
+
+    def insights(
+        self,
+        id: str,
+        *,
+        type: InsightsAccountRequestType,
+        max_days_back: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InsightsAccountResponse:
+        """
+        Return clustered creative themes for an account. `MEDIA_MIX` returns a
+        breakdown by media type; the other types return weekly buckets plus
+        ranked totals, highest first.
+
+        `maxDaysBack` filters both the weekly bucket series and ranked
+        `totals` to creatives that started within the requested window.
+
+        Limited to 120 requests per minute per user.
+        Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
+        type : InsightsAccountRequestType
+
+        max_days_back : typing.Optional[int]
+
+        limit : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InsightsAccountResponse
+            Creative insights for the account.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.account.insights(
+            id="id",
+            type="HOOK",
+        )
+        """
+        _response = self._raw_client.insights(
+            id, type=type, max_days_back=max_days_back, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    def landing_pages(
+        self,
+        id: str,
+        *,
+        show_inactive: typing.Optional[LandingPagesAccountRequestShowInactive] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> LandingPagesAccountResponse:
+        """
+        Return the landing-page URLs an account sends ad traffic to, ranked by
+        how often they appear across its ads.
+
+        Limited to 120 requests per minute per user.
+        Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
+        show_inactive : typing.Optional[LandingPagesAccountRequestShowInactive]
+
+        limit : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        LandingPagesAccountResponse
+            Landing pages for the account.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.account.landing_pages(
+            id="id",
+        )
+        """
+        _response = self._raw_client.landing_pages(
+            id, show_inactive=show_inactive, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    def index(
+        self, *, website_url: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> IndexAccountResponse:
+        """
+        Look up a brand by website URL, or start indexing it if we do not
+        have it yet. Pass a single `websiteUrl`. Instagram and TikTok
+        profile URLs are accepted and resolved as creators.
+
+        This endpoint does not consume credits. An existing brand returns
+        `status: "already_exists"`. A new brand is created and sync is
+        queued, returning `status: "indexing"` and the new `brandId`.
+
+        Limited to 50 requests per minute per user.
+        This call is free.
+
+        Parameters
+        ----------
+        website_url : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        IndexAccountResponse
+            The brand id and whether indexing was started.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.account.index(
+            website_url="https://www.nike.com",
+        )
+        """
+        _response = self._raw_client.index(website_url=website_url, request_options=request_options)
+        return _response.data
+
+    def index_status(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> IndexStatusAccountResponse:
+        """
+        Poll whether a brand finished indexing after POST /account/index.
+
+        Limited to 300 requests per minute per user.
+        This call is free.
+
+        Parameters
+        ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        IndexStatusAccountResponse
+            Whether the brand is still indexing or ready.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.account.index_status(
+            id="id",
+        )
+        """
+        _response = self._raw_client.index_status(id, request_options=request_options)
         return _response.data
 
 
@@ -71,27 +266,28 @@ class AsyncAccountClient:
         """
         return self._raw_client
 
-    async def get_credit_usage(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetCreditUsageResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetAccountResponse:
         """
-        Credits left on the API key's team, the credits included in the
-        plan, and the current billing period. Granted credits count toward
-        `remainingCredits` and not `planCredits`.
+        Fetch a single brand or creator by id. The `type` field tells you
+        which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+        (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
         Limited to 120 requests per minute per user.
-        This call is free and does not use credits. It still responds when
-        the team is out of credits.
+        Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+        An id that matches nothing returns 404 and is free.
 
         Parameters
         ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        GetCreditUsageResponse
-            Credit balance for the current billing period.
+        GetAccountResponse
+            The account.
 
         Examples
         --------
@@ -105,10 +301,225 @@ class AsyncAccountClient:
 
 
         async def main() -> None:
-            await client.account.get_credit_usage()
+            await client.account.get(
+                id="id",
+            )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_credit_usage(request_options=request_options)
+        _response = await self._raw_client.get(id, request_options=request_options)
+        return _response.data
+
+    async def insights(
+        self,
+        id: str,
+        *,
+        type: InsightsAccountRequestType,
+        max_days_back: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InsightsAccountResponse:
+        """
+        Return clustered creative themes for an account. `MEDIA_MIX` returns a
+        breakdown by media type; the other types return weekly buckets plus
+        ranked totals, highest first.
+
+        `maxDaysBack` filters both the weekly bucket series and ranked
+        `totals` to creatives that started within the requested window.
+
+        Limited to 120 requests per minute per user.
+        Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
+        type : InsightsAccountRequestType
+
+        max_days_back : typing.Optional[int]
+
+        limit : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InsightsAccountResponse
+            Creative insights for the account.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.account.insights(
+                id="id",
+                type="HOOK",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.insights(
+            id, type=type, max_days_back=max_days_back, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    async def landing_pages(
+        self,
+        id: str,
+        *,
+        show_inactive: typing.Optional[LandingPagesAccountRequestShowInactive] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> LandingPagesAccountResponse:
+        """
+        Return the landing-page URLs an account sends ad traffic to, ranked by
+        how often they appear across its ads.
+
+        Limited to 120 requests per minute per user.
+        Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
+        show_inactive : typing.Optional[LandingPagesAccountRequestShowInactive]
+
+        limit : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        LandingPagesAccountResponse
+            Landing pages for the account.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.account.landing_pages(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.landing_pages(
+            id, show_inactive=show_inactive, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    async def index(
+        self, *, website_url: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> IndexAccountResponse:
+        """
+        Look up a brand by website URL, or start indexing it if we do not
+        have it yet. Pass a single `websiteUrl`. Instagram and TikTok
+        profile URLs are accepted and resolved as creators.
+
+        This endpoint does not consume credits. An existing brand returns
+        `status: "already_exists"`. A new brand is created and sync is
+        queued, returning `status: "indexing"` and the new `brandId`.
+
+        Limited to 50 requests per minute per user.
+        This call is free.
+
+        Parameters
+        ----------
+        website_url : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        IndexAccountResponse
+            The brand id and whether indexing was started.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.account.index(
+                website_url="https://www.nike.com",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.index(website_url=website_url, request_options=request_options)
+        return _response.data
+
+    async def index_status(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> IndexStatusAccountResponse:
+        """
+        Poll whether a brand finished indexing after POST /account/index.
+
+        Limited to 300 requests per minute per user.
+        This call is free.
+
+        Parameters
+        ----------
+        id : str
+            Brand or creator id returned by POST /brands or POST /creators.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        IndexStatusAccountResponse
+            Whether the brand is still indexing or ready.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.account.index_status(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.index_status(id, request_options=request_options)
         return _response.data
