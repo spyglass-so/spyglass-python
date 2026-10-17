@@ -1,0 +1,13 @@
+{
+  "cliVersion": "5.162.0",
+  "generatorName": "fernapi/fern-python-sdk",
+  "generatorVersion": "5.41.3",
+  "generatorConfig": {
+    "client_class_name": "Spyglass"
+  },
+  "originGitCommit": "08206a8acc2c9b063ce9deed95ca70af1d5c6f30",
+  "originGitCommitIsDirty": true,
+  "invokedBy": "manual",
+  "requestedVersion": "0.1.0",
+  "sdkVersion": "0.1.0"
+}
