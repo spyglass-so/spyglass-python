@@ -57,13 +57,13 @@ from spyglass import Spyglass
 client = Spyglass(token=os.environ["SPYGLASS_API_KEY"])
 
 # 1. Resolve a brand
-result = client.search.brands(names=["Nike"], limit=1)
+result = client.search_brands(names=["Nike"], limit=1)
 
 if result.brands:
     brand = result.brands[0]
 
     # 2. Search the creatives that brand is running
-    media_result = client.search.get_media(
+    media_result = client.search_media(
         brand_id=brand.id,
         query="marathon running shoes comfort",
         limit=10,
@@ -86,7 +86,7 @@ client = AsyncSpyglass(token=os.environ["SPYGLASS_API_KEY"])
 
 
 async def main() -> None:
-    result = await client.search.brands(names=["Nike"], limit=3)
+    result = await client.search_brands(names=["Nike"], limit=3)
     for brand in result.brands:
         print(brand.id, brand.name)
 
@@ -98,34 +98,38 @@ asyncio.run(main())
 
 | SDK Method | HTTP Endpoint | Cost | Rate Limit |
 | --- | --- | --- | --- |
-| `client.search.brands(...)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
-| `client.search.creators(...)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
-| `client.search.get_account(id=...)` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
-| `client.search.get_media(...)` | `POST /media` | $0.0010 / creative returned | 120 / min |
-| `client.search.taxonomies(query=...)` | `GET /taxonomies` | Free | 120 / min |
-| `client.search.get_brand_media_insights(...)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
-| `client.search.get_brand_landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
-| `client.search.get_comments(...)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
-| `client.indexing.index_brand(...)` | `POST /account/index` | Free | 50 / min |
-| `client.indexing.index_brand_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
-| `client.account.get_credit_usage()` | `GET /team/credit-usage` | Free | 120 / min |
+| `client.search_brands(...)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
+| `client.search_creators(...)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
+| `client.search_media(...)` | `POST /media` | $0.0010 / creative returned | 120 / min |
+| `client.search_taxonomies(query=...)` | `GET /taxonomies` | Free | 120 / min |
+| `client.get_comments(...)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
+| `client.account.get(id=...)` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
+| `client.account.insights(...)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
+| `client.account.landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
+| `client.account.index(...)` | `POST /account/index` | Free | 50 / min |
+| `client.account.index_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
+| `client.get_credit_usage()` | `GET /team/credit-usage` | Free | 120 / min |
 
 Full parameters and response schemas are documented in [`reference.md`](https://github.com/spyglass-so/spyglass-python/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
 
-## Indexing a New Brand
+## Indexing a New Account
 
-If Spyglass doesn't have a brand yet, queue it by website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
+If Spyglass doesn't have a brand or creator yet, queue it by website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
 
 ```python
 import time
 
-indexed = client.indexing.index_brand(website_url="https://www.on.com")
+indexed = client.account.index(website_url="https://www.on.com")
 
 status = indexed.status
 while status == "indexing":
     time.sleep(3)
-    check = client.indexing.index_brand_status(id=indexed.brand_id)
+    check = client.account.index_status(id=indexed.brand_id)
     status = check.status
+
+if status in ("ready", "already_exists"):
+    account = client.account.get(id=indexed.brand_id)
+    print("Indexed account:", account.name)
 ```
 
 ## Error Handling
@@ -136,7 +140,7 @@ Non-2xx responses raise an `ApiError` with status code and parsed error body:
 from spyglass.core.api_error import ApiError
 
 try:
-    client.search.brands(names=["Nike"], limit=5)
+    client.search_brands(names=["Nike"], limit=5)
 except ApiError as e:
     print(e.status_code, e.body)
 ```
@@ -150,7 +154,7 @@ Requests default to a 60-second timeout and up to 2 automatic retries with expon
 ```python
 client = Spyglass(token="...", timeout=30.0, max_retries=3)
 
-response = client.search.brands(
+response = client.search_brands(
     names=["Nike"],
     limit=5,
     request_options={"timeout_in_seconds": 15, "max_retries": 1},
@@ -162,7 +166,7 @@ response = client.search.brands(
 Use `.with_raw_response` to inspect HTTP headers and status codes:
 
 ```python
-raw = client.search.with_raw_response.brands(names=["Nike"], limit=1)
+raw = client.with_raw_response.search_brands(names=["Nike"], limit=1)
 print(raw.status_code)
 print(raw.headers)
 print(raw.data.brands)
