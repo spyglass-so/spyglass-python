@@ -518,8 +518,8 @@ client.search_taxonomies(
 <dl>
 <dd>
 
-Return creatives. Pass `brandId` to scope to one brand or creator,
-or omit it to search the whole corpus. Without `brandId`,
+Return creatives. Pass `accountId` to scope to one brand or creator,
+or omit it to search the whole corpus. Without `accountId`,
 `query` is required.
 
 Limited to 120 requests per minute per user.
@@ -567,7 +567,7 @@ client.search_media(
 <dl>
 <dd>
 
-**brand_id:** `typing.Optional[SearchMediaRequestBrandId]` — Brand id given as a platform string or uuid
+**account_id:** `typing.Optional[SearchMediaRequestAccountId]` — Brand id given as a platform string or uuid
     
 </dd>
 </dl>

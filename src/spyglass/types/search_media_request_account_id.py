@@ -2,4 +2,4 @@
 
 import typing
 
-SearchMediaRequestBrandId = typing.Union[str, float]
+SearchMediaRequestAccountId = typing.Union[str, float]

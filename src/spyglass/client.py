@@ -22,7 +22,7 @@ from .types.search_creators_request_gender import SearchCreatorsRequestGender
 from .types.search_creators_request_language import SearchCreatorsRequestLanguage
 from .types.search_creators_request_sort_by import SearchCreatorsRequestSortBy
 from .types.search_creators_response import SearchCreatorsResponse
-from .types.search_media_request_brand_id import SearchMediaRequestBrandId
+from .types.search_media_request_account_id import SearchMediaRequestAccountId
 from .types.search_media_request_categories_item import SearchMediaRequestCategoriesItem
 from .types.search_media_request_channel_item import SearchMediaRequestChannelItem
 from .types.search_media_request_date_preset import SearchMediaRequestDatePreset
@@ -431,7 +431,7 @@ class Spyglass:
     def search_media(
         self,
         *,
-        brand_id: typing.Optional[SearchMediaRequestBrandId] = OMIT,
+        account_id: typing.Optional[SearchMediaRequestAccountId] = OMIT,
         query: typing.Optional[str] = OMIT,
         channel: typing.Optional[typing.Sequence[SearchMediaRequestChannelItem]] = OMIT,
         format: typing.Optional[typing.Sequence[SearchMediaRequestFormatItem]] = OMIT,
@@ -460,8 +460,8 @@ class Spyglass:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SearchMediaResponse:
         """
-        Return creatives. Pass `brandId` to scope to one brand or creator,
-        or omit it to search the whole corpus. Without `brandId`,
+        Return creatives. Pass `accountId` to scope to one brand or creator,
+        or omit it to search the whole corpus. Without `accountId`,
         `query` is required.
 
         Limited to 120 requests per minute per user.
@@ -471,7 +471,7 @@ class Spyglass:
 
         Parameters
         ----------
-        brand_id : typing.Optional[SearchMediaRequestBrandId]
+        account_id : typing.Optional[SearchMediaRequestAccountId]
             Brand id given as a platform string or uuid
 
         query : typing.Optional[str]
@@ -545,7 +545,7 @@ class Spyglass:
         )
         """
         _response = self._raw_client.search_media(
-            brand_id=brand_id,
+            account_id=account_id,
             query=query,
             channel=channel,
             format=format,
@@ -1120,7 +1120,7 @@ class AsyncSpyglass:
     async def search_media(
         self,
         *,
-        brand_id: typing.Optional[SearchMediaRequestBrandId] = OMIT,
+        account_id: typing.Optional[SearchMediaRequestAccountId] = OMIT,
         query: typing.Optional[str] = OMIT,
         channel: typing.Optional[typing.Sequence[SearchMediaRequestChannelItem]] = OMIT,
         format: typing.Optional[typing.Sequence[SearchMediaRequestFormatItem]] = OMIT,
@@ -1149,8 +1149,8 @@ class AsyncSpyglass:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SearchMediaResponse:
         """
-        Return creatives. Pass `brandId` to scope to one brand or creator,
-        or omit it to search the whole corpus. Without `brandId`,
+        Return creatives. Pass `accountId` to scope to one brand or creator,
+        or omit it to search the whole corpus. Without `accountId`,
         `query` is required.
 
         Limited to 120 requests per minute per user.
@@ -1160,7 +1160,7 @@ class AsyncSpyglass:
 
         Parameters
         ----------
-        brand_id : typing.Optional[SearchMediaRequestBrandId]
+        account_id : typing.Optional[SearchMediaRequestAccountId]
             Brand id given as a platform string or uuid
 
         query : typing.Optional[str]
@@ -1242,7 +1242,7 @@ class AsyncSpyglass:
         asyncio.run(main())
         """
         _response = await self._raw_client.search_media(
-            brand_id=brand_id,
+            account_id=account_id,
             query=query,
             channel=channel,
             format=format,

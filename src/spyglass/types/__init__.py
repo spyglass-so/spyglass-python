@@ -28,7 +28,7 @@ if typing.TYPE_CHECKING:
     from .search_creators_response import SearchCreatorsResponse
     from .search_creators_response_creators_item import SearchCreatorsResponseCreatorsItem
     from .search_creators_response_creators_item_type import SearchCreatorsResponseCreatorsItemType
-    from .search_media_request_brand_id import SearchMediaRequestBrandId
+    from .search_media_request_account_id import SearchMediaRequestAccountId
     from .search_media_request_categories_item import SearchMediaRequestCategoriesItem
     from .search_media_request_channel_item import SearchMediaRequestChannelItem
     from .search_media_request_date_preset import SearchMediaRequestDatePreset
@@ -77,7 +77,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SearchCreatorsResponse": ".search_creators_response",
     "SearchCreatorsResponseCreatorsItem": ".search_creators_response_creators_item",
     "SearchCreatorsResponseCreatorsItemType": ".search_creators_response_creators_item_type",
-    "SearchMediaRequestBrandId": ".search_media_request_brand_id",
+    "SearchMediaRequestAccountId": ".search_media_request_account_id",
     "SearchMediaRequestCategoriesItem": ".search_media_request_categories_item",
     "SearchMediaRequestChannelItem": ".search_media_request_channel_item",
     "SearchMediaRequestDatePreset": ".search_media_request_date_preset",
@@ -146,7 +146,7 @@ __all__ = [
     "SearchCreatorsResponse",
     "SearchCreatorsResponseCreatorsItem",
     "SearchCreatorsResponseCreatorsItemType",
-    "SearchMediaRequestBrandId",
+    "SearchMediaRequestAccountId",
     "SearchMediaRequestCategoriesItem",
     "SearchMediaRequestChannelItem",
     "SearchMediaRequestDatePreset",
