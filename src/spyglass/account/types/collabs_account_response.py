@@ -4,13 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .collabs_account_response_collabs_item import CollabsAccountResponseCollabsItem
 
 
-class InsightsAccountResponseBucketsTotalsItem(UniversalBaseModel):
-    id: str
-    label: str
-    tags: typing.Optional[typing.List[str]] = None
-    total: float
+class CollabsAccountResponse(UniversalBaseModel):
+    count: int
+    collabs: typing.List[CollabsAccountResponseCollabsItem]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

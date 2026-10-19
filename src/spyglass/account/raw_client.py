@@ -20,6 +20,11 @@ from ..errors.payment_required_error import PaymentRequiredError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error import Error
+from .types.campaigns_account_request_date_preset import CampaignsAccountRequestDatePreset
+from .types.campaigns_account_request_sort_by import CampaignsAccountRequestSortBy
+from .types.campaigns_account_request_type import CampaignsAccountRequestType
+from .types.campaigns_account_response import CampaignsAccountResponse
+from .types.collabs_account_response import CollabsAccountResponse
 from .types.get_account_response import GetAccountResponse
 from .types.index_account_response import IndexAccountResponse
 from .types.index_status_account_response import IndexStatusAccountResponse
@@ -46,7 +51,7 @@ class RawAccountClient:
         (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
         Limited to 120 requests per minute per user.
-        Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+        Costs $0.0010 per account returned, charged against your plan's monthly credits.
         An id that matches nothing returns 404 and is free.
 
         Parameters
@@ -192,7 +197,7 @@ class RawAccountClient:
         `totals` to creatives that started within the requested window.
 
         Limited to 120 requests per minute per user.
-        Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -330,12 +335,328 @@ class RawAccountClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def campaigns(
+        self,
+        id: str,
+        *,
+        type: CampaignsAccountRequestType,
+        sort_by: typing.Optional[CampaignsAccountRequestSortBy] = None,
+        limit: typing.Optional[int] = None,
+        date_preset: typing.Optional[CampaignsAccountRequestDatePreset] = None,
+        start_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CampaignsAccountResponse]:
+        """
+        Return an account’s campaigns or offers, newest start date first.
+        `datePreset`, or `startDate` and `endDate`, filter by campaign
+        start date. Omit both for all time.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand id returned by POST /brands/search.
+
+        type : CampaignsAccountRequestType
+
+        sort_by : typing.Optional[CampaignsAccountRequestSortBy]
+
+        limit : typing.Optional[int]
+
+        date_preset : typing.Optional[CampaignsAccountRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CampaignsAccountResponse]
+            Campaigns or offers for the account.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"account/{encode_path_param(id)}/campaigns",
+            method="GET",
+            params={
+                "type": type,
+                "sortBy": sort_by,
+                "limit": limit,
+                "datePreset": date_preset,
+                "startDate": start_date,
+                "endDate": end_date,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CampaignsAccountResponse,
+                    parse_obj_as(
+                        type_=CampaignsAccountResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 405:
+                raise MethodNotAllowedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def collabs(
+        self,
+        id: str,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CollabsAccountResponse]:
+        """
+        Return the creators an account has collaborated with, ordered from
+        most media to least. Works for both brands and creators.
+        mediaCount is how many of that account’s media items tag the
+        creator.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand id returned by POST /brands/search.
+
+        limit : typing.Optional[int]
+
+        offset : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CollabsAccountResponse]
+            Creator collabs for the account.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"account/{encode_path_param(id)}/collabs",
+            method="GET",
+            params={
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CollabsAccountResponse,
+                    parse_obj_as(
+                        type_=CollabsAccountResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 405:
+                raise MethodNotAllowedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     def landing_pages(
         self,
         id: str,
         *,
         show_inactive: typing.Optional[LandingPagesAccountRequestShowInactive] = None,
         limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[LandingPagesAccountResponse]:
         """
@@ -343,7 +664,7 @@ class RawAccountClient:
         how often they appear across its ads.
 
         Limited to 120 requests per minute per user.
-        Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -353,6 +674,8 @@ class RawAccountClient:
         show_inactive : typing.Optional[LandingPagesAccountRequestShowInactive]
 
         limit : typing.Optional[int]
+
+        offset : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -368,6 +691,7 @@ class RawAccountClient:
             params={
                 "showInactive": show_inactive,
                 "limit": limit,
+                "offset": offset,
             },
             request_options=request_options,
         )
@@ -750,7 +1074,7 @@ class AsyncRawAccountClient:
         (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
         Limited to 120 requests per minute per user.
-        Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+        Costs $0.0010 per account returned, charged against your plan's monthly credits.
         An id that matches nothing returns 404 and is free.
 
         Parameters
@@ -896,7 +1220,7 @@ class AsyncRawAccountClient:
         `totals` to creatives that started within the requested window.
 
         Limited to 120 requests per minute per user.
-        Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -1034,12 +1358,328 @@ class AsyncRawAccountClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    async def campaigns(
+        self,
+        id: str,
+        *,
+        type: CampaignsAccountRequestType,
+        sort_by: typing.Optional[CampaignsAccountRequestSortBy] = None,
+        limit: typing.Optional[int] = None,
+        date_preset: typing.Optional[CampaignsAccountRequestDatePreset] = None,
+        start_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CampaignsAccountResponse]:
+        """
+        Return an account’s campaigns or offers, newest start date first.
+        `datePreset`, or `startDate` and `endDate`, filter by campaign
+        start date. Omit both for all time.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand id returned by POST /brands/search.
+
+        type : CampaignsAccountRequestType
+
+        sort_by : typing.Optional[CampaignsAccountRequestSortBy]
+
+        limit : typing.Optional[int]
+
+        date_preset : typing.Optional[CampaignsAccountRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CampaignsAccountResponse]
+            Campaigns or offers for the account.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"account/{encode_path_param(id)}/campaigns",
+            method="GET",
+            params={
+                "type": type,
+                "sortBy": sort_by,
+                "limit": limit,
+                "datePreset": date_preset,
+                "startDate": start_date,
+                "endDate": end_date,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CampaignsAccountResponse,
+                    parse_obj_as(
+                        type_=CampaignsAccountResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 405:
+                raise MethodNotAllowedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def collabs(
+        self,
+        id: str,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CollabsAccountResponse]:
+        """
+        Return the creators an account has collaborated with, ordered from
+        most media to least. Works for both brands and creators.
+        mediaCount is how many of that account’s media items tag the
+        creator.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+        Parameters
+        ----------
+        id : str
+            Brand id returned by POST /brands/search.
+
+        limit : typing.Optional[int]
+
+        offset : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CollabsAccountResponse]
+            Creator collabs for the account.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"account/{encode_path_param(id)}/collabs",
+            method="GET",
+            params={
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CollabsAccountResponse,
+                    parse_obj_as(
+                        type_=CollabsAccountResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 405:
+                raise MethodNotAllowedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     async def landing_pages(
         self,
         id: str,
         *,
         show_inactive: typing.Optional[LandingPagesAccountRequestShowInactive] = None,
         limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[LandingPagesAccountResponse]:
         """
@@ -1047,7 +1687,7 @@ class AsyncRawAccountClient:
         how often they appear across its ads.
 
         Limited to 120 requests per minute per user.
-        Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -1057,6 +1697,8 @@ class AsyncRawAccountClient:
         show_inactive : typing.Optional[LandingPagesAccountRequestShowInactive]
 
         limit : typing.Optional[int]
+
+        offset : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1072,6 +1714,7 @@ class AsyncRawAccountClient:
             params={
                 "showInactive": show_inactive,
                 "limit": limit,
+                "offset": offset,
             },
             request_options=request_options,
         )

@@ -33,12 +33,12 @@ class BaseClientWrapper:
         import platform
 
         headers: typing.Dict[str, str] = {
-            "User-Agent": "spyglass-sdk/0.1.9",
+            "User-Agent": "spyglass-sdk/0.1.10",
             "X-Fern-Language": "Python",
             "X-Fern-Runtime": f"python/{platform.python_version()}",
             "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
             "X-Fern-SDK-Name": "spyglass-sdk",
-            "X-Fern-SDK-Version": "0.1.9",
+            "X-Fern-SDK-Version": "0.1.10",
             **(self.get_custom_headers() or {}),
         }
         if include_token:

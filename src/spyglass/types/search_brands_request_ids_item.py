@@ -2,4 +2,4 @@
 
 import typing
 
-SearchBrandsRequestBrandIdsItem = typing.Union[str, float]
+SearchBrandsRequestIdsItem = typing.Union[str, float]

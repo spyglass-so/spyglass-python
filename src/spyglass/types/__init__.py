@@ -14,15 +14,15 @@ if typing.TYPE_CHECKING:
     from .get_comments_response_posts_item import GetCommentsResponsePostsItem
     from .get_comments_response_posts_item_comments_item import GetCommentsResponsePostsItemCommentsItem
     from .get_credit_usage_response import GetCreditUsageResponse
-    from .search_brands_request_brand_ids_item import SearchBrandsRequestBrandIdsItem
+    from .search_brands_request_ids_item import SearchBrandsRequestIdsItem
     from .search_brands_request_sort_by import SearchBrandsRequestSortBy
     from .search_brands_response import SearchBrandsResponse
     from .search_brands_response_brands_item import SearchBrandsResponseBrandsItem
     from .search_brands_response_brands_item_type import SearchBrandsResponseBrandsItemType
     from .search_creators_request_age_range import SearchCreatorsRequestAgeRange
-    from .search_creators_request_brand_ids_item import SearchCreatorsRequestBrandIdsItem
     from .search_creators_request_ethnicity import SearchCreatorsRequestEthnicity
     from .search_creators_request_gender import SearchCreatorsRequestGender
+    from .search_creators_request_ids_item import SearchCreatorsRequestIdsItem
     from .search_creators_request_language import SearchCreatorsRequestLanguage
     from .search_creators_request_sort_by import SearchCreatorsRequestSortBy
     from .search_creators_response import SearchCreatorsResponse
@@ -63,15 +63,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetCommentsResponsePostsItem": ".get_comments_response_posts_item",
     "GetCommentsResponsePostsItemCommentsItem": ".get_comments_response_posts_item_comments_item",
     "GetCreditUsageResponse": ".get_credit_usage_response",
-    "SearchBrandsRequestBrandIdsItem": ".search_brands_request_brand_ids_item",
+    "SearchBrandsRequestIdsItem": ".search_brands_request_ids_item",
     "SearchBrandsRequestSortBy": ".search_brands_request_sort_by",
     "SearchBrandsResponse": ".search_brands_response",
     "SearchBrandsResponseBrandsItem": ".search_brands_response_brands_item",
     "SearchBrandsResponseBrandsItemType": ".search_brands_response_brands_item_type",
     "SearchCreatorsRequestAgeRange": ".search_creators_request_age_range",
-    "SearchCreatorsRequestBrandIdsItem": ".search_creators_request_brand_ids_item",
     "SearchCreatorsRequestEthnicity": ".search_creators_request_ethnicity",
     "SearchCreatorsRequestGender": ".search_creators_request_gender",
+    "SearchCreatorsRequestIdsItem": ".search_creators_request_ids_item",
     "SearchCreatorsRequestLanguage": ".search_creators_request_language",
     "SearchCreatorsRequestSortBy": ".search_creators_request_sort_by",
     "SearchCreatorsResponse": ".search_creators_response",
@@ -132,15 +132,15 @@ __all__ = [
     "GetCommentsResponsePostsItem",
     "GetCommentsResponsePostsItemCommentsItem",
     "GetCreditUsageResponse",
-    "SearchBrandsRequestBrandIdsItem",
+    "SearchBrandsRequestIdsItem",
     "SearchBrandsRequestSortBy",
     "SearchBrandsResponse",
     "SearchBrandsResponseBrandsItem",
     "SearchBrandsResponseBrandsItemType",
     "SearchCreatorsRequestAgeRange",
-    "SearchCreatorsRequestBrandIdsItem",
     "SearchCreatorsRequestEthnicity",
     "SearchCreatorsRequestGender",
+    "SearchCreatorsRequestIdsItem",
     "SearchCreatorsRequestLanguage",
     "SearchCreatorsRequestSortBy",
     "SearchCreatorsResponse",

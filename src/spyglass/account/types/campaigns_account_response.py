@@ -3,18 +3,13 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...core.serialization import FieldMetadata
+from .campaigns_account_response_campaigns_item import CampaignsAccountResponseCampaignsItem
 
 
-class InsightsAccountResponseBucketsBucketsItemClustersItem(UniversalBaseModel):
-    id: str
-    label: str
-    raw_delta: typing_extensions.Annotated[float, FieldMetadata(alias="rawDelta"), pydantic.Field(alias="rawDelta")]
-    percent_delta: typing_extensions.Annotated[
-        typing.Optional[float], FieldMetadata(alias="percentDelta"), pydantic.Field(alias="percentDelta")
-    ] = None
+class CampaignsAccountResponse(UniversalBaseModel):
+    count: int
+    campaigns: typing.List[CampaignsAccountResponseCampaignsItem]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

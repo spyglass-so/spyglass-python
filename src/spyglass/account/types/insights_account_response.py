@@ -2,7 +2,7 @@
 
 import typing
 
-from .insights_account_response_buckets import InsightsAccountResponseBuckets
 from .insights_account_response_rows import InsightsAccountResponseRows
+from .insights_account_response_totals import InsightsAccountResponseTotals
 
-InsightsAccountResponse = typing.Union[InsightsAccountResponseRows, InsightsAccountResponseBuckets]
+InsightsAccountResponse = typing.Union[InsightsAccountResponseRows, InsightsAccountResponseTotals]
