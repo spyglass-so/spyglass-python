@@ -34,7 +34,7 @@
 
 ---
 
-**`spyglass-sdk`** is the official Python client for the [Spyglass API](https://docs.spyglass.so) with both synchronous (`Spyglass`) and asynchronous (`AsyncSpyglass`) clients. Resolve brands and creators, search across millions of Meta, Instagram, and TikTok creatives with natural-language briefs or structured filters, and extract hooks, personas, landing pages, and public comments.
+**`spyglass-sdk`** is the official Python client for the [Spyglass API](https://docs.spyglass.so) with both synchronous (`Spyglass`) and asynchronous (`AsyncSpyglass`) clients. Resolve brands and creators, search across millions of Meta, Instagram, and TikTok creatives with natural-language briefs or structured filters, and extract hooks, personas, campaigns, collaborations, landing pages, and public comments.
 
 > Looking for TypeScript / Node.js? See [`spyglass-so/spyglass-typescript`](https://github.com/spyglass-so/spyglass-typescript) (`npm install @spyglasshq/sdk`).
 
@@ -64,13 +64,48 @@ if result.brands:
 
     # 2. Search the creatives that brand is running
     media_result = client.search_media(
-        brand_id=brand.id,
+        account_id=brand.id,
         query="marathon running shoes comfort",
         limit=10,
     )
 
     for ad in media_result.media:
         print(ad.id, ad.hook, ad.core_angle, ad.url)
+```
+
+## Creative Insights, Campaigns, Collabs & Landing Pages
+
+Pull clustered creative themes (`HOOK`, `USP`, `PERSONA`, `MEDIA_MIX`), campaigns or offers, creator collaborations, and ranked destination landing pages for any account:
+
+```python
+# Ranked hooks + weekly volume breakdown over the last 90 days
+insights = client.account.insights(
+    id=brand.id,
+    type="HOOK",
+    max_days_back=90,
+    limit=10,
+)
+
+# Active campaigns or promotional offers
+campaigns = client.account.campaigns(
+    id=brand.id,
+    type="CAMPAIGN",
+    date_preset="last-30-days",
+    limit=10,
+)
+
+# Creators the account has collaborated with, ordered by media count
+collabs = client.account.collabs(
+    id=brand.id,
+    limit=20,
+)
+
+# Top landing pages where the brand sends ad traffic
+landing_pages = client.account.landing_pages(
+    id=brand.id,
+    show_inactive="false",
+    limit=20,
+)
 ```
 
 ## Async Usage
@@ -98,14 +133,16 @@ asyncio.run(main())
 
 | SDK Method | HTTP Endpoint | Cost | Rate Limit |
 | --- | --- | --- | --- |
-| `client.search_brands(...)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
-| `client.search_creators(...)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
-| `client.search_media(...)` | `POST /media` | $0.0010 / creative returned | 120 / min |
+| `client.search_brands(...)` | `POST /brands` | $0.0010 / brand returned | 120 / min |
+| `client.search_creators(...)` | `POST /creators` | $0.0010 / creator returned | 120 / min |
+| `client.search_media(...)` | `POST /media` | $0.0005 / creative returned | 120 / min |
 | `client.search_taxonomies(query=...)` | `GET /taxonomies` | Free | 120 / min |
-| `client.get_comments(...)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
-| `client.account.get(id=...)` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
-| `client.account.insights(...)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
-| `client.account.landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
+| `client.get_comments(...)` | `POST /comments` | $0.0050 / live page fetched | 20 / min |
+| `client.account.get(id=...)` | `GET /account/{id}` | $0.0010 / account returned | 120 / min |
+| `client.account.insights(...)` | `GET /account/{id}/insights` | $0.0005 / cluster returned | 120 / min |
+| `client.account.campaigns(...)` | `GET /account/{id}/campaigns` | $0.0005 / campaign returned | 120 / min |
+| `client.account.collabs(...)` | `GET /account/{id}/collabs` | $0.0005 / collab returned | 120 / min |
+| `client.account.landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0025 / landing page returned | 120 / min |
 | `client.account.index(...)` | `POST /account/index` | Free | 50 / min |
 | `client.account.index_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
 | `client.get_credit_usage()` | `GET /team/credit-usage` | Free | 120 / min |
