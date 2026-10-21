@@ -1,5 +1,4 @@
 # Reference
-
 <details><summary><code>client.<a href="src/spyglass/client.py">search_brands</a>(...) -> SearchBrandsResponse</code></summary>
 <dl>
 <dd>
@@ -48,7 +47,6 @@ Limited to 120 requests per minute per user.
 Costs $0.0010 per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
 A `query` search runs a language model, so it bills a minimum of one
 row even when nothing matches.
-
 </dd>
 </dl>
 </dd>
@@ -79,7 +77,6 @@ client.search_brands(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -93,96 +90,96 @@ client.search_brands(
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.List[SearchBrandsRequestIdsItem]]`
-
+**ids:** `typing.Optional[typing.List[SearchBrandsRequestIdsItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**names:** `typing.Optional[typing.List[str]]`
-
+**names:** `typing.Optional[typing.List[str]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**ig_username:** `typing.Optional[str]`
-
+**ig_username:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**tiktok_username:** `typing.Optional[str]`
-
+**tiktok_username:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**query:** `typing.Optional[str]`
-
+**query:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**location:** `typing.Optional[str]`
-
+**location:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**min_followers:** `typing.Optional[int]`
-
+**min_followers:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**max_followers:** `typing.Optional[int]`
-
+**max_followers:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[SearchBrandsRequestSortBy]`
-
+**sort_by:** `typing.Optional[SearchBrandsRequestSortBy]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**offset:** `typing.Optional[int]`
-
+**offset:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**taxonomy:** `typing.Optional[typing.List[str]]`
-
+**taxonomy:** `typing.Optional[typing.List[str]]` 
+    
 </dd>
 </dl>
 
@@ -190,11 +187,12 @@ client.search_brands(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -248,7 +246,6 @@ Limited to 120 requests per minute per user.
 Costs $0.0010 per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
 A `query` search runs a language model, so it bills a minimum of one
 row even when nothing matches.
-
 </dd>
 </dl>
 </dd>
@@ -278,7 +275,6 @@ client.search_creators(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -292,120 +288,120 @@ client.search_creators(
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.List[SearchCreatorsRequestIdsItem]]`
-
+**ids:** `typing.Optional[typing.List[SearchCreatorsRequestIdsItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**names:** `typing.Optional[typing.List[str]]`
-
+**names:** `typing.Optional[typing.List[str]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**ig_username:** `typing.Optional[str]`
-
+**ig_username:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**tiktok_username:** `typing.Optional[str]`
-
+**tiktok_username:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**query:** `typing.Optional[str]`
-
+**query:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**location:** `typing.Optional[str]`
-
+**location:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**min_followers:** `typing.Optional[int]`
-
+**min_followers:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**max_followers:** `typing.Optional[int]`
-
+**max_followers:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[SearchCreatorsRequestSortBy]`
-
+**sort_by:** `typing.Optional[SearchCreatorsRequestSortBy]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**offset:** `typing.Optional[int]`
-
+**offset:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**ethnicity:** `typing.Optional[SearchCreatorsRequestEthnicity]`
-
+**ethnicity:** `typing.Optional[SearchCreatorsRequestEthnicity]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**gender:** `typing.Optional[SearchCreatorsRequestGender]`
-
+**gender:** `typing.Optional[SearchCreatorsRequestGender]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**age_range:** `typing.Optional[SearchCreatorsRequestAgeRange]`
-
+**age_range:** `typing.Optional[SearchCreatorsRequestAgeRange]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**language:** `typing.Optional[SearchCreatorsRequestLanguage]`
-
+**language:** `typing.Optional[SearchCreatorsRequestLanguage]` 
+    
 </dd>
 </dl>
 
@@ -413,11 +409,12 @@ client.search_creators(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -441,7 +438,6 @@ such as `Apparel > Footwear > Sneakers`.
 
 Limited to 120 requests per minute per user.
 This call is free and does not use credits.
-
 </dd>
 </dl>
 </dd>
@@ -469,7 +465,6 @@ client.search_taxonomies(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -483,16 +478,16 @@ client.search_taxonomies(
 <dl>
 <dd>
 
-**query:** `str`
-
+**query:** `str` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
@@ -500,11 +495,12 @@ client.search_taxonomies(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -530,7 +526,6 @@ Limited to 120 requests per minute per user.
 Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
 The call bills a minimum of one row even when nothing matches. In that
 case `count` is 0 but you are charged for one row.
-
 </dd>
 </dl>
 </dd>
@@ -559,7 +554,6 @@ client.search_media(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -574,207 +568,207 @@ client.search_media(
 <dd>
 
 **account_id:** `typing.Optional[SearchMediaRequestAccountId]` — Account id given as a platform string or uuid
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**query:** `typing.Optional[str]`
-
+**query:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**channel:** `typing.Optional[typing.List[SearchMediaRequestChannelItem]]`
-
+**channel:** `typing.Optional[typing.List[SearchMediaRequestChannelItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**format:** `typing.Optional[typing.List[SearchMediaRequestFormatItem]]`
-
+**format:** `typing.Optional[typing.List[SearchMediaRequestFormatItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**duration:** `typing.Optional[typing.List[SearchMediaRequestDurationItem]]`
-
+**duration:** `typing.Optional[typing.List[SearchMediaRequestDurationItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**status:** `typing.Optional[SearchMediaRequestStatus]`
-
+**status:** `typing.Optional[SearchMediaRequestStatus]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**categories:** `typing.Optional[typing.List[SearchMediaRequestCategoriesItem]]`
-
+**categories:** `typing.Optional[typing.List[SearchMediaRequestCategoriesItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**taxonomy:** `typing.Optional[typing.List[str]]`
-
+**taxonomy:** `typing.Optional[typing.List[str]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**funnel_stage:** `typing.Optional[typing.List[SearchMediaRequestFunnelStageItem]]`
-
+**funnel_stage:** `typing.Optional[typing.List[SearchMediaRequestFunnelStageItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**language:** `typing.Optional[typing.List[SearchMediaRequestLanguageItem]]`
-
+**language:** `typing.Optional[typing.List[SearchMediaRequestLanguageItem]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**location:** `typing.Optional[typing.List[str]]`
-
+**location:** `typing.Optional[typing.List[str]]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**date_preset:** `typing.Optional[SearchMediaRequestDatePreset]`
-
+**date_preset:** `typing.Optional[SearchMediaRequestDatePreset]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[str]`
-
+**start_date:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[str]`
-
+**end_date:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**min_days_run:** `typing.Optional[float]`
-
+**min_days_run:** `typing.Optional[float]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**max_days_run:** `typing.Optional[float]`
-
+**max_days_run:** `typing.Optional[float]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**min_view_count:** `typing.Optional[float]`
-
+**min_view_count:** `typing.Optional[float]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**max_view_count:** `typing.Optional[float]`
-
+**max_view_count:** `typing.Optional[float]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**landing_page:** `typing.Optional[str]`
-
+**landing_page:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**landing_page_match:** `typing.Optional[SearchMediaRequestLandingPageMatch]`
-
+**landing_page_match:** `typing.Optional[SearchMediaRequestLandingPageMatch]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**low_impressions:** `typing.Optional[bool]`
-
+**low_impressions:** `typing.Optional[bool]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**partnership_ad:** `typing.Optional[bool]`
-
+**partnership_ad:** `typing.Optional[bool]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**crossposted:** `typing.Optional[bool]`
-
+**crossposted:** `typing.Optional[bool]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[SearchMediaRequestSortBy]`
-
+**sort_by:** `typing.Optional[SearchMediaRequestSortBy]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**offset:** `typing.Optional[int]`
-
+**offset:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
@@ -782,11 +776,12 @@ client.search_media(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -811,7 +806,6 @@ plan, and the current billing period. Granted credits count toward
 Limited to 120 requests per minute per user.
 This call is free and does not use credits. It still responds when
 the team is out of credits.
-
 </dd>
 </dl>
 </dd>
@@ -837,7 +831,6 @@ client = Spyglass(
 client.get_credit_usage()
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -852,11 +845,12 @@ client.get_credit_usage()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -897,7 +891,6 @@ Limited to 20 requests per minute per user.
 Costs $0.0050 per successful page of comments returned, charged against your plan's monthly credits.
 Each comment page fetched live (`limit`, default 1) is one billed
 unit. Cached posts do not scrape and are not billed.
-
 </dd>
 </dl>
 </dd>
@@ -931,7 +924,6 @@ client.get_comments(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -946,7 +938,7 @@ client.get_comments(
 <dd>
 
 **instagram_ids:** `typing.Optional[typing.List[str]]` — Instagram post shortcodes or post URLs
-
+    
 </dd>
 </dl>
 
@@ -954,7 +946,7 @@ client.get_comments(
 <dd>
 
 **tiktok_ids:** `typing.Optional[typing.List[str]]` — TikTok video ids or post URLs
-
+    
 </dd>
 </dl>
 
@@ -962,7 +954,7 @@ client.get_comments(
 <dd>
 
 **limit:** `typing.Optional[int]` — Comment pages to fetch per post. Default 1.
-
+    
 </dd>
 </dl>
 
@@ -970,18 +962,18 @@ client.get_comments(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Account
-
 <details><summary><code>client.account.<a href="src/spyglass/account/client.py">get</a>(...) -> GetAccountResponse</code></summary>
 <dl>
 <dd>
@@ -1001,7 +993,6 @@ which one you got: `BRAND` or `CREATOR`, and the creator-only fields
 Limited to 120 requests per minute per user.
 Costs $0.0010 per account returned, charged against your plan's monthly credits.
 An id that matches nothing returns 404 and is free.
-
 </dd>
 </dl>
 </dd>
@@ -1029,7 +1020,6 @@ client.account.get(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -1044,7 +1034,7 @@ client.account.get(
 <dd>
 
 **id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
-
+    
 </dd>
 </dl>
 
@@ -1052,11 +1042,12 @@ client.account.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -1083,7 +1074,6 @@ ranked totals, highest first.
 
 Limited to 120 requests per minute per user.
 Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -1112,7 +1102,6 @@ client.account.insights(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -1127,31 +1116,31 @@ client.account.insights(
 <dd>
 
 **id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**type:** `InsightsAccountRequestType`
-
+**type:** `InsightsAccountRequestType` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**max_days_back:** `typing.Optional[int]`
-
+**max_days_back:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
@@ -1159,11 +1148,12 @@ client.account.insights(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -1187,7 +1177,6 @@ start date. Omit both for all time.
 
 Limited to 120 requests per minute per user.
 Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -1216,7 +1205,6 @@ client.account.campaigns(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -1231,55 +1219,55 @@ client.account.campaigns(
 <dd>
 
 **id:** `str` — Brand id returned by POST /brands/search.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**type:** `CampaignsAccountRequestType`
-
+**type:** `CampaignsAccountRequestType` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[CampaignsAccountRequestSortBy]`
-
+**sort_by:** `typing.Optional[CampaignsAccountRequestSortBy]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**date_preset:** `typing.Optional[CampaignsAccountRequestDatePreset]`
-
+**date_preset:** `typing.Optional[CampaignsAccountRequestDatePreset]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[str]`
-
+**start_date:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[str]`
-
+**end_date:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -1287,11 +1275,12 @@ client.account.campaigns(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -1316,7 +1305,6 @@ creator.
 
 Limited to 120 requests per minute per user.
 Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -1344,7 +1332,6 @@ client.account.collabs(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -1359,23 +1346,23 @@ client.account.collabs(
 <dd>
 
 **id:** `str` — Brand id returned by POST /brands/search.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**offset:** `typing.Optional[int]`
-
+**offset:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
@@ -1383,11 +1370,12 @@ client.account.collabs(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -1410,7 +1398,6 @@ how often they appear across its ads.
 
 Limited to 120 requests per minute per user.
 Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -1438,7 +1425,6 @@ client.account.landing_pages(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -1453,31 +1439,31 @@ client.account.landing_pages(
 <dd>
 
 **id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**show_inactive:** `typing.Optional[LandingPagesAccountRequestShowInactive]`
-
+**show_inactive:** `typing.Optional[LandingPagesAccountRequestShowInactive]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]`
-
+**limit:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**offset:** `typing.Optional[int]`
-
+**offset:** `typing.Optional[int]` 
+    
 </dd>
 </dl>
 
@@ -1485,11 +1471,12 @@ client.account.landing_pages(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -1517,7 +1504,6 @@ queued, returning `status: "indexing"` and the new `brandId`.
 
 Limited to 50 requests per minute per user.
 This call is free.
-
 </dd>
 </dl>
 </dd>
@@ -1545,7 +1531,6 @@ client.account.index(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -1559,8 +1544,8 @@ client.account.index(
 <dl>
 <dd>
 
-**website_url:** `str`
-
+**website_url:** `str` 
+    
 </dd>
 </dl>
 
@@ -1568,11 +1553,12 @@ client.account.index(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -1594,7 +1580,6 @@ Poll whether a brand finished indexing after POST /account/index.
 
 Limited to 300 requests per minute per user.
 This call is free.
-
 </dd>
 </dl>
 </dd>
@@ -1622,7 +1607,6 @@ client.account.index_status(
 )
 
 ```
-
 </dd>
 </dl>
 </dd>
@@ -1637,7 +1621,7 @@ client.account.index_status(
 <dd>
 
 **id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
-
+    
 </dd>
 </dl>
 
@@ -1645,12 +1629,14 @@ client.account.index_status(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
 </details>
+
