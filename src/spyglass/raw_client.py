@@ -23,6 +23,7 @@ from .types.error import Error
 from .types.get_comments_response import GetCommentsResponse
 from .types.get_credit_usage_response import GetCreditUsageResponse
 from .types.search_brands_request_ids_item import SearchBrandsRequestIdsItem
+from .types.search_brands_request_language import SearchBrandsRequestLanguage
 from .types.search_brands_request_sort_by import SearchBrandsRequestSortBy
 from .types.search_brands_response import SearchBrandsResponse
 from .types.search_creators_request_age_range import SearchCreatorsRequestAgeRange
@@ -70,6 +71,7 @@ class RawSpyglass:
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
+        language: typing.Optional[SearchBrandsRequestLanguage] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[SearchBrandsResponse]:
         """
@@ -136,6 +138,8 @@ class RawSpyglass:
 
         taxonomy : typing.Optional[typing.Sequence[str]]
 
+        language : typing.Optional[SearchBrandsRequestLanguage]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -162,6 +166,7 @@ class RawSpyglass:
                 "offset": offset,
                 "limit": limit,
                 "taxonomy": taxonomy,
+                "language": language,
             },
             headers={
                 "content-type": "application/json",
@@ -676,7 +681,7 @@ class RawSpyglass:
         `query` is required.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
         The call bills a minimum of one row even when nothing matches. In that
         case `count` is 0 but you are charged for one row.
 
@@ -1216,6 +1221,7 @@ class AsyncRawSpyglass:
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
+        language: typing.Optional[SearchBrandsRequestLanguage] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[SearchBrandsResponse]:
         """
@@ -1282,6 +1288,8 @@ class AsyncRawSpyglass:
 
         taxonomy : typing.Optional[typing.Sequence[str]]
 
+        language : typing.Optional[SearchBrandsRequestLanguage]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1308,6 +1316,7 @@ class AsyncRawSpyglass:
                 "offset": offset,
                 "limit": limit,
                 "taxonomy": taxonomy,
+                "language": language,
             },
             headers={
                 "content-type": "application/json",
@@ -1822,7 +1831,7 @@ class AsyncRawSpyglass:
         `query` is required.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
         The call bills a minimum of one row even when nothing matches. In that
         case `count` is 0 but you are charged for one row.
 

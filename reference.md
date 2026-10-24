@@ -186,6 +186,14 @@ client.search_brands(
 <dl>
 <dd>
 
+**language:** `typing.Optional[SearchBrandsRequestLanguage]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -523,7 +531,7 @@ or omit it to search the whole corpus. Without `accountId`,
 `query` is required.
 
 Limited to 120 requests per minute per user.
-Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
 The call bills a minimum of one row even when nothing matches. In that
 case `count` is 0 but you are charged for one row.
 </dd>
@@ -1073,7 +1081,7 @@ ranked totals, highest first.
 `totals` to creatives that started within the requested window.
 
 Limited to 120 requests per minute per user.
-Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0010 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
 </dd>
 </dl>
 </dd>
@@ -1176,7 +1184,7 @@ Return an account’s campaigns or offers, newest start date first.
 start date. Omit both for all time.
 
 Limited to 120 requests per minute per user.
-Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0010 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
 </dd>
 </dl>
 </dd>
@@ -1304,7 +1312,7 @@ mediaCount is how many of that account’s media items tag the
 creator.
 
 Limited to 120 requests per minute per user.
-Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
 </dd>
 </dl>
 </dd>
@@ -1397,7 +1405,7 @@ Return the landing-page URLs an account sends ad traffic to, ranked by
 how often they appear across its ads.
 
 Limited to 120 requests per minute per user.
-Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0010 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
 </dd>
 </dl>
 </dd>

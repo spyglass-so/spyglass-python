@@ -15,6 +15,7 @@ if typing.TYPE_CHECKING:
     from .get_comments_response_posts_item_comments_item import GetCommentsResponsePostsItemCommentsItem
     from .get_credit_usage_response import GetCreditUsageResponse
     from .search_brands_request_ids_item import SearchBrandsRequestIdsItem
+    from .search_brands_request_language import SearchBrandsRequestLanguage
     from .search_brands_request_sort_by import SearchBrandsRequestSortBy
     from .search_brands_response import SearchBrandsResponse
     from .search_brands_response_brands_item import SearchBrandsResponseBrandsItem
@@ -64,6 +65,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetCommentsResponsePostsItemCommentsItem": ".get_comments_response_posts_item_comments_item",
     "GetCreditUsageResponse": ".get_credit_usage_response",
     "SearchBrandsRequestIdsItem": ".search_brands_request_ids_item",
+    "SearchBrandsRequestLanguage": ".search_brands_request_language",
     "SearchBrandsRequestSortBy": ".search_brands_request_sort_by",
     "SearchBrandsResponse": ".search_brands_response",
     "SearchBrandsResponseBrandsItem": ".search_brands_response_brands_item",
@@ -133,6 +135,7 @@ __all__ = [
     "GetCommentsResponsePostsItemCommentsItem",
     "GetCreditUsageResponse",
     "SearchBrandsRequestIdsItem",
+    "SearchBrandsRequestLanguage",
     "SearchBrandsRequestSortBy",
     "SearchBrandsResponse",
     "SearchBrandsResponseBrandsItem",

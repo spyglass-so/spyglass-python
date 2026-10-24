@@ -197,7 +197,7 @@ class RawAccountClient:
         `totals` to creatives that started within the requested window.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -353,7 +353,7 @@ class RawAccountClient:
         start date. Omit both for all time.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -515,7 +515,7 @@ class RawAccountClient:
         creator.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -664,7 +664,7 @@ class RawAccountClient:
         how often they appear across its ads.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -1220,7 +1220,7 @@ class AsyncRawAccountClient:
         `totals` to creatives that started within the requested window.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -1376,7 +1376,7 @@ class AsyncRawAccountClient:
         start date. Omit both for all time.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -1538,7 +1538,7 @@ class AsyncRawAccountClient:
         creator.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
@@ -1687,7 +1687,7 @@ class AsyncRawAccountClient:
         how often they appear across its ads.
 
         Limited to 120 requests per minute per user.
-        Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        Costs $0.0010 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
         Parameters
         ----------
