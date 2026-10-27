@@ -15,6 +15,7 @@ class GetAccountResponseCreator(UniversalBaseModel):
     ] = None
     name: str
     summary: typing.Optional[str] = None
+    bio: typing.Optional[str] = None
     verified: bool
     ig_username: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="igUsername"), pydantic.Field(alias="igUsername")

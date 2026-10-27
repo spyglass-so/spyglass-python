@@ -153,7 +153,7 @@ class AccountClient:
         Parameters
         ----------
         id : str
-            Brand id returned by POST /brands/search.
+            Brand or creator id returned by POST /brands or POST /creators.
 
         type : CampaignsAccountRequestType
 
@@ -219,7 +219,7 @@ class AccountClient:
         Parameters
         ----------
         id : str
-            Brand id returned by POST /brands/search.
+            Brand or creator id returned by POST /brands or POST /creators.
 
         limit : typing.Optional[int]
 
@@ -523,7 +523,7 @@ class AsyncAccountClient:
         Parameters
         ----------
         id : str
-            Brand id returned by POST /brands/search.
+            Brand or creator id returned by POST /brands or POST /creators.
 
         type : CampaignsAccountRequestType
 
@@ -597,7 +597,7 @@ class AsyncAccountClient:
         Parameters
         ----------
         id : str
-            Brand id returned by POST /brands/search.
+            Brand or creator id returned by POST /brands or POST /creators.
 
         limit : typing.Optional[int]
 

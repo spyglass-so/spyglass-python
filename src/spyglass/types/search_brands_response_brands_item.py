@@ -17,6 +17,7 @@ class SearchBrandsResponseBrandsItem(UniversalBaseModel):
     ] = None
     name: str
     summary: typing.Optional[str] = None
+    bio: typing.Optional[str] = None
     category: typing.Optional[str] = None
     location: typing.Optional[str] = None
     language: typing.Optional[str] = None

@@ -18,6 +18,7 @@ class GetAccountResponse_Brand(UniversalBaseModel):
     ] = None
     name: str
     summary: typing.Optional[str] = None
+    bio: typing.Optional[str] = None
     category: typing.Optional[str] = None
     location: typing.Optional[str] = None
     language: typing.Optional[str] = None
@@ -63,6 +64,7 @@ class GetAccountResponse_Creator(UniversalBaseModel):
     ] = None
     name: str
     summary: typing.Optional[str] = None
+    bio: typing.Optional[str] = None
     verified: bool
     ig_username: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="igUsername"), pydantic.Field(alias="igUsername")
