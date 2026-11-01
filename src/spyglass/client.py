@@ -10,8 +10,11 @@ from .core.logging import LogConfig, Logger
 from .core.request_options import RequestOptions
 from .environment import SpyglassEnvironment
 from .raw_client import AsyncRawSpyglass, RawSpyglass
+from .types.create_agent_run_request_effort import CreateAgentRunRequestEffort
+from .types.create_agent_run_response import CreateAgentRunResponse
 from .types.get_comments_response import GetCommentsResponse
 from .types.get_credit_usage_response import GetCreditUsageResponse
+from .types.list_agent_runs_response import ListAgentRunsResponse
 from .types.search_brands_request_ids_item import SearchBrandsRequestIdsItem
 from .types.search_brands_request_language import SearchBrandsRequestLanguage
 from .types.search_brands_request_sort_by import SearchBrandsRequestSortBy
@@ -680,6 +683,147 @@ class Spyglass:
         _response = self._raw_client.get_comments(
             instagram_ids=instagram_ids, tiktok_ids=tiktok_ids, limit=limit, request_options=request_options
         )
+        return _response.data
+
+    def list_agent_runs(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListAgentRunsResponse:
+        """
+        Lists runs for this team, newest first.
+        Pass `after` from the previous response `pagination.next` to get the next page.
+        Pass `before` from `pagination.previous` to go back.
+        Do not send `after` and `before` together.
+
+        Limited to 120 requests per minute per user.
+        This call is free and does not use credits.
+
+        Parameters
+        ----------
+        limit : typing.Optional[int]
+
+        after : typing.Optional[str]
+
+        before : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListAgentRunsResponse
+            Recent runs for this team.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.list_agent_runs()
+        """
+        _response = self._raw_client.list_agent_runs(
+            limit=limit, after=after, before=before, request_options=request_options
+        )
+        return _response.data
+
+    def create_agent_run(
+        self,
+        *,
+        query: str,
+        output_schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        system_prompt: typing.Optional[str] = OMIT,
+        effort: typing.Optional[CreateAgentRunRequestEffort] = OMIT,
+        previous_run_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateAgentRunResponse:
+        """
+        Start a Spyglass agent run. The run id is the chat thread id.
+        Pass `outputSchema` to get that JSON on `structured` when the run completes.
+        Poll GET /agent/runs/{id} until `status` is `completed`.
+
+        Limited to 20 requests per minute per user.
+        The create call is free. The run is billed from model usage when it finishes.
+
+        Parameters
+        ----------
+        query : str
+
+        output_schema : typing.Optional[typing.Dict[str, typing.Any]]
+
+        system_prompt : typing.Optional[str]
+
+        effort : typing.Optional[CreateAgentRunRequestEffort]
+
+        previous_run_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateAgentRunResponse
+            The queued run.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.create_agent_run(
+            query="query",
+        )
+        """
+        _response = self._raw_client.create_agent_run(
+            query=query,
+            output_schema=output_schema,
+            system_prompt=system_prompt,
+            effort=effort,
+            previous_run_id=previous_run_id,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_agent_run(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Dict[str, typing.Any]:
+        """
+        Poll a run until `status` is `completed`.
+        Completed runs include `text` and, when you passed a schema, `structured`.
+
+        Limited to 120 requests per minute per user.
+
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Dict[str, typing.Any]
+            The run.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.get_agent_run(
+            id="id",
+        )
+        """
+        _response = self._raw_client.get_agent_run(id, request_options=request_options)
         return _response.data
 
     @property
@@ -1399,6 +1543,171 @@ class AsyncSpyglass:
         _response = await self._raw_client.get_comments(
             instagram_ids=instagram_ids, tiktok_ids=tiktok_ids, limit=limit, request_options=request_options
         )
+        return _response.data
+
+    async def list_agent_runs(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListAgentRunsResponse:
+        """
+        Lists runs for this team, newest first.
+        Pass `after` from the previous response `pagination.next` to get the next page.
+        Pass `before` from `pagination.previous` to go back.
+        Do not send `after` and `before` together.
+
+        Limited to 120 requests per minute per user.
+        This call is free and does not use credits.
+
+        Parameters
+        ----------
+        limit : typing.Optional[int]
+
+        after : typing.Optional[str]
+
+        before : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListAgentRunsResponse
+            Recent runs for this team.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.list_agent_runs()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_agent_runs(
+            limit=limit, after=after, before=before, request_options=request_options
+        )
+        return _response.data
+
+    async def create_agent_run(
+        self,
+        *,
+        query: str,
+        output_schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        system_prompt: typing.Optional[str] = OMIT,
+        effort: typing.Optional[CreateAgentRunRequestEffort] = OMIT,
+        previous_run_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateAgentRunResponse:
+        """
+        Start a Spyglass agent run. The run id is the chat thread id.
+        Pass `outputSchema` to get that JSON on `structured` when the run completes.
+        Poll GET /agent/runs/{id} until `status` is `completed`.
+
+        Limited to 20 requests per minute per user.
+        The create call is free. The run is billed from model usage when it finishes.
+
+        Parameters
+        ----------
+        query : str
+
+        output_schema : typing.Optional[typing.Dict[str, typing.Any]]
+
+        system_prompt : typing.Optional[str]
+
+        effort : typing.Optional[CreateAgentRunRequestEffort]
+
+        previous_run_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateAgentRunResponse
+            The queued run.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.create_agent_run(
+                query="query",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_agent_run(
+            query=query,
+            output_schema=output_schema,
+            system_prompt=system_prompt,
+            effort=effort,
+            previous_run_id=previous_run_id,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_agent_run(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Dict[str, typing.Any]:
+        """
+        Poll a run until `status` is `completed`.
+        Completed runs include `text` and, when you passed a schema, `structured`.
+
+        Limited to 120 requests per minute per user.
+
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Dict[str, typing.Any]
+            The run.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.get_agent_run(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_agent_run(id, request_options=request_options)
         return _response.data
 
     @property
