@@ -176,7 +176,7 @@ if status in ("ready", "already_exists"):
 
 Start a Spyglass agent run, then poll until `status` is `"completed"`. Queuing the run is free. The run is billed from model usage when it finishes. `effort` is `none`, `minimal`, `low`, `medium` (default), `high`, or `xhigh`.
 
-Pass a JSON Schema `output_schema` (`type` `"object"`) to also get `structured` on the completed run. Pass `previous_run_id` of a completed run to continue that thread.
+Pass a JSON Schema `output_schema` (`type` `"object"`) to also get `structured` on the completed run. Pass `previous_run_id` of a completed run to continue that thread. Page the list with `offset`. The next page is `offset` plus `limit`, and you stop when fewer than `limit` runs come back.
 
 ```python
 import time
@@ -207,7 +207,7 @@ client.agent.runs.create(
     previous_run_id=run.id,
 )
 
-page = client.agent.runs.list(limit=10)
+page = client.agent.runs.list(limit=10, offset=0)
 ```
 
 ## Error Handling
