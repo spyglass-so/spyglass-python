@@ -129,6 +129,44 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## Run the Agent
+
+Start a Spyglass agent run, then poll until `status` is `"completed"`. Queuing the run is free. The run is billed from model usage when it finishes. `effort` is `none`, `minimal`, `low`, `medium` (default), `high`, or `xhigh`.
+
+Pass a JSON Schema `output_schema` (`type` `"object"`) to also get `structured` on the completed run. Pass `previous_run_id` of a completed run to continue that thread.
+
+```python
+import time
+
+created = client.agent.runs.create(
+    query="What are three hooks Liquid Death uses in recent ads?",
+    effort="low",
+    output_schema={
+        "type": "object",
+        "properties": {
+            "hooks": {"type": "array", "items": {"type": "string"}},
+        },
+        "required": ["hooks"],
+    },
+)
+
+run = client.agent.runs.get(id=created.id)
+while run.status != "completed":
+    time.sleep(3)
+    run = client.agent.runs.get(id=created.id)
+
+print(run.text)
+print(run.structured)
+
+# Continue the same thread
+client.agent.runs.create(
+    query="Turn those hooks into 15-second ad scripts.",
+    previous_run_id=run.id,
+)
+
+page = client.agent.runs.list(limit=10)
+```
+
 ## API Reference Overview
 
 | SDK Method | HTTP Endpoint | Cost | Rate Limit |
@@ -146,6 +184,9 @@ asyncio.run(main())
 | `client.account.index(...)` | `POST /account/index` | Free | 50 / min |
 | `client.account.index_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
 | `client.get_credit_usage()` | `GET /team/credit-usage` | Free | 120 / min |
+| `client.agent.runs.create(...)` | `POST /agent/runs` | Free to queue; billed from model usage when the run finishes | 20 / min |
+| `client.agent.runs.list(...)` | `GET /agent/runs` | Free | 120 / min |
+| `client.agent.runs.get(id=...)` | `GET /agent/runs/{id}` | Free | 120 / min |
 
 Full parameters and response schemas are documented in [`reference.md`](https://github.com/spyglass-so/spyglass-python/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
 
