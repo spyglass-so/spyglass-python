@@ -129,6 +129,49 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## API Reference Overview
+
+| SDK Method | HTTP Endpoint | Cost | Rate Limit |
+| --- | --- | --- | --- |
+| `client.search_brands(...)` | `POST /brands` | $0.0010 / brand returned | 120 / min |
+| `client.search_creators(...)` | `POST /creators` | $0.0010 / creator returned | 120 / min |
+| `client.search_media(...)` | `POST /media` | $0.0005 / creative returned | 120 / min |
+| `client.search_taxonomies(query=...)` | `GET /taxonomies` | Free | 120 / min |
+| `client.get_comments(...)` | `POST /comments` | $0.0050 / live page fetched | 20 / min |
+| `client.account.get(id=...)` | `GET /account/{id}` | $0.0010 / account returned | 120 / min |
+| `client.account.insights(...)` | `GET /account/{id}/insights` | $0.0005 / cluster returned | 120 / min |
+| `client.account.campaigns(...)` | `GET /account/{id}/campaigns` | $0.0005 / campaign returned | 120 / min |
+| `client.account.collabs(...)` | `GET /account/{id}/collabs` | $0.0005 / collab returned | 120 / min |
+| `client.account.landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0025 / landing page returned | 120 / min |
+| `client.account.index(...)` | `POST /account/index` | Free | 50 / min |
+| `client.account.index_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
+| `client.agent.runs.create(...)` | `POST /agent/runs` | Free to queue; billed from model usage when the run finishes | 20 / min |
+| `client.agent.runs.list(...)` | `GET /agent/runs` | Free | 120 / min |
+| `client.agent.runs.get(id=...)` | `GET /agent/runs/{id}` | Free | 120 / min |
+| `client.get_credit_usage()` | `GET /team/credit-usage` | Free | 120 / min |
+
+Full parameters and response schemas are documented in [`reference.md`](https://github.com/spyglass-so/spyglass-python/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
+
+## Indexing a New Account
+
+If Spyglass doesn't have a brand or creator yet, queue it by website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
+
+```python
+import time
+
+indexed = client.account.index(website_url="https://www.on.com")
+
+status = indexed.status
+while status == "indexing":
+    time.sleep(3)
+    check = client.account.index_status(id=indexed.brand_id)
+    status = check.status
+
+if status in ("ready", "already_exists"):
+    account = client.account.get(id=indexed.brand_id)
+    print("Indexed account:", account.name)
+```
+
 ## Run the Agent
 
 Start a Spyglass agent run, then poll until `status` is `"completed"`. Queuing the run is free. The run is billed from model usage when it finishes. `effort` is `none`, `minimal`, `low`, `medium` (default), `high`, or `xhigh`.
@@ -165,49 +208,6 @@ client.agent.runs.create(
 )
 
 page = client.agent.runs.list(limit=10)
-```
-
-## API Reference Overview
-
-| SDK Method | HTTP Endpoint | Cost | Rate Limit |
-| --- | --- | --- | --- |
-| `client.search_brands(...)` | `POST /brands` | $0.0010 / brand returned | 120 / min |
-| `client.search_creators(...)` | `POST /creators` | $0.0010 / creator returned | 120 / min |
-| `client.search_media(...)` | `POST /media` | $0.0005 / creative returned | 120 / min |
-| `client.search_taxonomies(query=...)` | `GET /taxonomies` | Free | 120 / min |
-| `client.get_comments(...)` | `POST /comments` | $0.0050 / live page fetched | 20 / min |
-| `client.account.get(id=...)` | `GET /account/{id}` | $0.0010 / account returned | 120 / min |
-| `client.account.insights(...)` | `GET /account/{id}/insights` | $0.0005 / cluster returned | 120 / min |
-| `client.account.campaigns(...)` | `GET /account/{id}/campaigns` | $0.0005 / campaign returned | 120 / min |
-| `client.account.collabs(...)` | `GET /account/{id}/collabs` | $0.0005 / collab returned | 120 / min |
-| `client.account.landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0025 / landing page returned | 120 / min |
-| `client.account.index(...)` | `POST /account/index` | Free | 50 / min |
-| `client.account.index_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
-| `client.get_credit_usage()` | `GET /team/credit-usage` | Free | 120 / min |
-| `client.agent.runs.create(...)` | `POST /agent/runs` | Free to queue; billed from model usage when the run finishes | 20 / min |
-| `client.agent.runs.list(...)` | `GET /agent/runs` | Free | 120 / min |
-| `client.agent.runs.get(id=...)` | `GET /agent/runs/{id}` | Free | 120 / min |
-
-Full parameters and response schemas are documented in [`reference.md`](https://github.com/spyglass-so/spyglass-python/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
-
-## Indexing a New Account
-
-If Spyglass doesn't have a brand or creator yet, queue it by website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
-
-```python
-import time
-
-indexed = client.account.index(website_url="https://www.on.com")
-
-status = indexed.status
-while status == "indexing":
-    time.sleep(3)
-    check = client.account.index_status(id=indexed.brand_id)
-    status = check.status
-
-if status in ("ready", "already_exists"):
-    account = client.account.get(id=indexed.brand_id)
-    print("Indexed account:", account.name)
 ```
 
 ## Error Handling
