@@ -689,15 +689,13 @@ class Spyglass:
         self,
         *,
         limit: typing.Optional[int] = None,
-        after: typing.Optional[str] = None,
-        before: typing.Optional[str] = None,
+        offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ListAgentRunsResponse:
         """
         Lists runs for this team, newest first.
-        Pass `after` from the previous response `pagination.next` to get the next page.
-        Pass `before` from `pagination.previous` to go back.
-        Do not send `after` and `before` together.
+        Page with `offset`. The next page is `offset` plus the `limit` you sent.
+        `count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
         Limited to 120 requests per minute per user.
         This call is free and does not use credits.
@@ -706,9 +704,7 @@ class Spyglass:
         ----------
         limit : typing.Optional[int]
 
-        after : typing.Optional[str]
-
-        before : typing.Optional[str]
+        offset : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -727,9 +723,7 @@ class Spyglass:
         )
         client.list_agent_runs()
         """
-        _response = self._raw_client.list_agent_runs(
-            limit=limit, after=after, before=before, request_options=request_options
-        )
+        _response = self._raw_client.list_agent_runs(limit=limit, offset=offset, request_options=request_options)
         return _response.data
 
     def create_agent_run(
@@ -1549,15 +1543,13 @@ class AsyncSpyglass:
         self,
         *,
         limit: typing.Optional[int] = None,
-        after: typing.Optional[str] = None,
-        before: typing.Optional[str] = None,
+        offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ListAgentRunsResponse:
         """
         Lists runs for this team, newest first.
-        Pass `after` from the previous response `pagination.next` to get the next page.
-        Pass `before` from `pagination.previous` to go back.
-        Do not send `after` and `before` together.
+        Page with `offset`. The next page is `offset` plus the `limit` you sent.
+        `count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
         Limited to 120 requests per minute per user.
         This call is free and does not use credits.
@@ -1566,9 +1558,7 @@ class AsyncSpyglass:
         ----------
         limit : typing.Optional[int]
 
-        after : typing.Optional[str]
-
-        before : typing.Optional[str]
+        offset : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1595,9 +1585,7 @@ class AsyncSpyglass:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list_agent_runs(
-            limit=limit, after=after, before=before, request_options=request_options
-        )
+        _response = await self._raw_client.list_agent_runs(limit=limit, offset=offset, request_options=request_options)
         return _response.data
 
     async def create_agent_run(

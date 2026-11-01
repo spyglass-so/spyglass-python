@@ -1209,15 +1209,13 @@ class RawSpyglass:
         self,
         *,
         limit: typing.Optional[int] = None,
-        after: typing.Optional[str] = None,
-        before: typing.Optional[str] = None,
+        offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ListAgentRunsResponse]:
         """
         Lists runs for this team, newest first.
-        Pass `after` from the previous response `pagination.next` to get the next page.
-        Pass `before` from `pagination.previous` to go back.
-        Do not send `after` and `before` together.
+        Page with `offset`. The next page is `offset` plus the `limit` you sent.
+        `count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
         Limited to 120 requests per minute per user.
         This call is free and does not use credits.
@@ -1226,9 +1224,7 @@ class RawSpyglass:
         ----------
         limit : typing.Optional[int]
 
-        after : typing.Optional[str]
-
-        before : typing.Optional[str]
+        offset : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1243,8 +1239,7 @@ class RawSpyglass:
             method="GET",
             params={
                 "limit": limit,
-                "after": after,
-                "before": before,
+                "offset": offset,
             },
             request_options=request_options,
         )
@@ -2781,15 +2776,13 @@ class AsyncRawSpyglass:
         self,
         *,
         limit: typing.Optional[int] = None,
-        after: typing.Optional[str] = None,
-        before: typing.Optional[str] = None,
+        offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ListAgentRunsResponse]:
         """
         Lists runs for this team, newest first.
-        Pass `after` from the previous response `pagination.next` to get the next page.
-        Pass `before` from `pagination.previous` to go back.
-        Do not send `after` and `before` together.
+        Page with `offset`. The next page is `offset` plus the `limit` you sent.
+        `count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
         Limited to 120 requests per minute per user.
         This call is free and does not use credits.
@@ -2798,9 +2791,7 @@ class AsyncRawSpyglass:
         ----------
         limit : typing.Optional[int]
 
-        after : typing.Optional[str]
-
-        before : typing.Optional[str]
+        offset : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2815,8 +2806,7 @@ class AsyncRawSpyglass:
             method="GET",
             params={
                 "limit": limit,
-                "after": after,
-                "before": before,
+                "offset": offset,
             },
             request_options=request_options,
         )
