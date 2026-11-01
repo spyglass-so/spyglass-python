@@ -7,6 +7,14 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .create_agent_run_request_effort import CreateAgentRunRequestEffort
+    from .create_agent_run_request_output_schema import CreateAgentRunRequestOutputSchema
+    from .create_agent_run_request_output_schema_properties_value import (
+        CreateAgentRunRequestOutputSchemaPropertiesValue,
+    )
+    from .create_agent_run_request_output_schema_properties_value_type import (
+        CreateAgentRunRequestOutputSchemaPropertiesValueType,
+    )
+    from .create_agent_run_request_output_schema_type import CreateAgentRunRequestOutputSchemaType
     from .create_agent_run_response import CreateAgentRunResponse
     from .create_agent_run_response_status import CreateAgentRunResponseStatus
     from .error import Error
@@ -61,6 +69,10 @@ if typing.TYPE_CHECKING:
     from .search_taxonomies_response import SearchTaxonomiesResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateAgentRunRequestEffort": ".create_agent_run_request_effort",
+    "CreateAgentRunRequestOutputSchema": ".create_agent_run_request_output_schema",
+    "CreateAgentRunRequestOutputSchemaPropertiesValue": ".create_agent_run_request_output_schema_properties_value",
+    "CreateAgentRunRequestOutputSchemaPropertiesValueType": ".create_agent_run_request_output_schema_properties_value_type",
+    "CreateAgentRunRequestOutputSchemaType": ".create_agent_run_request_output_schema_type",
     "CreateAgentRunResponse": ".create_agent_run_response",
     "CreateAgentRunResponseStatus": ".create_agent_run_response_status",
     "Error": ".error",
@@ -135,6 +147,10 @@ def __dir__():
 
 __all__ = [
     "CreateAgentRunRequestEffort",
+    "CreateAgentRunRequestOutputSchema",
+    "CreateAgentRunRequestOutputSchemaPropertiesValue",
+    "CreateAgentRunRequestOutputSchemaPropertiesValueType",
+    "CreateAgentRunRequestOutputSchemaType",
     "CreateAgentRunResponse",
     "CreateAgentRunResponseStatus",
     "Error",

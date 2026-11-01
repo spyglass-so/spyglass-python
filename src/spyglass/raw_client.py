@@ -21,6 +21,7 @@ from .errors.payment_required_error import PaymentRequiredError
 from .errors.too_many_requests_error import TooManyRequestsError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.create_agent_run_request_effort import CreateAgentRunRequestEffort
+from .types.create_agent_run_request_output_schema import CreateAgentRunRequestOutputSchema
 from .types.create_agent_run_response import CreateAgentRunResponse
 from .types.error import Error
 from .types.get_comments_response import GetCommentsResponse
@@ -1343,7 +1344,7 @@ class RawSpyglass:
         self,
         *,
         query: str,
-        output_schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        output_schema: typing.Optional[CreateAgentRunRequestOutputSchema] = OMIT,
         system_prompt: typing.Optional[str] = OMIT,
         effort: typing.Optional[CreateAgentRunRequestEffort] = OMIT,
         previous_run_id: typing.Optional[str] = OMIT,
@@ -1352,6 +1353,7 @@ class RawSpyglass:
         """
         Start a Spyglass agent run. The run id is the chat thread id.
         Pass `outputSchema` to get that JSON on `structured` when the run completes.
+        The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
         Poll GET /agent/runs/{id} until `status` is `completed`.
 
         Limited to 20 requests per minute per user.
@@ -1361,7 +1363,8 @@ class RawSpyglass:
         ----------
         query : str
 
-        output_schema : typing.Optional[typing.Dict[str, typing.Any]]
+        output_schema : typing.Optional[CreateAgentRunRequestOutputSchema]
+            JSON Schema for `structured`. The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
 
         system_prompt : typing.Optional[str]
 
@@ -1382,7 +1385,9 @@ class RawSpyglass:
             method="POST",
             json={
                 "query": query,
-                "outputSchema": output_schema,
+                "outputSchema": convert_and_respect_annotation_metadata(
+                    object_=output_schema, annotation=CreateAgentRunRequestOutputSchema, direction="write"
+                ),
                 "systemPrompt": system_prompt,
                 "effort": effort,
                 "previousRunId": previous_run_id,
@@ -2910,7 +2915,7 @@ class AsyncRawSpyglass:
         self,
         *,
         query: str,
-        output_schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        output_schema: typing.Optional[CreateAgentRunRequestOutputSchema] = OMIT,
         system_prompt: typing.Optional[str] = OMIT,
         effort: typing.Optional[CreateAgentRunRequestEffort] = OMIT,
         previous_run_id: typing.Optional[str] = OMIT,
@@ -2919,6 +2924,7 @@ class AsyncRawSpyglass:
         """
         Start a Spyglass agent run. The run id is the chat thread id.
         Pass `outputSchema` to get that JSON on `structured` when the run completes.
+        The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
         Poll GET /agent/runs/{id} until `status` is `completed`.
 
         Limited to 20 requests per minute per user.
@@ -2928,7 +2934,8 @@ class AsyncRawSpyglass:
         ----------
         query : str
 
-        output_schema : typing.Optional[typing.Dict[str, typing.Any]]
+        output_schema : typing.Optional[CreateAgentRunRequestOutputSchema]
+            JSON Schema for `structured`. The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
 
         system_prompt : typing.Optional[str]
 
@@ -2949,7 +2956,9 @@ class AsyncRawSpyglass:
             method="POST",
             json={
                 "query": query,
-                "outputSchema": output_schema,
+                "outputSchema": convert_and_respect_annotation_metadata(
+                    object_=output_schema, annotation=CreateAgentRunRequestOutputSchema, direction="write"
+                ),
                 "systemPrompt": system_prompt,
                 "effort": effort,
                 "previousRunId": previous_run_id,
