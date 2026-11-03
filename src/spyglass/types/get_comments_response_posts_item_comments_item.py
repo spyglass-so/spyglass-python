@@ -28,6 +28,9 @@ class GetCommentsResponsePostsItemCommentsItem(UniversalBaseModel):
     is_verified: typing_extensions.Annotated[
         bool, FieldMetadata(alias="isVerified"), pydantic.Field(alias="isVerified")
     ]
+    avatar_url: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="avatarUrl"), pydantic.Field(alias="avatarUrl")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
