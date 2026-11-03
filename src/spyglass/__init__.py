@@ -8,6 +8,7 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .types import (
         CreateAgentRunRequestEffort,
+        CreateAgentRunRequestModel,
         CreateAgentRunRequestOutputSchema,
         CreateAgentRunRequestOutputSchemaPropertiesValue,
         CreateAgentRunRequestOutputSchemaPropertiesValueType,
@@ -118,6 +119,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CollabsAccountResponseCollabsItem": ".account",
     "ContentTooLargeError": ".errors",
     "CreateAgentRunRequestEffort": ".types",
+    "CreateAgentRunRequestModel": ".types",
     "CreateAgentRunRequestOutputSchema": ".types",
     "CreateAgentRunRequestOutputSchemaPropertiesValue": ".types",
     "CreateAgentRunRequestOutputSchemaPropertiesValueType": ".types",
@@ -239,6 +241,7 @@ __all__ = [
     "CollabsAccountResponseCollabsItem",
     "ContentTooLargeError",
     "CreateAgentRunRequestEffort",
+    "CreateAgentRunRequestModel",
     "CreateAgentRunRequestOutputSchema",
     "CreateAgentRunRequestOutputSchemaPropertiesValue",
     "CreateAgentRunRequestOutputSchemaPropertiesValueType",

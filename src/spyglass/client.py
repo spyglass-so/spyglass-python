@@ -11,6 +11,7 @@ from .core.request_options import RequestOptions
 from .environment import SpyglassEnvironment
 from .raw_client import AsyncRawSpyglass, RawSpyglass
 from .types.create_agent_run_request_effort import CreateAgentRunRequestEffort
+from .types.create_agent_run_request_model import CreateAgentRunRequestModel
 from .types.create_agent_run_request_output_schema import CreateAgentRunRequestOutputSchema
 from .types.create_agent_run_response import CreateAgentRunResponse
 from .types.get_comments_response import GetCommentsResponse
@@ -734,13 +735,14 @@ class Spyglass:
         output_schema: typing.Optional[CreateAgentRunRequestOutputSchema] = OMIT,
         system_prompt: typing.Optional[str] = OMIT,
         effort: typing.Optional[CreateAgentRunRequestEffort] = OMIT,
-        previous_run_id: typing.Optional[str] = OMIT,
+        model: typing.Optional[CreateAgentRunRequestModel] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateAgentRunResponse:
         """
         Start a Spyglass agent run. The run id is the chat thread id.
         Pass `outputSchema` to get that JSON on `structured` when the run completes.
         The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
+        `model` is `default` or `pro`.
         Poll GET /agent/runs/{id} until `status` is `completed`.
 
         Limited to 20 requests per minute per user.
@@ -757,7 +759,7 @@ class Spyglass:
 
         effort : typing.Optional[CreateAgentRunRequestEffort]
 
-        previous_run_id : typing.Optional[str]
+        model : typing.Optional[CreateAgentRunRequestModel]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -783,7 +785,7 @@ class Spyglass:
             output_schema=output_schema,
             system_prompt=system_prompt,
             effort=effort,
-            previous_run_id=previous_run_id,
+            model=model,
             request_options=request_options,
         )
         return _response.data
@@ -1598,13 +1600,14 @@ class AsyncSpyglass:
         output_schema: typing.Optional[CreateAgentRunRequestOutputSchema] = OMIT,
         system_prompt: typing.Optional[str] = OMIT,
         effort: typing.Optional[CreateAgentRunRequestEffort] = OMIT,
-        previous_run_id: typing.Optional[str] = OMIT,
+        model: typing.Optional[CreateAgentRunRequestModel] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateAgentRunResponse:
         """
         Start a Spyglass agent run. The run id is the chat thread id.
         Pass `outputSchema` to get that JSON on `structured` when the run completes.
         The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
+        `model` is `default` or `pro`.
         Poll GET /agent/runs/{id} until `status` is `completed`.
 
         Limited to 20 requests per minute per user.
@@ -1621,7 +1624,7 @@ class AsyncSpyglass:
 
         effort : typing.Optional[CreateAgentRunRequestEffort]
 
-        previous_run_id : typing.Optional[str]
+        model : typing.Optional[CreateAgentRunRequestModel]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1655,7 +1658,7 @@ class AsyncSpyglass:
             output_schema=output_schema,
             system_prompt=system_prompt,
             effort=effort,
-            previous_run_id=previous_run_id,
+            model=model,
             request_options=request_options,
         )
         return _response.data

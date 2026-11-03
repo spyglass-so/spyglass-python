@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .create_agent_run_request_effort import CreateAgentRunRequestEffort
+    from .create_agent_run_request_model import CreateAgentRunRequestModel
     from .create_agent_run_request_output_schema import CreateAgentRunRequestOutputSchema
     from .create_agent_run_request_output_schema_properties_value import (
         CreateAgentRunRequestOutputSchemaPropertiesValue,
@@ -69,6 +70,7 @@ if typing.TYPE_CHECKING:
     from .search_taxonomies_response import SearchTaxonomiesResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateAgentRunRequestEffort": ".create_agent_run_request_effort",
+    "CreateAgentRunRequestModel": ".create_agent_run_request_model",
     "CreateAgentRunRequestOutputSchema": ".create_agent_run_request_output_schema",
     "CreateAgentRunRequestOutputSchemaPropertiesValue": ".create_agent_run_request_output_schema_properties_value",
     "CreateAgentRunRequestOutputSchemaPropertiesValueType": ".create_agent_run_request_output_schema_properties_value_type",
@@ -147,6 +149,7 @@ def __dir__():
 
 __all__ = [
     "CreateAgentRunRequestEffort",
+    "CreateAgentRunRequestModel",
     "CreateAgentRunRequestOutputSchema",
     "CreateAgentRunRequestOutputSchemaPropertiesValue",
     "CreateAgentRunRequestOutputSchemaPropertiesValueType",
