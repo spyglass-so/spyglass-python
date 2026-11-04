@@ -24,6 +24,7 @@ from .types.campaigns_account_request_date_preset import CampaignsAccountRequest
 from .types.campaigns_account_request_sort_by import CampaignsAccountRequestSortBy
 from .types.campaigns_account_request_type import CampaignsAccountRequestType
 from .types.campaigns_account_response import CampaignsAccountResponse
+from .types.collabs_account_request_date_preset import CollabsAccountRequestDatePreset
 from .types.collabs_account_response import CollabsAccountResponse
 from .types.get_account_response import GetAccountResponse
 from .types.index_account_response import IndexAccountResponse
@@ -506,13 +507,18 @@ class RawAccountClient:
         *,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
+        date_preset: typing.Optional[CollabsAccountRequestDatePreset] = None,
+        start_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CollabsAccountResponse]:
         """
         Return the creators an account has collaborated with, ordered from
         most media to least. Works for both brands and creators.
         mediaCount is how many of that account’s media items tag the
-        creator.
+        creator. startedAt is the earliest of those media start times, and
+        lastPostedAt is the latest. `datePreset`, or `startDate` and
+        `endDate`, filter by startedAt. Omit both for all time.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -525,6 +531,12 @@ class RawAccountClient:
         limit : typing.Optional[int]
 
         offset : typing.Optional[int]
+
+        date_preset : typing.Optional[CollabsAccountRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -540,6 +552,9 @@ class RawAccountClient:
             params={
                 "limit": limit,
                 "offset": offset,
+                "datePreset": date_preset,
+                "startDate": start_date,
+                "endDate": end_date,
             },
             request_options=request_options,
         )
@@ -1529,13 +1544,18 @@ class AsyncRawAccountClient:
         *,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
+        date_preset: typing.Optional[CollabsAccountRequestDatePreset] = None,
+        start_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CollabsAccountResponse]:
         """
         Return the creators an account has collaborated with, ordered from
         most media to least. Works for both brands and creators.
         mediaCount is how many of that account’s media items tag the
-        creator.
+        creator. startedAt is the earliest of those media start times, and
+        lastPostedAt is the latest. `datePreset`, or `startDate` and
+        `endDate`, filter by startedAt. Omit both for all time.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -1548,6 +1568,12 @@ class AsyncRawAccountClient:
         limit : typing.Optional[int]
 
         offset : typing.Optional[int]
+
+        date_preset : typing.Optional[CollabsAccountRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1563,6 +1589,9 @@ class AsyncRawAccountClient:
             params={
                 "limit": limit,
                 "offset": offset,
+                "datePreset": date_preset,
+                "startDate": start_date,
+                "endDate": end_date,
             },
             request_options=request_options,
         )

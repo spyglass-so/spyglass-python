@@ -9,6 +9,7 @@ from .types.campaigns_account_request_date_preset import CampaignsAccountRequest
 from .types.campaigns_account_request_sort_by import CampaignsAccountRequestSortBy
 from .types.campaigns_account_request_type import CampaignsAccountRequestType
 from .types.campaigns_account_response import CampaignsAccountResponse
+from .types.collabs_account_request_date_preset import CollabsAccountRequestDatePreset
 from .types.collabs_account_response import CollabsAccountResponse
 from .types.get_account_response import GetAccountResponse
 from .types.index_account_response import IndexAccountResponse
@@ -205,13 +206,18 @@ class AccountClient:
         *,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
+        date_preset: typing.Optional[CollabsAccountRequestDatePreset] = None,
+        start_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CollabsAccountResponse:
         """
         Return the creators an account has collaborated with, ordered from
         most media to least. Works for both brands and creators.
         mediaCount is how many of that account’s media items tag the
-        creator.
+        creator. startedAt is the earliest of those media start times, and
+        lastPostedAt is the latest. `datePreset`, or `startDate` and
+        `endDate`, filter by startedAt. Omit both for all time.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -224,6 +230,12 @@ class AccountClient:
         limit : typing.Optional[int]
 
         offset : typing.Optional[int]
+
+        date_preset : typing.Optional[CollabsAccountRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -244,7 +256,15 @@ class AccountClient:
             id="id",
         )
         """
-        _response = self._raw_client.collabs(id, limit=limit, offset=offset, request_options=request_options)
+        _response = self._raw_client.collabs(
+            id,
+            limit=limit,
+            offset=offset,
+            date_preset=date_preset,
+            start_date=start_date,
+            end_date=end_date,
+            request_options=request_options,
+        )
         return _response.data
 
     def landing_pages(
@@ -583,13 +603,18 @@ class AsyncAccountClient:
         *,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
+        date_preset: typing.Optional[CollabsAccountRequestDatePreset] = None,
+        start_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CollabsAccountResponse:
         """
         Return the creators an account has collaborated with, ordered from
         most media to least. Works for both brands and creators.
         mediaCount is how many of that account’s media items tag the
-        creator.
+        creator. startedAt is the earliest of those media start times, and
+        lastPostedAt is the latest. `datePreset`, or `startDate` and
+        `endDate`, filter by startedAt. Omit both for all time.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -602,6 +627,12 @@ class AsyncAccountClient:
         limit : typing.Optional[int]
 
         offset : typing.Optional[int]
+
+        date_preset : typing.Optional[CollabsAccountRequestDatePreset]
+
+        start_date : typing.Optional[str]
+
+        end_date : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -630,7 +661,15 @@ class AsyncAccountClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.collabs(id, limit=limit, offset=offset, request_options=request_options)
+        _response = await self._raw_client.collabs(
+            id,
+            limit=limit,
+            offset=offset,
+            date_preset=date_preset,
+            start_date=start_date,
+            end_date=end_date,
+            request_options=request_options,
+        )
         return _response.data
 
     async def landing_pages(

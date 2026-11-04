@@ -12,6 +12,23 @@ class CollabsAccountResponseCollabsItem(UniversalBaseModel):
     name: str
     profile_url: typing_extensions.Annotated[str, FieldMetadata(alias="profileUrl"), pydantic.Field(alias="profileUrl")]
     media_count: typing_extensions.Annotated[int, FieldMetadata(alias="mediaCount"), pydantic.Field(alias="mediaCount")]
+    started_at: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="startedAt"),
+        pydantic.Field(alias="startedAt", description="When the collab started: the earliest media start time."),
+    ]
+    """
+    When the collab started: the earliest media start time.
+    """
+
+    last_posted_at: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="lastPostedAt"),
+        pydantic.Field(alias="lastPostedAt", description="The latest media post time for this creator."),
+    ]
+    """
+    The latest media post time for this creator.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

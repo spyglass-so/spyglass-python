@@ -11,6 +11,7 @@ if typing.TYPE_CHECKING:
     from .campaigns_account_request_type import CampaignsAccountRequestType
     from .campaigns_account_response import CampaignsAccountResponse
     from .campaigns_account_response_campaigns_item import CampaignsAccountResponseCampaignsItem
+    from .collabs_account_request_date_preset import CollabsAccountRequestDatePreset
     from .collabs_account_response import CollabsAccountResponse
     from .collabs_account_response_collabs_item import CollabsAccountResponseCollabsItem
     from .get_account_response import GetAccountResponse, GetAccountResponse_Brand, GetAccountResponse_Creator
@@ -37,6 +38,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CampaignsAccountRequestType": ".campaigns_account_request_type",
     "CampaignsAccountResponse": ".campaigns_account_response",
     "CampaignsAccountResponseCampaignsItem": ".campaigns_account_response_campaigns_item",
+    "CollabsAccountRequestDatePreset": ".collabs_account_request_date_preset",
     "CollabsAccountResponse": ".collabs_account_response",
     "CollabsAccountResponseCollabsItem": ".collabs_account_response_collabs_item",
     "GetAccountResponse": ".get_account_response",
@@ -89,6 +91,7 @@ __all__ = [
     "CampaignsAccountRequestType",
     "CampaignsAccountResponse",
     "CampaignsAccountResponseCampaignsItem",
+    "CollabsAccountRequestDatePreset",
     "CollabsAccountResponse",
     "CollabsAccountResponseCollabsItem",
     "GetAccountResponse",
