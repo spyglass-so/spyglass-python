@@ -30,21 +30,27 @@ class GetCreditUsageResponse(UniversalBaseModel):
     """
 
     billing_period_start: typing_extensions.Annotated[
-        str,
+        typing.Optional[str],
         FieldMetadata(alias="billingPeriodStart"),
-        pydantic.Field(alias="billingPeriodStart", description="Start of the current billing period, UTC."),
-    ]
+        pydantic.Field(
+            alias="billingPeriodStart",
+            description="Start of the current billing period, UTC. Null when no billing period exists.",
+        ),
+    ] = None
     """
-    Start of the current billing period, UTC.
+    Start of the current billing period, UTC. Null when no billing period exists.
     """
 
     billing_period_end: typing_extensions.Annotated[
-        str,
+        typing.Optional[str],
         FieldMetadata(alias="billingPeriodEnd"),
-        pydantic.Field(alias="billingPeriodEnd", description="End of the current billing period, UTC."),
-    ]
+        pydantic.Field(
+            alias="billingPeriodEnd",
+            description="End of the current billing period, UTC. Null when no billing period exists.",
+        ),
+    ] = None
     """
-    End of the current billing period, UTC.
+    End of the current billing period, UTC. Null when no billing period exists.
     """
 
     if IS_PYDANTIC_V2:
