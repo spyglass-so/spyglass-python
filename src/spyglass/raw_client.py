@@ -1356,7 +1356,7 @@ class RawSpyglass:
         Pass `outputSchema` to get that JSON on `structured` when the run completes.
         The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
         `model` is `default` or `pro`.
-        Poll GET /agent/runs/{id} until `status` is `completed`.
+        Poll GET /agent/runs/{id} until `status` is `completed` or `failed`.
 
         Limited to 20 requests per minute per user.
         The create call is free. The run is billed from model usage when it finishes.
@@ -1500,8 +1500,9 @@ class RawSpyglass:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[typing.Dict[str, typing.Any]]:
         """
-        Poll a run until `status` is `completed`.
+        Poll a run until `status` is `completed` or `failed`.
         Completed runs include `text` and, when you passed a schema, `structured`.
+        Failed runs include `error` with a `code` and `message`.
 
         Limited to 120 requests per minute per user.
 
@@ -2928,7 +2929,7 @@ class AsyncRawSpyglass:
         Pass `outputSchema` to get that JSON on `structured` when the run completes.
         The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
         `model` is `default` or `pro`.
-        Poll GET /agent/runs/{id} until `status` is `completed`.
+        Poll GET /agent/runs/{id} until `status` is `completed` or `failed`.
 
         Limited to 20 requests per minute per user.
         The create call is free. The run is billed from model usage when it finishes.
@@ -3072,8 +3073,9 @@ class AsyncRawSpyglass:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[typing.Dict[str, typing.Any]]:
         """
-        Poll a run until `status` is `completed`.
+        Poll a run until `status` is `completed` or `failed`.
         Completed runs include `text` and, when you passed a schema, `structured`.
+        Failed runs include `error` with a `code` and `message`.
 
         Limited to 120 requests per minute per user.
 
