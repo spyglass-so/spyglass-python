@@ -1267,8 +1267,16 @@ client.get_agent_run(
 <dl>
 <dd>
 
-Fetch a single brand or creator by id. The `type` field tells you
-which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+Fetch a single brand or creator. `id` is any one of:
+
+- an account id (a UUID, or the numeric id from POST /brands or POST /creators)
+- a website URL or bare domain, such as `https://www.nike.com` or `nike.com`
+- an Instagram handle, such as `nike` or `@nike`
+- a TikTok handle, such as `nike` or `@nike`
+
+A website matches the account domain. A handle matches Instagram or
+TikTok. Encode `/` and `?` in a URL. The `type` field tells you which
+one you got: `BRAND` or `CREATOR`, and the creator-only fields
 (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
 Limited to 120 requests per minute per user.
@@ -1297,7 +1305,7 @@ client = Spyglass(
 )
 
 client.account.get(
-    id="id",
+    id="e9cf96ee-7455-4b00-b692-80e2f923f79d",
 )
 
 ```
@@ -1314,7 +1322,7 @@ client.account.get(
 <dl>
 <dd>
 
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+**id:** `str` — Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
     
 </dd>
 </dl>
@@ -1378,7 +1386,7 @@ client = Spyglass(
 )
 
 client.account.insights(
-    id="id",
+    id="e9cf96ee-7455-4b00-b692-80e2f923f79d",
     type="HOOK",
 )
 
@@ -1396,7 +1404,7 @@ client.account.insights(
 <dl>
 <dd>
 
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+**id:** `str` — Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
     
 </dd>
 </dl>
@@ -1481,7 +1489,7 @@ client = Spyglass(
 )
 
 client.account.campaigns(
-    id="id",
+    id="e9cf96ee-7455-4b00-b692-80e2f923f79d",
     type="CAMPAIGN",
 )
 
@@ -1499,7 +1507,7 @@ client.account.campaigns(
 <dl>
 <dd>
 
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+**id:** `str` — Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
     
 </dd>
 </dl>
@@ -1611,7 +1619,7 @@ client = Spyglass(
 )
 
 client.account.collabs(
-    id="id",
+    id="e9cf96ee-7455-4b00-b692-80e2f923f79d",
 )
 
 ```
@@ -1628,7 +1636,7 @@ client.account.collabs(
 <dl>
 <dd>
 
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+**id:** `str` — Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
     
 </dd>
 </dl>
@@ -1728,7 +1736,7 @@ client = Spyglass(
 )
 
 client.account.landing_pages(
-    id="id",
+    id="e9cf96ee-7455-4b00-b692-80e2f923f79d",
 )
 
 ```
@@ -1745,7 +1753,7 @@ client.account.landing_pages(
 <dl>
 <dd>
 
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+**id:** `str` — Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
     
 </dd>
 </dl>
@@ -1910,7 +1918,7 @@ client = Spyglass(
 )
 
 client.account.index_status(
-    id="id",
+    id="e9cf96ee-7455-4b00-b692-80e2f923f79d",
 )
 
 ```
@@ -1927,7 +1935,7 @@ client.account.index_status(
 <dl>
 <dd>
 
-**id:** `str` — Brand or creator id returned by POST /brands or POST /creators.
+**id:** `str` — Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
     
 </dd>
 </dl>

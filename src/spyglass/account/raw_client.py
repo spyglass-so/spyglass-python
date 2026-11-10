@@ -47,8 +47,16 @@ class RawAccountClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetAccountResponse]:
         """
-        Fetch a single brand or creator by id. The `type` field tells you
-        which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+        Fetch a single brand or creator. `id` is any one of:
+
+        - an account id (a UUID, or the numeric id from POST /brands or POST /creators)
+        - a website URL or bare domain, such as `https://www.nike.com` or `nike.com`
+        - an Instagram handle, such as `nike` or `@nike`
+        - a TikTok handle, such as `nike` or `@nike`
+
+        A website matches the account domain. A handle matches Instagram or
+        TikTok. Encode `/` and `?` in a URL. The `type` field tells you which
+        one you got: `BRAND` or `CREATOR`, and the creator-only fields
         (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
         Limited to 120 requests per minute per user.
@@ -58,7 +66,7 @@ class RawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -203,7 +211,7 @@ class RawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         type : InsightsAccountRequestType
 
@@ -359,7 +367,7 @@ class RawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         type : CampaignsAccountRequestType
 
@@ -526,7 +534,7 @@ class RawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         limit : typing.Optional[int]
 
@@ -684,7 +692,7 @@ class RawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         show_inactive : typing.Optional[LandingPagesAccountRequestShowInactive]
 
@@ -964,7 +972,7 @@ class RawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1084,8 +1092,16 @@ class AsyncRawAccountClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetAccountResponse]:
         """
-        Fetch a single brand or creator by id. The `type` field tells you
-        which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+        Fetch a single brand or creator. `id` is any one of:
+
+        - an account id (a UUID, or the numeric id from POST /brands or POST /creators)
+        - a website URL or bare domain, such as `https://www.nike.com` or `nike.com`
+        - an Instagram handle, such as `nike` or `@nike`
+        - a TikTok handle, such as `nike` or `@nike`
+
+        A website matches the account domain. A handle matches Instagram or
+        TikTok. Encode `/` and `?` in a URL. The `type` field tells you which
+        one you got: `BRAND` or `CREATOR`, and the creator-only fields
         (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
         Limited to 120 requests per minute per user.
@@ -1095,7 +1111,7 @@ class AsyncRawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1240,7 +1256,7 @@ class AsyncRawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         type : InsightsAccountRequestType
 
@@ -1396,7 +1412,7 @@ class AsyncRawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         type : CampaignsAccountRequestType
 
@@ -1563,7 +1579,7 @@ class AsyncRawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         limit : typing.Optional[int]
 
@@ -1721,7 +1737,7 @@ class AsyncRawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         show_inactive : typing.Optional[LandingPagesAccountRequestShowInactive]
 
@@ -2001,7 +2017,7 @@ class AsyncRawAccountClient:
         Parameters
         ----------
         id : str
-            Brand or creator id returned by POST /brands or POST /creators.
+            Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
