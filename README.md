@@ -108,6 +108,34 @@ landing_pages = client.account.landing_pages(
 )
 ```
 
+## Account posts
+
+Fetch an account's posts live with `GET /account/posts`. The account does not need to be indexed. Send exactly one of `ig_username`, `tiktok_username`, or `facebook_ad_library_id`. The call usually takes 10–30 seconds and can run up to 5 minutes, so raise the timeout above the 60-second default.
+
+```python
+posts = client.account.posts(
+    ig_username="nike",
+    post_type="reels",
+    limit=20,
+    request_options={"timeout_in_seconds": 300},
+)
+
+# TikTok, most recent by default. sort_by can be "popular".
+client.account.posts(
+    tiktok_username="nike",
+    sort_by="most_recent",
+    limit=20,
+    request_options={"timeout_in_seconds": 300},
+)
+
+# Facebook Ad Library. sort_by can be "most_impressions".
+client.account.posts(
+    facebook_ad_library_id="15087023444",
+    limit=20,
+    request_options={"timeout_in_seconds": 300},
+)
+```
+
 ## Async Usage
 
 Use `AsyncSpyglass` for non-blocking calls with `asyncio`:
@@ -143,6 +171,7 @@ asyncio.run(main())
 | `client.account.campaigns(...)` | `GET /account/{id}/campaigns` | $0.0005 / campaign returned | 120 / min |
 | `client.account.collabs(...)` | `GET /account/{id}/collabs` | $0.0005 / collab returned | 120 / min |
 | `client.account.landing_pages(...)` | `GET /account/{id}/landing-pages` | $0.0025 / landing page returned | 120 / min |
+| `client.account.posts(...)` | `GET /account/posts` | $0.0010 / post returned | 120 / min |
 | `client.account.index(...)` | `POST /account/index` | Free | 50 / min |
 | `client.account.index_status(id=...)` | `GET /account/{id}/index-status` | Free | 300 / min |
 | `client.agent.runs.create(...)` | `POST /agent/runs` | Free to queue; billed from model usage when the run finishes | 20 / min |
