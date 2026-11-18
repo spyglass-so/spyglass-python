@@ -14,6 +14,7 @@ ErrorErrorCode = typing.Union[
         "not_found",
         "method_not_allowed",
         "rate_limited",
+        "not_implemented",
         "internal_error",
     ],
     typing.Any,

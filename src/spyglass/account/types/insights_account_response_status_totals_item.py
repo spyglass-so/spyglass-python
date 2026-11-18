@@ -4,14 +4,13 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .insights_account_response_totals_totals_item import InsightsAccountResponseTotalsTotalsItem
-from .insights_account_response_totals_type import InsightsAccountResponseTotalsType
 
 
-class InsightsAccountResponseTotals(UniversalBaseModel):
-    type: InsightsAccountResponseTotalsType
-    count: int
-    totals: typing.List[InsightsAccountResponseTotalsTotalsItem]
+class InsightsAccountResponseStatusTotalsItem(UniversalBaseModel):
+    id: str
+    label: str
+    tags: typing.Optional[typing.List[str]] = None
+    total: float
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

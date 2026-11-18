@@ -465,6 +465,7 @@ class Spyglass:
         partnership_ad: typing.Optional[bool] = OMIT,
         crossposted: typing.Optional[bool] = OMIT,
         sort_by: typing.Optional[SearchMediaRequestSortBy] = OMIT,
+        include_transcript: typing.Optional[bool] = OMIT,
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -472,7 +473,9 @@ class Spyglass:
         """
         Return creatives. Pass `accountId` to scope to one brand or creator,
         or omit it to search the whole corpus. Without `accountId`,
-        `query` is required.
+        `query` is required. A call typically takes under 10 seconds.
+        Set `includeTranscript` to true to include each video transcript.
+        That does not change the credit charge. The default is false.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -482,7 +485,7 @@ class Spyglass:
         Parameters
         ----------
         account_id : typing.Optional[SearchMediaRequestAccountId]
-            Account id given as a platform string or uuid
+            Account id given as a string, uuid, or handle
 
         query : typing.Optional[str]
 
@@ -529,6 +532,9 @@ class Spyglass:
         crossposted : typing.Optional[bool]
 
         sort_by : typing.Optional[SearchMediaRequestSortBy]
+
+        include_transcript : typing.Optional[bool]
+            Include each video transcript. Does not change the credit charge. Default false.
 
         limit : typing.Optional[int]
 
@@ -579,6 +585,7 @@ class Spyglass:
             partnership_ad=partnership_ad,
             crossposted=crossposted,
             sort_by=sort_by,
+            include_transcript=include_transcript,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1297,6 +1304,7 @@ class AsyncSpyglass:
         partnership_ad: typing.Optional[bool] = OMIT,
         crossposted: typing.Optional[bool] = OMIT,
         sort_by: typing.Optional[SearchMediaRequestSortBy] = OMIT,
+        include_transcript: typing.Optional[bool] = OMIT,
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1304,7 +1312,9 @@ class AsyncSpyglass:
         """
         Return creatives. Pass `accountId` to scope to one brand or creator,
         or omit it to search the whole corpus. Without `accountId`,
-        `query` is required.
+        `query` is required. A call typically takes under 10 seconds.
+        Set `includeTranscript` to true to include each video transcript.
+        That does not change the credit charge. The default is false.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -1314,7 +1324,7 @@ class AsyncSpyglass:
         Parameters
         ----------
         account_id : typing.Optional[SearchMediaRequestAccountId]
-            Account id given as a platform string or uuid
+            Account id given as a string, uuid, or handle
 
         query : typing.Optional[str]
 
@@ -1361,6 +1371,9 @@ class AsyncSpyglass:
         crossposted : typing.Optional[bool]
 
         sort_by : typing.Optional[SearchMediaRequestSortBy]
+
+        include_transcript : typing.Optional[bool]
+            Include each video transcript. Does not change the credit charge. Default false.
 
         limit : typing.Optional[int]
 
@@ -1419,6 +1432,7 @@ class AsyncSpyglass:
             partnership_ad=partnership_ad,
             crossposted=crossposted,
             sort_by=sort_by,
+            include_transcript=include_transcript,
             limit=limit,
             offset=offset,
             request_options=request_options,

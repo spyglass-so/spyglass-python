@@ -18,6 +18,11 @@ from .types.insights_account_request_type import InsightsAccountRequestType
 from .types.insights_account_response import InsightsAccountResponse
 from .types.landing_pages_account_request_show_inactive import LandingPagesAccountRequestShowInactive
 from .types.landing_pages_account_response import LandingPagesAccountResponse
+from .types.posts_account_request_include_transcript import PostsAccountRequestIncludeTranscript
+from .types.posts_account_request_post_type import PostsAccountRequestPostType
+from .types.posts_account_request_sort_by import PostsAccountRequestSortBy
+from .types.posts_account_request_tagged import PostsAccountRequestTagged
+from .types.posts_account_response import PostsAccountResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -97,6 +102,11 @@ class AccountClient:
         Return clustered creative themes for an account. `MEDIA_MIX` returns a
         breakdown by media type; the other types return weekly buckets plus
         ranked totals, highest first.
+
+        If a hook, angle, or persona clustering run is missing, older than 30
+        days, or has no clusters, clustering starts and the response includes
+        `status: "analyzing"` with empty totals. Retry for the finished clusters.
+        Analyzing responses are not charged.
 
         `maxDaysBack` filters both the weekly bucket series and ranked
         `totals` to creatives that started within the requested window.
@@ -327,6 +337,120 @@ class AccountClient:
         )
         return _response.data
 
+    def posts(
+        self,
+        *,
+        ig_username: typing.Optional[str] = None,
+        tiktok_username: typing.Optional[str] = None,
+        facebook_ad_library_id: typing.Optional[str] = None,
+        tagged: typing.Optional[PostsAccountRequestTagged] = None,
+        post_type: typing.Optional[PostsAccountRequestPostType] = None,
+        include_transcript: typing.Optional[PostsAccountRequestIncludeTranscript] = None,
+        sort_by: typing.Optional[PostsAccountRequestSortBy] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PostsAccountResponse:
+        """
+        Return one account's posts, fetched live. The account does not need to be indexed.
+        A call usually takes 10–30 seconds and starts indexing the rest of the brand's posts.
+        Use `POST /media` first when you already have an account id. See the Finding media guide.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        The call bills a minimum of one row even when nothing matches. In that
+        case `count` is 0 but you are charged for one row.
+
+        Send exactly one identifier. The fields you can send depend on which
+        one you pick.
+
+        **`igUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `igUsername` | Instagram handle. A leading `@` is ignored. |
+        | `tagged` | Optional. `true` returns posts the account is tagged in. Omit it for the account's own posts. Cannot be combined with `postType=reels`. |
+        | `postType` | Optional, Instagram only. `posts` (default) or `reels`. Cannot be combined with `tagged`. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `limit` | Optional. Default 20, max 120. |
+        | `sortBy` | Ignored. Posts are always most recent. |
+
+        **`tiktokUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `tiktokUsername` | TikTok handle. A leading `@` is ignored. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `popular`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        **`facebookAdLibraryId`**
+
+        | Field | Details |
+        | --- | --- |
+        | `facebookAdLibraryId` | Facebook Ad Library page id. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `most_impressions`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        Parameters
+        ----------
+        ig_username : typing.Optional[str]
+            Instagram handle. Exactly one of igUsername, tiktokUsername, or facebookAdLibraryId. A leading @ is ignored. sortBy is ignored.
+
+        tiktok_username : typing.Optional[str]
+            TikTok handle. Exactly one identifier. sortBy is optional: most_recent (default) or popular. A leading @ is ignored. Do not send tagged.
+
+        facebook_ad_library_id : typing.Optional[str]
+            Facebook Ad Library page id. Exactly one identifier. sortBy is optional: most_recent (default) or most_impressions. Do not send tagged.
+
+        tagged : typing.Optional[PostsAccountRequestTagged]
+            Only with igUsername. true returns posts the account is tagged in. Omit for the account’s own posts.
+
+        post_type : typing.Optional[PostsAccountRequestPostType]
+            Only with igUsername. posts (default) or reels. Cannot be combined with tagged. Rejected for other identifiers.
+
+        include_transcript : typing.Optional[PostsAccountRequestIncludeTranscript]
+            true transcribes each video and returns transcript. Omit or false to skip transcription.
+
+        sort_by : typing.Optional[PostsAccountRequestSortBy]
+            Optional. With tiktokUsername: most_recent (default) or popular. With facebookAdLibraryId: most_recent (default) or most_impressions. Ignored with igUsername.
+
+        limit : typing.Optional[int]
+            Maximum posts to return. Default 20, max 120.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PostsAccountResponse
+            Posts for the account.
+
+        Examples
+        --------
+        from spyglass import Spyglass
+
+        client = Spyglass(
+            token="YOUR_TOKEN",
+        )
+        client.account.posts(
+            ig_username="nike",
+            limit=20,
+        )
+        """
+        _response = self._raw_client.posts(
+            ig_username=ig_username,
+            tiktok_username=tiktok_username,
+            facebook_ad_library_id=facebook_ad_library_id,
+            tagged=tagged,
+            post_type=post_type,
+            include_transcript=include_transcript,
+            sort_by=sort_by,
+            limit=limit,
+            request_options=request_options,
+        )
+        return _response.data
+
     def index(
         self, *, website_url: str, request_options: typing.Optional[RequestOptions] = None
     ) -> IndexAccountResponse:
@@ -487,6 +611,11 @@ class AsyncAccountClient:
         Return clustered creative themes for an account. `MEDIA_MIX` returns a
         breakdown by media type; the other types return weekly buckets plus
         ranked totals, highest first.
+
+        If a hook, angle, or persona clustering run is missing, older than 30
+        days, or has no clusters, clustering starts and the response includes
+        `status: "analyzing"` with empty totals. Retry for the finished clusters.
+        Analyzing responses are not charged.
 
         `maxDaysBack` filters both the weekly bucket series and ranked
         `totals` to creatives that started within the requested window.
@@ -746,6 +875,128 @@ class AsyncAccountClient:
         """
         _response = await self._raw_client.landing_pages(
             id, show_inactive=show_inactive, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    async def posts(
+        self,
+        *,
+        ig_username: typing.Optional[str] = None,
+        tiktok_username: typing.Optional[str] = None,
+        facebook_ad_library_id: typing.Optional[str] = None,
+        tagged: typing.Optional[PostsAccountRequestTagged] = None,
+        post_type: typing.Optional[PostsAccountRequestPostType] = None,
+        include_transcript: typing.Optional[PostsAccountRequestIncludeTranscript] = None,
+        sort_by: typing.Optional[PostsAccountRequestSortBy] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PostsAccountResponse:
+        """
+        Return one account's posts, fetched live. The account does not need to be indexed.
+        A call usually takes 10–30 seconds and starts indexing the rest of the brand's posts.
+        Use `POST /media` first when you already have an account id. See the Finding media guide.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        The call bills a minimum of one row even when nothing matches. In that
+        case `count` is 0 but you are charged for one row.
+
+        Send exactly one identifier. The fields you can send depend on which
+        one you pick.
+
+        **`igUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `igUsername` | Instagram handle. A leading `@` is ignored. |
+        | `tagged` | Optional. `true` returns posts the account is tagged in. Omit it for the account's own posts. Cannot be combined with `postType=reels`. |
+        | `postType` | Optional, Instagram only. `posts` (default) or `reels`. Cannot be combined with `tagged`. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `limit` | Optional. Default 20, max 120. |
+        | `sortBy` | Ignored. Posts are always most recent. |
+
+        **`tiktokUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `tiktokUsername` | TikTok handle. A leading `@` is ignored. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `popular`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        **`facebookAdLibraryId`**
+
+        | Field | Details |
+        | --- | --- |
+        | `facebookAdLibraryId` | Facebook Ad Library page id. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `most_impressions`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        Parameters
+        ----------
+        ig_username : typing.Optional[str]
+            Instagram handle. Exactly one of igUsername, tiktokUsername, or facebookAdLibraryId. A leading @ is ignored. sortBy is ignored.
+
+        tiktok_username : typing.Optional[str]
+            TikTok handle. Exactly one identifier. sortBy is optional: most_recent (default) or popular. A leading @ is ignored. Do not send tagged.
+
+        facebook_ad_library_id : typing.Optional[str]
+            Facebook Ad Library page id. Exactly one identifier. sortBy is optional: most_recent (default) or most_impressions. Do not send tagged.
+
+        tagged : typing.Optional[PostsAccountRequestTagged]
+            Only with igUsername. true returns posts the account is tagged in. Omit for the account’s own posts.
+
+        post_type : typing.Optional[PostsAccountRequestPostType]
+            Only with igUsername. posts (default) or reels. Cannot be combined with tagged. Rejected for other identifiers.
+
+        include_transcript : typing.Optional[PostsAccountRequestIncludeTranscript]
+            true transcribes each video and returns transcript. Omit or false to skip transcription.
+
+        sort_by : typing.Optional[PostsAccountRequestSortBy]
+            Optional. With tiktokUsername: most_recent (default) or popular. With facebookAdLibraryId: most_recent (default) or most_impressions. Ignored with igUsername.
+
+        limit : typing.Optional[int]
+            Maximum posts to return. Default 20, max 120.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PostsAccountResponse
+            Posts for the account.
+
+        Examples
+        --------
+        import asyncio
+
+        from spyglass import AsyncSpyglass
+
+        client = AsyncSpyglass(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.account.posts(
+                ig_username="nike",
+                limit=20,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.posts(
+            ig_username=ig_username,
+            tiktok_username=tiktok_username,
+            facebook_ad_library_id=facebook_ad_library_id,
+            tagged=tagged,
+            post_type=post_type,
+            include_transcript=include_transcript,
+            sort_by=sort_by,
+            limit=limit,
+            request_options=request_options,
         )
         return _response.data
 

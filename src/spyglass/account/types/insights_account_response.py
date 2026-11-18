@@ -3,6 +3,6 @@
 import typing
 
 from .insights_account_response_rows import InsightsAccountResponseRows
-from .insights_account_response_totals import InsightsAccountResponseTotals
+from .insights_account_response_status import InsightsAccountResponseStatus
 
-InsightsAccountResponse = typing.Union[InsightsAccountResponseRows, InsightsAccountResponseTotals]
+InsightsAccountResponse = typing.Union[InsightsAccountResponseRows, InsightsAccountResponseStatus]

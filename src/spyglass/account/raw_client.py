@@ -33,6 +33,11 @@ from .types.insights_account_request_type import InsightsAccountRequestType
 from .types.insights_account_response import InsightsAccountResponse
 from .types.landing_pages_account_request_show_inactive import LandingPagesAccountRequestShowInactive
 from .types.landing_pages_account_response import LandingPagesAccountResponse
+from .types.posts_account_request_include_transcript import PostsAccountRequestIncludeTranscript
+from .types.posts_account_request_post_type import PostsAccountRequestPostType
+from .types.posts_account_request_sort_by import PostsAccountRequestSortBy
+from .types.posts_account_request_tagged import PostsAccountRequestTagged
+from .types.posts_account_response import PostsAccountResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -202,6 +207,11 @@ class RawAccountClient:
         Return clustered creative themes for an account. `MEDIA_MIX` returns a
         breakdown by media type; the other types return weekly buckets plus
         ranked totals, highest first.
+
+        If a hook, angle, or persona clustering run is missing, older than 30
+        days, or has no clusters, clustering starts and the response includes
+        `status: "analyzing"` with empty totals. Retry for the finished clusters.
+        Analyzing responses are not charged.
 
         `maxDaysBack` filters both the weekly bucket series and ranked
         `totals` to creatives that started within the requested window.
@@ -826,6 +836,206 @@ class RawAccountClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def posts(
+        self,
+        *,
+        ig_username: typing.Optional[str] = None,
+        tiktok_username: typing.Optional[str] = None,
+        facebook_ad_library_id: typing.Optional[str] = None,
+        tagged: typing.Optional[PostsAccountRequestTagged] = None,
+        post_type: typing.Optional[PostsAccountRequestPostType] = None,
+        include_transcript: typing.Optional[PostsAccountRequestIncludeTranscript] = None,
+        sort_by: typing.Optional[PostsAccountRequestSortBy] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[PostsAccountResponse]:
+        """
+        Return one account's posts, fetched live. The account does not need to be indexed.
+        A call usually takes 10–30 seconds and starts indexing the rest of the brand's posts.
+        Use `POST /media` first when you already have an account id. See the Finding media guide.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        The call bills a minimum of one row even when nothing matches. In that
+        case `count` is 0 but you are charged for one row.
+
+        Send exactly one identifier. The fields you can send depend on which
+        one you pick.
+
+        **`igUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `igUsername` | Instagram handle. A leading `@` is ignored. |
+        | `tagged` | Optional. `true` returns posts the account is tagged in. Omit it for the account's own posts. Cannot be combined with `postType=reels`. |
+        | `postType` | Optional, Instagram only. `posts` (default) or `reels`. Cannot be combined with `tagged`. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `limit` | Optional. Default 20, max 120. |
+        | `sortBy` | Ignored. Posts are always most recent. |
+
+        **`tiktokUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `tiktokUsername` | TikTok handle. A leading `@` is ignored. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `popular`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        **`facebookAdLibraryId`**
+
+        | Field | Details |
+        | --- | --- |
+        | `facebookAdLibraryId` | Facebook Ad Library page id. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `most_impressions`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        Parameters
+        ----------
+        ig_username : typing.Optional[str]
+            Instagram handle. Exactly one of igUsername, tiktokUsername, or facebookAdLibraryId. A leading @ is ignored. sortBy is ignored.
+
+        tiktok_username : typing.Optional[str]
+            TikTok handle. Exactly one identifier. sortBy is optional: most_recent (default) or popular. A leading @ is ignored. Do not send tagged.
+
+        facebook_ad_library_id : typing.Optional[str]
+            Facebook Ad Library page id. Exactly one identifier. sortBy is optional: most_recent (default) or most_impressions. Do not send tagged.
+
+        tagged : typing.Optional[PostsAccountRequestTagged]
+            Only with igUsername. true returns posts the account is tagged in. Omit for the account’s own posts.
+
+        post_type : typing.Optional[PostsAccountRequestPostType]
+            Only with igUsername. posts (default) or reels. Cannot be combined with tagged. Rejected for other identifiers.
+
+        include_transcript : typing.Optional[PostsAccountRequestIncludeTranscript]
+            true transcribes each video and returns transcript. Omit or false to skip transcription.
+
+        sort_by : typing.Optional[PostsAccountRequestSortBy]
+            Optional. With tiktokUsername: most_recent (default) or popular. With facebookAdLibraryId: most_recent (default) or most_impressions. Ignored with igUsername.
+
+        limit : typing.Optional[int]
+            Maximum posts to return. Default 20, max 120.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[PostsAccountResponse]
+            Posts for the account.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "account/posts",
+            method="GET",
+            params={
+                "igUsername": ig_username,
+                "tiktokUsername": tiktok_username,
+                "facebookAdLibraryId": facebook_ad_library_id,
+                "tagged": tagged,
+                "postType": post_type,
+                "includeTranscript": include_transcript,
+                "sortBy": sort_by,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PostsAccountResponse,
+                    parse_obj_as(
+                        type_=PostsAccountResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 405:
+                raise MethodNotAllowedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     def index(
         self, *, website_url: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[IndexAccountResponse]:
@@ -1248,6 +1458,11 @@ class AsyncRawAccountClient:
         Return clustered creative themes for an account. `MEDIA_MIX` returns a
         breakdown by media type; the other types return weekly buckets plus
         ranked totals, highest first.
+
+        If a hook, angle, or persona clustering run is missing, older than 30
+        days, or has no clusters, clustering starts and the response includes
+        `status: "analyzing"` with empty totals. Retry for the finished clusters.
+        Analyzing responses are not charged.
 
         `maxDaysBack` filters both the weekly bucket series and ranked
         `totals` to creatives that started within the requested window.
@@ -1821,6 +2036,206 @@ class AsyncRawAccountClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 405:
+                raise MethodNotAllowedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def posts(
+        self,
+        *,
+        ig_username: typing.Optional[str] = None,
+        tiktok_username: typing.Optional[str] = None,
+        facebook_ad_library_id: typing.Optional[str] = None,
+        tagged: typing.Optional[PostsAccountRequestTagged] = None,
+        post_type: typing.Optional[PostsAccountRequestPostType] = None,
+        include_transcript: typing.Optional[PostsAccountRequestIncludeTranscript] = None,
+        sort_by: typing.Optional[PostsAccountRequestSortBy] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[PostsAccountResponse]:
+        """
+        Return one account's posts, fetched live. The account does not need to be indexed.
+        A call usually takes 10–30 seconds and starts indexing the rest of the brand's posts.
+        Use `POST /media` first when you already have an account id. See the Finding media guide.
+
+        Limited to 120 requests per minute per user.
+        Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+        The call bills a minimum of one row even when nothing matches. In that
+        case `count` is 0 but you are charged for one row.
+
+        Send exactly one identifier. The fields you can send depend on which
+        one you pick.
+
+        **`igUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `igUsername` | Instagram handle. A leading `@` is ignored. |
+        | `tagged` | Optional. `true` returns posts the account is tagged in. Omit it for the account's own posts. Cannot be combined with `postType=reels`. |
+        | `postType` | Optional, Instagram only. `posts` (default) or `reels`. Cannot be combined with `tagged`. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `limit` | Optional. Default 20, max 120. |
+        | `sortBy` | Ignored. Posts are always most recent. |
+
+        **`tiktokUsername`**
+
+        | Field | Details |
+        | --- | --- |
+        | `tiktokUsername` | TikTok handle. A leading `@` is ignored. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `popular`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        **`facebookAdLibraryId`**
+
+        | Field | Details |
+        | --- | --- |
+        | `facebookAdLibraryId` | Facebook Ad Library page id. |
+        | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+        | `sortBy` | Optional. `most_recent` (default) or `most_impressions`. |
+        | `limit` | Optional. Default 20, max 120. |
+
+        Parameters
+        ----------
+        ig_username : typing.Optional[str]
+            Instagram handle. Exactly one of igUsername, tiktokUsername, or facebookAdLibraryId. A leading @ is ignored. sortBy is ignored.
+
+        tiktok_username : typing.Optional[str]
+            TikTok handle. Exactly one identifier. sortBy is optional: most_recent (default) or popular. A leading @ is ignored. Do not send tagged.
+
+        facebook_ad_library_id : typing.Optional[str]
+            Facebook Ad Library page id. Exactly one identifier. sortBy is optional: most_recent (default) or most_impressions. Do not send tagged.
+
+        tagged : typing.Optional[PostsAccountRequestTagged]
+            Only with igUsername. true returns posts the account is tagged in. Omit for the account’s own posts.
+
+        post_type : typing.Optional[PostsAccountRequestPostType]
+            Only with igUsername. posts (default) or reels. Cannot be combined with tagged. Rejected for other identifiers.
+
+        include_transcript : typing.Optional[PostsAccountRequestIncludeTranscript]
+            true transcribes each video and returns transcript. Omit or false to skip transcription.
+
+        sort_by : typing.Optional[PostsAccountRequestSortBy]
+            Optional. With tiktokUsername: most_recent (default) or popular. With facebookAdLibraryId: most_recent (default) or most_impressions. Ignored with igUsername.
+
+        limit : typing.Optional[int]
+            Maximum posts to return. Default 20, max 120.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[PostsAccountResponse]
+            Posts for the account.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "account/posts",
+            method="GET",
+            params={
+                "igUsername": ig_username,
+                "tiktokUsername": tiktok_username,
+                "facebookAdLibraryId": facebook_ad_library_id,
+                "tagged": tagged,
+                "postType": post_type,
+                "includeTranscript": include_transcript,
+                "sortBy": sort_by,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PostsAccountResponse,
+                    parse_obj_as(
+                        type_=PostsAccountResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        Error,
+                        parse_obj_as(
+                            type_=Error,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         Error,

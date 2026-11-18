@@ -4,13 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .posts_account_response_media_item import PostsAccountResponseMediaItem
 
 
-class InsightsAccountResponseTotalsTotalsItem(UniversalBaseModel):
-    id: str
-    label: str
-    tags: typing.Optional[typing.List[str]] = None
-    total: float
+class PostsAccountResponse(UniversalBaseModel):
+    count: int
+    media: typing.List[PostsAccountResponseMediaItem]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
