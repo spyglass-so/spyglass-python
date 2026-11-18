@@ -2,3 +2,4 @@
 README.md
 LICENSE
 assets/
+.github/workflows/ci.yml
