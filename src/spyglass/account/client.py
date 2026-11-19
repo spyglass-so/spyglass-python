@@ -105,8 +105,8 @@ class AccountClient:
         """
         Return creative insights for an account. `MEDIA_MIX` counts creatives by
         media type, `CATEGORY` by creative category, and `FUNNEL` by funnel
-        stage. `HOOK`, `TARGET_PERSONA`, and `AD_ANGLE` return weekly buckets
-        plus ranked totals, highest first.
+        stage. `HOOK`, `TARGET_PERSONA`, and `AD_ANGLE` return ranked totals
+        (`id`, `label`, `tags`, `total`), highest first.
 
         If a hook, angle, or persona clustering run is missing, older than 30
         days, or has no clusters, clustering starts and the response includes
@@ -480,12 +480,12 @@ class AccountClient:
         have it yet. Pass a single `websiteUrl`. Instagram and TikTok
         profile URLs are accepted and resolved as creators.
 
-        This endpoint does not consume credits. An existing brand returns
+        An existing brand returns
         `status: "already_exists"`. A new brand is created and sync is
         queued, returning `status: "indexing"` and the new `brandId`.
 
         Limited to 50 requests per minute per user.
-        This call is free.
+        This call is free and does not consume credits.
 
         Parameters
         ----------
@@ -520,7 +520,7 @@ class AccountClient:
         Poll whether a brand finished indexing after POST /account/index.
 
         Limited to 300 requests per minute per user.
-        This call is free.
+        This call is free and does not consume credits.
 
         Parameters
         ----------
@@ -633,8 +633,8 @@ class AsyncAccountClient:
         """
         Return creative insights for an account. `MEDIA_MIX` counts creatives by
         media type, `CATEGORY` by creative category, and `FUNNEL` by funnel
-        stage. `HOOK`, `TARGET_PERSONA`, and `AD_ANGLE` return weekly buckets
-        plus ranked totals, highest first.
+        stage. `HOOK`, `TARGET_PERSONA`, and `AD_ANGLE` return ranked totals
+        (`id`, `label`, `tags`, `total`), highest first.
 
         If a hook, angle, or persona clustering run is missing, older than 30
         days, or has no clusters, clustering starts and the response includes
@@ -1048,12 +1048,12 @@ class AsyncAccountClient:
         have it yet. Pass a single `websiteUrl`. Instagram and TikTok
         profile URLs are accepted and resolved as creators.
 
-        This endpoint does not consume credits. An existing brand returns
+        An existing brand returns
         `status: "already_exists"`. A new brand is created and sync is
         queued, returning `status: "indexing"` and the new `brandId`.
 
         Limited to 50 requests per minute per user.
-        This call is free.
+        This call is free and does not consume credits.
 
         Parameters
         ----------
@@ -1096,7 +1096,7 @@ class AsyncAccountClient:
         Poll whether a brand finished indexing after POST /account/index.
 
         Limited to 300 requests per minute per user.
-        This call is free.
+        This call is free and does not consume credits.
 
         Parameters
         ----------

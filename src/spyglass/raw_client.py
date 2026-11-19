@@ -532,7 +532,7 @@ class RawSpyglass:
         such as `Apparel > Footwear > Sneakers`.
 
         Limited to 120 requests per minute per user.
-        This call is free and does not use credits.
+        This call is free and does not consume credits.
 
         Parameters
         ----------
@@ -932,7 +932,7 @@ class RawSpyglass:
         `remainingCredits` and not `planCredits`.
 
         Limited to 60 requests per minute per user.
-        This call is free and does not use credits. It still responds when
+        This call is free and does not consume credits. It still responds when
         the team is out of credits.
 
         Parameters
@@ -1232,7 +1232,7 @@ class RawSpyglass:
         `count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
         Limited to 120 requests per minute per user.
-        This call is free and does not use credits.
+        This call is free and does not consume credits.
 
         Parameters
         ----------
@@ -2116,7 +2116,7 @@ class AsyncRawSpyglass:
         such as `Apparel > Footwear > Sneakers`.
 
         Limited to 120 requests per minute per user.
-        This call is free and does not use credits.
+        This call is free and does not consume credits.
 
         Parameters
         ----------
@@ -2516,7 +2516,7 @@ class AsyncRawSpyglass:
         `remainingCredits` and not `planCredits`.
 
         Limited to 60 requests per minute per user.
-        This call is free and does not use credits. It still responds when
+        This call is free and does not consume credits. It still responds when
         the team is out of credits.
 
         Parameters
@@ -2816,7 +2816,7 @@ class AsyncRawSpyglass:
         `count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
         Limited to 120 requests per minute per user.
-        This call is free and does not use credits.
+        This call is free and does not consume credits.
 
         Parameters
         ----------
