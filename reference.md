@@ -675,7 +675,7 @@ client.search_media(
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[str]` 
+**start_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
     
 </dd>
 </dl>
@@ -683,7 +683,7 @@ client.search_media(
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[str]` 
+**end_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
     
 </dd>
 </dl>
@@ -1367,17 +1367,18 @@ client.account.get(
 <dl>
 <dd>
 
-Return clustered creative themes for an account. `MEDIA_MIX` returns a
-breakdown by media type; the other types return weekly buckets plus
-ranked totals, highest first.
+Return creative insights for an account. `MEDIA_MIX` counts creatives by
+media type, `CATEGORY` by creative category, and `FUNNEL` by funnel
+stage. `HOOK`, `TARGET_PERSONA`, and `AD_ANGLE` return weekly buckets
+plus ranked totals, highest first.
 
 If a hook, angle, or persona clustering run is missing, older than 30
 days, or has no clusters, clustering starts and the response includes
 `status: "analyzing"` with empty totals. Retry for the finished clusters.
 Analyzing responses are not charged.
 
-`maxDaysBack` filters both the weekly bucket series and ranked
-`totals` to creatives that started within the requested window.
+`datePreset`, or `startDate` and `endDate` as `YYYY-MM-DD`, filter
+by creative start date. Omit both for the last 30 days.
 
 Limited to 120 requests per minute per user.
 Costs $0.0010 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -1438,7 +1439,23 @@ client.account.insights(
 <dl>
 <dd>
 
-**max_days_back:** `typing.Optional[int]` 
+**date_preset:** `typing.Optional[InsightsAccountRequestDatePreset]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
     
 </dd>
 </dl>
@@ -1479,8 +1496,8 @@ client.account.insights(
 <dd>
 
 Return an account’s campaigns or offers, newest start date first.
-`datePreset`, or `startDate` and `endDate`, filter by campaign
-start date. Omit both for all time.
+`datePreset`, or `startDate` and `endDate` as `YYYY-MM-DD`, filter
+by campaign start date. Omit both for all time.
 
 Limited to 120 requests per minute per user.
 Costs $0.0010 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -1565,7 +1582,7 @@ client.account.campaigns(
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[str]` 
+**start_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
     
 </dd>
 </dl>
@@ -1573,7 +1590,7 @@ client.account.campaigns(
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[str]` 
+**end_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
     
 </dd>
 </dl>
@@ -1610,7 +1627,7 @@ most media to least. Works for both brands and creators.
 mediaCount is how many of that account’s media items tag the
 creator. startedAt is the earliest of those media start times, and
 lastPostedAt is the latest. `datePreset`, or `startDate` and
-`endDate`, filter by startedAt. Omit both for all time.
+`endDate` as `YYYY-MM-DD`, filter by startedAt. Omit both for all time.
 
 Limited to 120 requests per minute per user.
 Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -1686,7 +1703,7 @@ client.account.collabs(
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[str]` 
+**start_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
     
 </dd>
 </dl>
@@ -1694,7 +1711,7 @@ client.account.collabs(
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[str]` 
+**end_date:** `typing.Optional[datetime.date]` — Calendar date, YYYY-MM-DD.
     
 </dd>
 </dl>

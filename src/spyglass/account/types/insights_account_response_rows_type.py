@@ -2,4 +2,4 @@
 
 import typing
 
-InsightsAccountResponseRowsType = typing.Union[typing.Literal["MEDIA_MIX"], typing.Any]
+InsightsAccountResponseRowsType = typing.Union[typing.Literal["MEDIA_MIX", "CATEGORY", "FUNNEL"], typing.Any]

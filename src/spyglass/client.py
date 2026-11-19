@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import typing
 
 import httpx
@@ -455,8 +456,8 @@ class Spyglass:
         language: typing.Optional[typing.Sequence[SearchMediaRequestLanguageItem]] = OMIT,
         location: typing.Optional[typing.Sequence[str]] = OMIT,
         date_preset: typing.Optional[SearchMediaRequestDatePreset] = OMIT,
-        start_date: typing.Optional[str] = OMIT,
-        end_date: typing.Optional[str] = OMIT,
+        start_date: typing.Optional[dt.date] = OMIT,
+        end_date: typing.Optional[dt.date] = OMIT,
         min_days_run: typing.Optional[float] = OMIT,
         max_days_run: typing.Optional[float] = OMIT,
         min_view_count: typing.Optional[float] = OMIT,
@@ -511,9 +512,11 @@ class Spyglass:
 
         date_preset : typing.Optional[SearchMediaRequestDatePreset]
 
-        start_date : typing.Optional[str]
+        start_date : typing.Optional[dt.date]
+            Calendar date, YYYY-MM-DD.
 
-        end_date : typing.Optional[str]
+        end_date : typing.Optional[dt.date]
+            Calendar date, YYYY-MM-DD.
 
         min_days_run : typing.Optional[float]
 
@@ -1296,8 +1299,8 @@ class AsyncSpyglass:
         language: typing.Optional[typing.Sequence[SearchMediaRequestLanguageItem]] = OMIT,
         location: typing.Optional[typing.Sequence[str]] = OMIT,
         date_preset: typing.Optional[SearchMediaRequestDatePreset] = OMIT,
-        start_date: typing.Optional[str] = OMIT,
-        end_date: typing.Optional[str] = OMIT,
+        start_date: typing.Optional[dt.date] = OMIT,
+        end_date: typing.Optional[dt.date] = OMIT,
         min_days_run: typing.Optional[float] = OMIT,
         max_days_run: typing.Optional[float] = OMIT,
         min_view_count: typing.Optional[float] = OMIT,
@@ -1352,9 +1355,11 @@ class AsyncSpyglass:
 
         date_preset : typing.Optional[SearchMediaRequestDatePreset]
 
-        start_date : typing.Optional[str]
+        start_date : typing.Optional[dt.date]
+            Calendar date, YYYY-MM-DD.
 
-        end_date : typing.Optional[str]
+        end_date : typing.Optional[dt.date]
+            Calendar date, YYYY-MM-DD.
 
         min_days_run : typing.Optional[float]
 

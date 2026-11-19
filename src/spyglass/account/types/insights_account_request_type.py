@@ -2,4 +2,6 @@
 
 import typing
 
-InsightsAccountRequestType = typing.Union[typing.Literal["HOOK", "TARGET_PERSONA", "AD_ANGLE", "MEDIA_MIX"], typing.Any]
+InsightsAccountRequestType = typing.Union[
+    typing.Literal["HOOK", "TARGET_PERSONA", "AD_ANGLE", "MEDIA_MIX", "CATEGORY", "FUNNEL"], typing.Any
+]
