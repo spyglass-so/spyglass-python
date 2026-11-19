@@ -177,7 +177,8 @@ class Spyglass:
           when nothing matches.
         - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
           match). Pass every name in one array.
-        - **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
+        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
+          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
           in `unmatchedIds`. `limit` and `offset` are ignored.
         - **Instagram** (`igUsername`). Case-insensitive contains match on the
           handle. A leading `@` is ignored.
@@ -301,7 +302,8 @@ class Spyglass:
           when nothing matches.
         - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
           match). Pass every name in one array.
-        - **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
+        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
+          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
           in `unmatchedIds`. `limit` and `offset` are ignored.
         - **Instagram** (`igUsername`). Case-insensitive contains match on the
           handle. A leading `@` is ignored.
@@ -992,7 +994,8 @@ class AsyncSpyglass:
           when nothing matches.
         - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
           match). Pass every name in one array.
-        - **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
+        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
+          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
           in `unmatchedIds`. `limit` and `offset` are ignored.
         - **Instagram** (`igUsername`). Case-insensitive contains match on the
           handle. A leading `@` is ignored.
@@ -1124,7 +1127,8 @@ class AsyncSpyglass:
           when nothing matches.
         - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
           match). Pass every name in one array.
-        - **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
+        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
+          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
           in `unmatchedIds`. `limit` and `offset` are ignored.
         - **Instagram** (`igUsername`). Case-insensitive contains match on the
           handle. A leading `@` is ignored.
