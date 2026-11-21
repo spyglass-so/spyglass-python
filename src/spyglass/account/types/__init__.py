@@ -43,6 +43,7 @@ if typing.TYPE_CHECKING:
     from .posts_account_response_media_item_brand import PostsAccountResponseMediaItemBrand
     from .posts_account_response_media_item_brand_type import PostsAccountResponseMediaItemBrandType
     from .posts_account_response_media_item_media_type import PostsAccountResponseMediaItemMediaType
+    from .posts_account_response_media_item_placement_item import PostsAccountResponseMediaItemPlacementItem
     from .posts_account_response_media_item_type import PostsAccountResponseMediaItemType
     from .posts_account_response_media_item_ugc_character import PostsAccountResponseMediaItemUgcCharacter
     from .posts_account_response_media_item_ugc_character_age_range import (
@@ -92,6 +93,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PostsAccountResponseMediaItemBrand": ".posts_account_response_media_item_brand",
     "PostsAccountResponseMediaItemBrandType": ".posts_account_response_media_item_brand_type",
     "PostsAccountResponseMediaItemMediaType": ".posts_account_response_media_item_media_type",
+    "PostsAccountResponseMediaItemPlacementItem": ".posts_account_response_media_item_placement_item",
     "PostsAccountResponseMediaItemType": ".posts_account_response_media_item_type",
     "PostsAccountResponseMediaItemUgcCharacter": ".posts_account_response_media_item_ugc_character",
     "PostsAccountResponseMediaItemUgcCharacterAgeRange": ".posts_account_response_media_item_ugc_character_age_range",
@@ -161,6 +163,7 @@ __all__ = [
     "PostsAccountResponseMediaItemBrand",
     "PostsAccountResponseMediaItemBrandType",
     "PostsAccountResponseMediaItemMediaType",
+    "PostsAccountResponseMediaItemPlacementItem",
     "PostsAccountResponseMediaItemType",
     "PostsAccountResponseMediaItemUgcCharacter",
     "PostsAccountResponseMediaItemUgcCharacterAgeRange",

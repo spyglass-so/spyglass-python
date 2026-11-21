@@ -23,6 +23,7 @@ from .types.search_brands_request_language import SearchBrandsRequestLanguage
 from .types.search_brands_request_sort_by import SearchBrandsRequestSortBy
 from .types.search_brands_response import SearchBrandsResponse
 from .types.search_creators_request_age_range import SearchCreatorsRequestAgeRange
+from .types.search_creators_request_category_item import SearchCreatorsRequestCategoryItem
 from .types.search_creators_request_ethnicity import SearchCreatorsRequestEthnicity
 from .types.search_creators_request_gender import SearchCreatorsRequestGender
 from .types.search_creators_request_ids_item import SearchCreatorsRequestIdsItem
@@ -161,48 +162,41 @@ class Spyglass:
         sort_by: typing.Optional[SearchBrandsRequestSortBy] = OMIT,
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
+        min_views: typing.Optional[int] = OMIT,
+        max_views: typing.Optional[int] = OMIT,
+        min_engagement: typing.Optional[float] = OMIT,
+        max_engagement: typing.Optional[float] = OMIT,
+        min_active_ads: typing.Optional[int] = OMIT,
+        max_active_ads: typing.Optional[int] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
         language: typing.Optional[SearchBrandsRequestLanguage] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SearchBrandsResponse:
         """
         Find brands.
-        Search semantically with `query`, or look them up by name, id, or
-        social handle. Either way, you can also narrow the results with
-        filters such as product taxonomy, location, and follower count.
+        Filter by taxonomy, location, or followers.
 
-        Send one search field. Each field is its own mode:
+        Leave the search fields empty to list by `sortBy` (default `MOST_FOLLOWERS`).
+        Or pass one of:
 
-        - **Query** (`query`). A natural-language brief. Runs a language model and
-          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
-          when nothing matches.
-        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
-          match). Pass every name in one array.
-        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
-          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
-          in `unmatchedIds`. `limit` and `offset` are ignored.
-        - **Instagram** (`igUsername`). Case-insensitive contains match on the
-          handle. A leading `@` is ignored.
-        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+        - `query` — semantic search. Ordered by relevance, so `sortBy` is ignored.
+          Bills at least one row even when nothing matches.
+        - `names` — name contains this text.
+        - `ids` — UUID, handle, domain, or Ad Library id. Misses are in
+          `unmatchedIds`. Ignores `limit` and `offset`.
+        - `igUsername` or `tiktokUsername` — handle contains this text. A leading
+          `@` is ignored.
 
-        If a request includes more than one of these fields, only the highest
-        priority field is used. The rest are ignored:
+        When more than one is set:
 
-        1. `ids`
-        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
-        3. `names`
-        4. `query`
+        `ids` > `igUsername` / `tiktokUsername` > `names` > `query`
 
-        One exception: `query` together with `names` uses both. `names` narrows the
-        set, and `query` ranks inside it.
+        `names` + `query` uses both.
 
-        `limit` (default 20, max 100) caps the rows returned, and the cost, for
-        every mode except ID.
+        `limit` is 20 by default, 100 max, and caps the charge except for `ids`.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
-        A `query` search runs a language model, so it bills a minimum of one
-        row even when nothing matches.
 
         Parameters
         ----------
@@ -227,6 +221,18 @@ class Spyglass:
         offset : typing.Optional[int]
 
         limit : typing.Optional[int]
+
+        min_views : typing.Optional[int]
+
+        max_views : typing.Optional[int]
+
+        min_engagement : typing.Optional[float]
+
+        max_engagement : typing.Optional[float]
+
+        min_active_ads : typing.Optional[int]
+
+        max_active_ads : typing.Optional[int]
 
         taxonomy : typing.Optional[typing.Sequence[str]]
 
@@ -264,6 +270,12 @@ class Spyglass:
             sort_by=sort_by,
             offset=offset,
             limit=limit,
+            min_views=min_views,
+            max_views=max_views,
+            min_engagement=min_engagement,
+            max_engagement=max_engagement,
+            min_active_ads=min_active_ads,
+            max_active_ads=max_active_ads,
             taxonomy=taxonomy,
             language=language,
             request_options=request_options,
@@ -284,6 +296,13 @@ class Spyglass:
         sort_by: typing.Optional[SearchCreatorsRequestSortBy] = OMIT,
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
+        min_views: typing.Optional[int] = OMIT,
+        max_views: typing.Optional[int] = OMIT,
+        min_engagement: typing.Optional[float] = OMIT,
+        max_engagement: typing.Optional[float] = OMIT,
+        min_active_ads: typing.Optional[int] = OMIT,
+        max_active_ads: typing.Optional[int] = OMIT,
+        category: typing.Optional[typing.Sequence[SearchCreatorsRequestCategoryItem]] = OMIT,
         ethnicity: typing.Optional[SearchCreatorsRequestEthnicity] = OMIT,
         gender: typing.Optional[SearchCreatorsRequestGender] = OMIT,
         age_range: typing.Optional[SearchCreatorsRequestAgeRange] = OMIT,
@@ -292,42 +311,29 @@ class Spyglass:
     ) -> SearchCreatorsResponse:
         """
         Find creators.
-        Search semantically with `query`, or look them up by name, id, or
-        social handle. Either way, you can also narrow the results with
-        filters such as audience profile, location, and follower count.
+        Filter by category, audience, location, or followers.
 
-        Send one search field. Each field is its own mode:
+        Leave the search fields empty to list by `sortBy` (default `MOST_FOLLOWERS`).
+        Or pass one of:
 
-        - **Query** (`query`). A natural-language brief. Runs a language model and
-          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
-          when nothing matches.
-        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
-          match). Pass every name in one array.
-        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
-          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
-          in `unmatchedIds`. `limit` and `offset` are ignored.
-        - **Instagram** (`igUsername`). Case-insensitive contains match on the
-          handle. A leading `@` is ignored.
-        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+        - `query` — semantic search. Ordered by relevance, so `sortBy` is ignored.
+          Bills at least one row even when nothing matches.
+        - `names` — name contains this text.
+        - `ids` — UUID, handle, domain, or Ad Library id. Misses are in
+          `unmatchedIds`. Ignores `limit` and `offset`.
+        - `igUsername` or `tiktokUsername` — handle contains this text. A leading
+          `@` is ignored.
 
-        If a request includes more than one of these fields, only the highest
-        priority field is used. The rest are ignored:
+        When more than one is set:
 
-        1. `ids`
-        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
-        3. `names`
-        4. `query`
+        `ids` > `igUsername` / `tiktokUsername` > `names` > `query`
 
-        One exception: `query` together with `names` uses both. `names` narrows the
-        set, and `query` ranks inside it.
+        `names` + `query` uses both.
 
-        `limit` (default 20, max 100) caps the rows returned, and the cost, for
-        every mode except ID.
+        `limit` is 20 by default, 100 max, and caps the charge except for `ids`.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
-        A `query` search runs a language model, so it bills a minimum of one
-        row even when nothing matches.
 
         Parameters
         ----------
@@ -352,6 +358,21 @@ class Spyglass:
         offset : typing.Optional[int]
 
         limit : typing.Optional[int]
+
+        min_views : typing.Optional[int]
+
+        max_views : typing.Optional[int]
+
+        min_engagement : typing.Optional[float]
+
+        max_engagement : typing.Optional[float]
+
+        min_active_ads : typing.Optional[int]
+
+        max_active_ads : typing.Optional[int]
+
+        category : typing.Optional[typing.Sequence[SearchCreatorsRequestCategoryItem]]
+            Creator niche, such as Celebrity or Comedian. Matches any listed value.
 
         ethnicity : typing.Optional[SearchCreatorsRequestEthnicity]
 
@@ -394,6 +415,13 @@ class Spyglass:
             sort_by=sort_by,
             offset=offset,
             limit=limit,
+            min_views=min_views,
+            max_views=max_views,
+            min_engagement=min_engagement,
+            max_engagement=max_engagement,
+            min_active_ads=min_active_ads,
+            max_active_ads=max_active_ads,
+            category=category,
             ethnicity=ethnicity,
             gender=gender,
             age_range=age_range,
@@ -469,21 +497,45 @@ class Spyglass:
         crossposted: typing.Optional[bool] = OMIT,
         sort_by: typing.Optional[SearchMediaRequestSortBy] = OMIT,
         include_transcript: typing.Optional[bool] = OMIT,
+        include_caption: typing.Optional[bool] = OMIT,
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SearchMediaResponse:
         """
-        Return creatives. Pass `accountId` to scope to one brand or creator,
-        or omit it to search the whole corpus. Without `accountId`,
-        `query` is required. A call typically takes under 10 seconds.
-        Set `includeTranscript` to true to include each video transcript.
-        That does not change the credit charge. The default is false.
+        Return media posts. A call usually takes under 10 seconds.
 
-        Limited to 120 requests per minute per user.
+        **1. Pick what to search**
+
+        | You want | Send |
+        | --- | --- |
+        | All media | Send neither `accountId` nor `query` to list media across the index, ordered by `sortBy` |
+        | One account's media | `accountId` |
+        | Media matching a description | `query`, which matches posts by what they show or say |
+        | One account's media matching a description | `accountId` and `query` |
+        | A broader category | `taxonomy`, a path from GET /taxonomies |
+
+        **2. Pick a sort order**
+
+        `sortBy` defaults to `MOST_RECENT`. Some orders only work with certain channels:
+
+        | `sortBy` | Allowed `channel` |
+        | --- | --- |
+        | `MOST_RECENT`, `OLDEST` | Any |
+        | `MOST_IMPRESSIONS`, `LONGEST_RUN` | Exactly `META_AD` |
+        | `MOST_VIEWS`, `MOST_LIKES`, `MOST_COMMENTS`, `HIGHEST_ENGAGEMENT`, `HIGHEST_OUTLIER` | Anything except `META_AD` |
+
+        **3. Optionally add a transcript or caption**
+
+        Send `includeTranscript: true` to get each video transcript.
+        Send `includeCaption: true` to get each post caption.
+        Both default to false and do not change the price.
+
+        **Cost and limits**
+
         Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
-        The call bills a minimum of one row even when nothing matches. In that
-        case `count` is 0 but you are charged for one row.
+        You are always charged for at least one row. If nothing matches, `count` is 0 but you pay for one row.
+        Limited to 120 requests per minute per user.
 
         Parameters
         ----------
@@ -541,6 +593,9 @@ class Spyglass:
         include_transcript : typing.Optional[bool]
             Include each video transcript. Does not change the credit charge. Default false.
 
+        include_caption : typing.Optional[bool]
+            Include each post caption. Does not change the credit charge. Default false.
+
         limit : typing.Optional[int]
 
         offset : typing.Optional[int]
@@ -591,6 +646,7 @@ class Spyglass:
             crossposted=crossposted,
             sort_by=sort_by,
             include_transcript=include_transcript,
+            include_caption=include_caption,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -980,48 +1036,41 @@ class AsyncSpyglass:
         sort_by: typing.Optional[SearchBrandsRequestSortBy] = OMIT,
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
+        min_views: typing.Optional[int] = OMIT,
+        max_views: typing.Optional[int] = OMIT,
+        min_engagement: typing.Optional[float] = OMIT,
+        max_engagement: typing.Optional[float] = OMIT,
+        min_active_ads: typing.Optional[int] = OMIT,
+        max_active_ads: typing.Optional[int] = OMIT,
         taxonomy: typing.Optional[typing.Sequence[str]] = OMIT,
         language: typing.Optional[SearchBrandsRequestLanguage] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SearchBrandsResponse:
         """
         Find brands.
-        Search semantically with `query`, or look them up by name, id, or
-        social handle. Either way, you can also narrow the results with
-        filters such as product taxonomy, location, and follower count.
+        Filter by taxonomy, location, or followers.
 
-        Send one search field. Each field is its own mode:
+        Leave the search fields empty to list by `sortBy` (default `MOST_FOLLOWERS`).
+        Or pass one of:
 
-        - **Query** (`query`). A natural-language brief. Runs a language model and
-          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
-          when nothing matches.
-        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
-          match). Pass every name in one array.
-        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
-          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
-          in `unmatchedIds`. `limit` and `offset` are ignored.
-        - **Instagram** (`igUsername`). Case-insensitive contains match on the
-          handle. A leading `@` is ignored.
-        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+        - `query` — semantic search. Ordered by relevance, so `sortBy` is ignored.
+          Bills at least one row even when nothing matches.
+        - `names` — name contains this text.
+        - `ids` — UUID, handle, domain, or Ad Library id. Misses are in
+          `unmatchedIds`. Ignores `limit` and `offset`.
+        - `igUsername` or `tiktokUsername` — handle contains this text. A leading
+          `@` is ignored.
 
-        If a request includes more than one of these fields, only the highest
-        priority field is used. The rest are ignored:
+        When more than one is set:
 
-        1. `ids`
-        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
-        3. `names`
-        4. `query`
+        `ids` > `igUsername` / `tiktokUsername` > `names` > `query`
 
-        One exception: `query` together with `names` uses both. `names` narrows the
-        set, and `query` ranks inside it.
+        `names` + `query` uses both.
 
-        `limit` (default 20, max 100) caps the rows returned, and the cost, for
-        every mode except ID.
+        `limit` is 20 by default, 100 max, and caps the charge except for `ids`.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
-        A `query` search runs a language model, so it bills a minimum of one
-        row even when nothing matches.
 
         Parameters
         ----------
@@ -1046,6 +1095,18 @@ class AsyncSpyglass:
         offset : typing.Optional[int]
 
         limit : typing.Optional[int]
+
+        min_views : typing.Optional[int]
+
+        max_views : typing.Optional[int]
+
+        min_engagement : typing.Optional[float]
+
+        max_engagement : typing.Optional[float]
+
+        min_active_ads : typing.Optional[int]
+
+        max_active_ads : typing.Optional[int]
 
         taxonomy : typing.Optional[typing.Sequence[str]]
 
@@ -1091,6 +1152,12 @@ class AsyncSpyglass:
             sort_by=sort_by,
             offset=offset,
             limit=limit,
+            min_views=min_views,
+            max_views=max_views,
+            min_engagement=min_engagement,
+            max_engagement=max_engagement,
+            min_active_ads=min_active_ads,
+            max_active_ads=max_active_ads,
             taxonomy=taxonomy,
             language=language,
             request_options=request_options,
@@ -1111,6 +1178,13 @@ class AsyncSpyglass:
         sort_by: typing.Optional[SearchCreatorsRequestSortBy] = OMIT,
         offset: typing.Optional[int] = OMIT,
         limit: typing.Optional[int] = OMIT,
+        min_views: typing.Optional[int] = OMIT,
+        max_views: typing.Optional[int] = OMIT,
+        min_engagement: typing.Optional[float] = OMIT,
+        max_engagement: typing.Optional[float] = OMIT,
+        min_active_ads: typing.Optional[int] = OMIT,
+        max_active_ads: typing.Optional[int] = OMIT,
+        category: typing.Optional[typing.Sequence[SearchCreatorsRequestCategoryItem]] = OMIT,
         ethnicity: typing.Optional[SearchCreatorsRequestEthnicity] = OMIT,
         gender: typing.Optional[SearchCreatorsRequestGender] = OMIT,
         age_range: typing.Optional[SearchCreatorsRequestAgeRange] = OMIT,
@@ -1119,42 +1193,29 @@ class AsyncSpyglass:
     ) -> SearchCreatorsResponse:
         """
         Find creators.
-        Search semantically with `query`, or look them up by name, id, or
-        social handle. Either way, you can also narrow the results with
-        filters such as audience profile, location, and follower count.
+        Filter by category, audience, location, or followers.
 
-        Send one search field. Each field is its own mode:
+        Leave the search fields empty to list by `sortBy` (default `MOST_FOLLOWERS`).
+        Or pass one of:
 
-        - **Query** (`query`). A natural-language brief. Runs a language model and
-          ranks by relevance, so `sortBy` is ignored. Bills at least one row even
-          when nothing matches.
-        - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
-          match). Pass every name in one array.
-        - **ID** (`ids`). Looks up UUIDs, Instagram handles, TikTok handles, website
-          domains, or Facebook Ad Library ids. A leading `@` is ignored. Missing ids are omitted and listed
-          in `unmatchedIds`. `limit` and `offset` are ignored.
-        - **Instagram** (`igUsername`). Case-insensitive contains match on the
-          handle. A leading `@` is ignored.
-        - **TikTok** (`tiktokUsername`). Same match on the TikTok handle.
+        - `query` — semantic search. Ordered by relevance, so `sortBy` is ignored.
+          Bills at least one row even when nothing matches.
+        - `names` — name contains this text.
+        - `ids` — UUID, handle, domain, or Ad Library id. Misses are in
+          `unmatchedIds`. Ignores `limit` and `offset`.
+        - `igUsername` or `tiktokUsername` — handle contains this text. A leading
+          `@` is ignored.
 
-        If a request includes more than one of these fields, only the highest
-        priority field is used. The rest are ignored:
+        When more than one is set:
 
-        1. `ids`
-        2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
-        3. `names`
-        4. `query`
+        `ids` > `igUsername` / `tiktokUsername` > `names` > `query`
 
-        One exception: `query` together with `names` uses both. `names` narrows the
-        set, and `query` ranks inside it.
+        `names` + `query` uses both.
 
-        `limit` (default 20, max 100) caps the rows returned, and the cost, for
-        every mode except ID.
+        `limit` is 20 by default, 100 max, and caps the charge except for `ids`.
 
         Limited to 120 requests per minute per user.
         Costs $0.0010 per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
-        A `query` search runs a language model, so it bills a minimum of one
-        row even when nothing matches.
 
         Parameters
         ----------
@@ -1179,6 +1240,21 @@ class AsyncSpyglass:
         offset : typing.Optional[int]
 
         limit : typing.Optional[int]
+
+        min_views : typing.Optional[int]
+
+        max_views : typing.Optional[int]
+
+        min_engagement : typing.Optional[float]
+
+        max_engagement : typing.Optional[float]
+
+        min_active_ads : typing.Optional[int]
+
+        max_active_ads : typing.Optional[int]
+
+        category : typing.Optional[typing.Sequence[SearchCreatorsRequestCategoryItem]]
+            Creator niche, such as Celebrity or Comedian. Matches any listed value.
 
         ethnicity : typing.Optional[SearchCreatorsRequestEthnicity]
 
@@ -1229,6 +1305,13 @@ class AsyncSpyglass:
             sort_by=sort_by,
             offset=offset,
             limit=limit,
+            min_views=min_views,
+            max_views=max_views,
+            min_engagement=min_engagement,
+            max_engagement=max_engagement,
+            min_active_ads=min_active_ads,
+            max_active_ads=max_active_ads,
+            category=category,
             ethnicity=ethnicity,
             gender=gender,
             age_range=age_range,
@@ -1312,21 +1395,45 @@ class AsyncSpyglass:
         crossposted: typing.Optional[bool] = OMIT,
         sort_by: typing.Optional[SearchMediaRequestSortBy] = OMIT,
         include_transcript: typing.Optional[bool] = OMIT,
+        include_caption: typing.Optional[bool] = OMIT,
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SearchMediaResponse:
         """
-        Return creatives. Pass `accountId` to scope to one brand or creator,
-        or omit it to search the whole corpus. Without `accountId`,
-        `query` is required. A call typically takes under 10 seconds.
-        Set `includeTranscript` to true to include each video transcript.
-        That does not change the credit charge. The default is false.
+        Return media posts. A call usually takes under 10 seconds.
 
-        Limited to 120 requests per minute per user.
+        **1. Pick what to search**
+
+        | You want | Send |
+        | --- | --- |
+        | All media | Send neither `accountId` nor `query` to list media across the index, ordered by `sortBy` |
+        | One account's media | `accountId` |
+        | Media matching a description | `query`, which matches posts by what they show or say |
+        | One account's media matching a description | `accountId` and `query` |
+        | A broader category | `taxonomy`, a path from GET /taxonomies |
+
+        **2. Pick a sort order**
+
+        `sortBy` defaults to `MOST_RECENT`. Some orders only work with certain channels:
+
+        | `sortBy` | Allowed `channel` |
+        | --- | --- |
+        | `MOST_RECENT`, `OLDEST` | Any |
+        | `MOST_IMPRESSIONS`, `LONGEST_RUN` | Exactly `META_AD` |
+        | `MOST_VIEWS`, `MOST_LIKES`, `MOST_COMMENTS`, `HIGHEST_ENGAGEMENT`, `HIGHEST_OUTLIER` | Anything except `META_AD` |
+
+        **3. Optionally add a transcript or caption**
+
+        Send `includeTranscript: true` to get each video transcript.
+        Send `includeCaption: true` to get each post caption.
+        Both default to false and do not change the price.
+
+        **Cost and limits**
+
         Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
-        The call bills a minimum of one row even when nothing matches. In that
-        case `count` is 0 but you are charged for one row.
+        You are always charged for at least one row. If nothing matches, `count` is 0 but you pay for one row.
+        Limited to 120 requests per minute per user.
 
         Parameters
         ----------
@@ -1383,6 +1490,9 @@ class AsyncSpyglass:
 
         include_transcript : typing.Optional[bool]
             Include each video transcript. Does not change the credit charge. Default false.
+
+        include_caption : typing.Optional[bool]
+            Include each post caption. Does not change the credit charge. Default false.
 
         limit : typing.Optional[int]
 
@@ -1442,6 +1552,7 @@ class AsyncSpyglass:
             crossposted=crossposted,
             sort_by=sort_by,
             include_transcript=include_transcript,
+            include_caption=include_caption,
             limit=limit,
             offset=offset,
             request_options=request_options,

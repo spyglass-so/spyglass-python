@@ -34,6 +34,7 @@ if typing.TYPE_CHECKING:
     from .search_brands_response_brands_item import SearchBrandsResponseBrandsItem
     from .search_brands_response_brands_item_type import SearchBrandsResponseBrandsItemType
     from .search_creators_request_age_range import SearchCreatorsRequestAgeRange
+    from .search_creators_request_category_item import SearchCreatorsRequestCategoryItem
     from .search_creators_request_ethnicity import SearchCreatorsRequestEthnicity
     from .search_creators_request_gender import SearchCreatorsRequestGender
     from .search_creators_request_ids_item import SearchCreatorsRequestIdsItem
@@ -58,6 +59,7 @@ if typing.TYPE_CHECKING:
     from .search_media_response_media_item_brand import SearchMediaResponseMediaItemBrand
     from .search_media_response_media_item_brand_type import SearchMediaResponseMediaItemBrandType
     from .search_media_response_media_item_media_type import SearchMediaResponseMediaItemMediaType
+    from .search_media_response_media_item_placement_item import SearchMediaResponseMediaItemPlacementItem
     from .search_media_response_media_item_type import SearchMediaResponseMediaItemType
     from .search_media_response_media_item_ugc_character import SearchMediaResponseMediaItemUgcCharacter
     from .search_media_response_media_item_ugc_character_age_range import (
@@ -93,6 +95,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SearchBrandsResponseBrandsItem": ".search_brands_response_brands_item",
     "SearchBrandsResponseBrandsItemType": ".search_brands_response_brands_item_type",
     "SearchCreatorsRequestAgeRange": ".search_creators_request_age_range",
+    "SearchCreatorsRequestCategoryItem": ".search_creators_request_category_item",
     "SearchCreatorsRequestEthnicity": ".search_creators_request_ethnicity",
     "SearchCreatorsRequestGender": ".search_creators_request_gender",
     "SearchCreatorsRequestIdsItem": ".search_creators_request_ids_item",
@@ -117,6 +120,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SearchMediaResponseMediaItemBrand": ".search_media_response_media_item_brand",
     "SearchMediaResponseMediaItemBrandType": ".search_media_response_media_item_brand_type",
     "SearchMediaResponseMediaItemMediaType": ".search_media_response_media_item_media_type",
+    "SearchMediaResponseMediaItemPlacementItem": ".search_media_response_media_item_placement_item",
     "SearchMediaResponseMediaItemType": ".search_media_response_media_item_type",
     "SearchMediaResponseMediaItemUgcCharacter": ".search_media_response_media_item_ugc_character",
     "SearchMediaResponseMediaItemUgcCharacterAgeRange": ".search_media_response_media_item_ugc_character_age_range",
@@ -172,6 +176,7 @@ __all__ = [
     "SearchBrandsResponseBrandsItem",
     "SearchBrandsResponseBrandsItemType",
     "SearchCreatorsRequestAgeRange",
+    "SearchCreatorsRequestCategoryItem",
     "SearchCreatorsRequestEthnicity",
     "SearchCreatorsRequestGender",
     "SearchCreatorsRequestIdsItem",
@@ -196,6 +201,7 @@ __all__ = [
     "SearchMediaResponseMediaItemBrand",
     "SearchMediaResponseMediaItemBrandType",
     "SearchMediaResponseMediaItemMediaType",
+    "SearchMediaResponseMediaItemPlacementItem",
     "SearchMediaResponseMediaItemType",
     "SearchMediaResponseMediaItemUgcCharacter",
     "SearchMediaResponseMediaItemUgcCharacterAgeRange",

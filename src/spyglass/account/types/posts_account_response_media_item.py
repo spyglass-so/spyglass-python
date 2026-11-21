@@ -8,6 +8,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .posts_account_response_media_item_brand import PostsAccountResponseMediaItemBrand
 from .posts_account_response_media_item_media_type import PostsAccountResponseMediaItemMediaType
+from .posts_account_response_media_item_placement_item import PostsAccountResponseMediaItemPlacementItem
 from .posts_account_response_media_item_type import PostsAccountResponseMediaItemType
 from .posts_account_response_media_item_ugc_character import PostsAccountResponseMediaItemUgcCharacter
 
@@ -16,7 +17,32 @@ class PostsAccountResponseMediaItem(UniversalBaseModel):
     id: str
     platform_id: typing_extensions.Annotated[str, FieldMetadata(alias="platformId"), pydantic.Field(alias="platformId")]
     brand: typing.Optional[PostsAccountResponseMediaItemBrand] = None
-    title: typing.Optional[str] = None
+    title: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Landing page headline. For organic posts, the post title.
+    """
+
+    cta: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Call to action, such as Shop now or Learn more.
+    """
+
+    landing_page_url: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="landingPageUrl"),
+        pydantic.Field(
+            alias="landingPageUrl", description="Landing page link for a Meta ad. Null for Instagram and TikTok posts."
+        ),
+    ] = None
+    """
+    Landing page link for a Meta ad. Null for Instagram and TikTok posts.
+    """
+
+    placement: typing.Optional[typing.List[PostsAccountResponseMediaItemPlacementItem]] = pydantic.Field(default=None)
+    """
+    Where a Meta ad was shown, such as FACEBOOK, INSTAGRAM, or AUDIENCE_NETWORK. Present only on Meta ads.
+    """
+
     type: typing.Optional[PostsAccountResponseMediaItemType] = None
     media_type: typing_extensions.Annotated[
         typing.Optional[PostsAccountResponseMediaItemMediaType],
@@ -84,6 +110,7 @@ class PostsAccountResponseMediaItem(UniversalBaseModel):
         typing.Optional[str], FieldMetadata(alias="impressionsText"), pydantic.Field(alias="impressionsText")
     ] = None
     transcript: typing.Optional[str] = None
+    caption: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

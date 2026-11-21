@@ -35,11 +35,20 @@ class SearchBrandsResponseBrandsItem(UniversalBaseModel):
     ig_engagement_rate: typing_extensions.Annotated[
         typing.Optional[float], FieldMetadata(alias="igEngagementRate"), pydantic.Field(alias="igEngagementRate")
     ] = None
+    ig_median_views: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="igMedianViews"), pydantic.Field(alias="igMedianViews")
+    ] = None
     tiktok_username: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="tiktokUsername"), pydantic.Field(alias="tiktokUsername")
     ] = None
     tiktok_followers: typing_extensions.Annotated[
         typing.Optional[float], FieldMetadata(alias="tiktokFollowers"), pydantic.Field(alias="tiktokFollowers")
+    ] = None
+    tiktok_median_views: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="tiktokMedianViews"), pydantic.Field(alias="tiktokMedianViews")
+    ] = None
+    active_ad_count: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="activeAdCount"), pydantic.Field(alias="activeAdCount")
     ] = None
     thumbnail_url: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="thumbnailUrl"), pydantic.Field(alias="thumbnailUrl")
